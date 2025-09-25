@@ -8,8 +8,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  name: string;
+  @Column({ unique: true })
+  username: string;
 
   @Column({ select: false })
   password: string;
@@ -19,4 +19,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column({ default: false })
+  isActive: boolean;
 }
