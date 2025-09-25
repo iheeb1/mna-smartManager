@@ -1,0 +1,14 @@
+<div class="app-container">
+  <p-menubar [model]="menuItems">
+    <ng-template pTemplate="start">
+      <div class="flex align-items-center">
+        <i class="pi pi-desktop mr-2" style="font-size: 2rem; color: var(--primary-color);"></i>
+        <span class="font-bold text-xl">MNA Smart Manager</span>
+      </div>
+    </ng-template>
+  </p-menubar>
+  
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</div>
