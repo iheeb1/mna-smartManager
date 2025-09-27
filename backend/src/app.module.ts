@@ -5,6 +5,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { AgentsModule } from './agents/agents.module';
+import { BackupsModule } from './backups/backups.module';
+import { CarsModule } from './cars/cars.module';
+import { CustomersModule } from './customers/customers.module';
+import { DriversModule } from './drivers/drivers.module';
+import { InventoryAdjustmentsModule } from './inventory-adjustments/inventory-adjustments.module';
+import { InventoryAdjustmentItemsModule } from './inventory-adjustment-items/inventory-adjustment-items.module';
+import { OrdersModule } from './orders/orders.module';
+import { OrderItemsModule } from './order-items/order-items.module';
+import { PaymentsModule } from './payments/payments.module';
+import { PaymentItemsModule } from './payment-items/payment-items.module';
+import { ProductsModule } from './products/products.module';
+import { QuotesModule } from './quotes/quotes.module';
+import { QuoteItemsModule } from './quote-items/quote-items.module';
+import { TransportationsModule } from './transportations/transportations.module';
+import { TransportationItemsModule } from './transportation-items/transportation-items.module';
 
 @Module({
   imports: [
@@ -23,6 +39,22 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    AgentsModule,
+    BackupsModule,
+    CarsModule,
+    CustomersModule,
+    DriversModule,
+    InventoryAdjustmentsModule,
+    InventoryAdjustmentItemsModule,
+    OrdersModule,
+    OrderItemsModule,
+    PaymentsModule,
+    PaymentItemsModule,
+    ProductsModule,
+    QuotesModule,
+    QuoteItemsModule,
+    TransportationsModule,
+    TransportationItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
