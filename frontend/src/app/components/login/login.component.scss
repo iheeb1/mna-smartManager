@@ -1,0 +1,473 @@
+// Variables
+$primary-gradient: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+$secondary-gradient: linear-gradient(135deg, #6C63FF 0%, #5A52D5 100%);
+$background-gradient: linear-gradient(135deg, #e8f4fd 0%, #b8d8f0 100%);
+$white: #ffffff;
+$shadow-light: rgba(0, 0, 0, 0.1);
+$shadow-medium: rgba(0, 0, 0, 0.2);
+$border-color: #e0e0e0;
+$text-primary: #333;
+$text-secondary: #666;
+$text-muted: #999;
+
+// Mixins
+@mixin card-shadow {
+  box-shadow: 0 8px 32px $shadow-light;
+}
+
+@mixin button-hover {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px $shadow-medium;
+  }
+}
+
+@mixin fade-in-animation {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+// Global Styles
+.login-container {
+  min-height: 100vh;
+  background: $background-gradient;
+  padding: 20px;
+  direction: rtl;
+  font-family: 'Arial', sans-serif;
+}
+
+// Mobile Layout
+.mobile-layout {
+  display: block;
+}
+
+.mobile-cards-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mobile-card {
+  background: $white;
+  border-radius: 16px;
+  @include card-shadow;
+  overflow: hidden;
+  width: 320px;
+  min-height: 600px;
+  @include fade-in-animation;
+}
+
+.card-header {
+  background: $primary-gradient;
+  padding: 30px 20px;
+  color: $white;
+  position: relative;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid $white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.brand-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.brand-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.illustration {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.truck-scene {
+  width: 200px;
+  height: 150px;
+  position: relative;
+}
+
+.city-bg {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
+  border-radius: 8px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    width: 15px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    width: 12px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+}
+
+.truck {
+  position: absolute;
+  bottom: 20px;
+  left: 60px;
+  width: 50px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 5px;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 5px;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 30px 0 rgba(255, 255, 255, 0.4);
+  }
+}
+
+.screen {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 60px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.boxes {
+  position: absolute;
+  bottom: 50px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 1px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 1px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12px;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 1px;
+  }
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-content {
+  padding-top: 10px;
+}
+
+.field {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: $text-primary;
+    font-weight: 500;
+    text-align: right;
+  }
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.login-btn {
+  background: $secondary-gradient !important;
+  border: none !important;
+  border-radius: 25px !important;
+  height: 45px !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+.send-code-btn {
+  background: $primary-gradient !important;
+  border: none !important;
+  border-radius: 25px !important;
+  height: 45px !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+// Dialog Styles
+::ng-deep .login-dialog {
+  .p-dialog {
+    width: 800px !important;
+    max-width: 90vw;
+    border-radius: 16px !important;
+    overflow: hidden;
+  }
+
+  .p-dialog-content {
+    padding: 0 !important;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+}
+
+.dialog-container {
+  display: flex;
+  min-height: 500px;
+  @include fade-in-animation;
+}
+
+.dialog-left {
+  flex: 1;
+  background: $white;
+  padding: 30px;
+  position: relative;
+}
+
+.dialog-right {
+  flex: 1;
+  background: $primary-gradient;
+  padding: 30px;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  color: $text-muted;
+  font-size: 18px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #f0f0f0;
+    color: $text-primary;
+  }
+}
+
+.form-section {
+  margin-top: 40px;
+}
+
+.forgot-password {
+  color: #6C63FF;
+  text-decoration: none;
+  font-size: 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Desktop Actions
+.desktop-actions {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+// Tab Styles
+::ng-deep .p-tabview {
+  .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #6C63FF !important;
+    border-color: #6C63FF !important;
+    color: $white !important;
+  }
+
+  .p-tabview-nav li .p-tabview-nav-link {
+    color: $text-secondary !important;
+    border-radius: 8px 8px 0 0 !important;
+  }
+
+  .p-tabview-panels {
+    background: transparent !important;
+    border: none !important;
+    padding: 20px 0 0 0 !important;
+  }
+}
+
+// Input Styles
+::ng-deep {
+  .p-inputtext, 
+  .p-password input {
+    border-radius: 8px !important;
+    border: 2px solid $border-color !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+
+    &:focus {
+      border-color: #6C63FF !important;
+      box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.2) !important;
+    }
+
+    &:disabled {
+      background: #f8f9fa !important;
+      color: $text-secondary !important;
+    }
+  }
+}
+
+// Button Styles
+::ng-deep .p-button {
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  @include button-hover;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .mobile-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mobile-card {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .dialog-container {
+    flex-direction: column;
+  }
+  
+  .dialog-right {
+    min-height: 200px;
+  }
+  
+  ::ng-deep .login-dialog .p-dialog {
+    width: 95vw !important;
+  }
+}
+
+// RTL Support
+[dir="rtl"] {
+  .p-inputtext, 
+  .p-password input {
+    text-align: right !important;
+  }
+
+  .p-tabview .p-tabview-nav {
+    justify-content: flex-end;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
