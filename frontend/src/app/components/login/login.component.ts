@@ -26,27 +26,22 @@ import { RippleModule } from 'primeng/ripple';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  // Dialog visibility flags
   passwordDialogVisible = false;
   textDialogVisible = false;
 
-  // Mobile form data
   mobileUsername = '';
   mobilePassword = '';
   mobileId = '';
   mobilePhoneNumber = '0509100726';
 
-  // Desktop form data
   desktopPassword = '';
   desktopId = '12345678';
   desktopTextId = '0509100726';
   desktopTextCode = '';
 
-  // Tab states for mobile cards
-  mobileActiveTab1 = 'password'; // 'password' or 'sms'
-  mobileActiveTab2 = 'sms';      // 'sms' or 'password'
+  mobileActiveTab1 = 'password'; 
+  mobileActiveTab2 = 'sms';     
 
-  // Dialog control methods
   showPasswordDialog() {
     this.passwordDialogVisible = true;
   }
@@ -71,7 +66,6 @@ export class LoginComponent {
     this.textDialogVisible = false;
   }
 
-  // Login handlers
   onMobileLogin() {
     console.log('Mobile login:', {
       username: this.mobileUsername,
