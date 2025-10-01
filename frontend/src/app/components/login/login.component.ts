@@ -1,14 +1,10 @@
-// src/app/components/login/login.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// PrimeNG Modules (v17.18.0 - NgModule-based)
-import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
 import { PasswordModule } from 'primeng/password';
-import { DialogModule } from 'primeng/dialog';
-import { RippleModule } from 'primeng/ripple';
 
 @Component({
   selector: 'app-login',
@@ -16,81 +12,45 @@ import { RippleModule } from 'primeng/ripple';
   imports: [
     CommonModule,
     FormsModule,
-    ButtonModule,
     InputTextModule,
-    PasswordModule,
-    DialogModule,
-    RippleModule
+    ButtonModule,
+    TabViewModule,
+    PasswordModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  passwordDialogVisible = false;
-  textDialogVisible = false;
+  // Text login
+  textPhone: string = '';
+  textCode: string = '';
+  
+  // Password login
+  passwordUsername: string = '';
+  passwordEmail: string = '';
+  passwordPhone: string = '';
+  passwordValue: string = '';
+  
+  showPassword: boolean = false;
 
-  mobileUsername = '';
-  mobilePassword = '';
-  mobileId = '';
-  mobilePhoneNumber = '0509100726';
-
-  desktopPassword = '';
-  desktopId = '12345678';
-  desktopTextId = '0509100726';
-  desktopTextCode = '';
-
-  mobileActiveTab1 = 'password'; 
-  mobileActiveTab2 = 'sms';     
-
-  showPasswordDialog() {
-    this.passwordDialogVisible = true;
+  onTextSubmit() {
+    console.log('Text Login:', { phone: this.textPhone, code: this.textCode });
   }
 
-  hidePasswordDialog() {
-    this.passwordDialogVisible = false;
-  }
-
-  onPasswordDialogHide() {
-    this.passwordDialogVisible = false;
-  }
-
-  showTextDialog() {
-    this.textDialogVisible = true;
-  }
-
-  hideTextDialog() {
-    this.textDialogVisible = false;
-  }
-
-  onTextDialogHide() {
-    this.textDialogVisible = false;
-  }
-
-  onMobileLogin() {
-    console.log('Mobile login:', {
-      username: this.mobileUsername,
-      password: this.mobilePassword,
-      id: this.mobileId
+  onPasswordSubmit() {
+    console.log('Password Login:', {
+      username: this.passwordUsername,
+      email: this.passwordEmail,
+      phone: this.passwordPhone,
+      password: this.passwordValue
     });
   }
 
-  onDesktopPasswordLogin() {
-    console.log('Desktop password login:', {
-      password: this.desktopPassword,
-      id: this.desktopId
-    });
-    this.hidePasswordDialog();
+  sendVerificationCode() {
+    console.log('Sending verification code to:', this.textPhone);
   }
 
-  onDesktopTextLogin() {
-    console.log('Desktop text login:', {
-      code: this.desktopTextCode,
-      id: this.desktopTextId
-    });
-    this.hideTextDialog();
-  }
-
-  sendTextCode() {
-    console.log('Sending text code to:', this.mobilePhoneNumber);
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

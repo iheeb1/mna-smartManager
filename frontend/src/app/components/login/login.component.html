@@ -1,323 +1,94 @@
-<!-- src/app/components/login/login.component.html -->
 <div class="login-container">
-    <!-- Mobile Layout -->
-    <div class="mobile-layout">
-      <div class="mobile-cards-container">
-        <!-- Mobile Password Card -->
-        <div class="mobile-card">
-          <div class="card-header">
-            <div class="logo-section">
-              <div class="logo">S</div>
-              <span class="brand-text">Smart</span>
-              <div class="brand-subtitle">ברכים באים ל</div>
-            </div>
-            <div class="illustration">
-              <div class="truck-scene">
-                <div class="city-bg"></div>
-                <div class="truck"></div>
-                <div class="screen"></div>
-                <div class="boxes"></div>
-              </div>
-            </div>
+  <div class="login-card">
+    <div class="branding-section">
+      <div class="branding-content">
+        <div class="logo-section">
+          <h2 class="welcome-text">مرحباً بك في</h2>
+          <div class="logo">
+            <img src="/assets/images/logo.png" alt="Smart Logo" class="logo-img" />
+            <span class="logo-text">سمارت</span>
           </div>
-          <div class="card-body">
-            <!-- Custom Tabs -->
-            <div class="custom-tabs">
-              <button 
-                pButton 
-                [text]="true"
-                [class.active]="mobileActiveTab1 === 'password'"
-                (click)="mobileActiveTab1 = 'password'"
-                icon="pi pi-lock"
-                label="دخول بكلمة مرور">
-              </button>
-              <button 
-                pButton 
-                [text]="true"
-                [class.active]="mobileActiveTab1 === 'sms'"
-                (click)="mobileActiveTab1 = 'sms'"
-                icon="pi pi-comment"
-                label="دخول بنص">
-              </button>
+        </div>
+
+        <div class="illustration">
+          <img src="/assets/images/login_picture.svg" alt="Smart Logistics" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+
+      <p-tabView>
+        <!-- Tab 1: Text Message Login -->
+        <p-tabPanel header="تسجيل الدخول بالرسالة">
+          <form (ngSubmit)="onTextSubmit()" class="login-form">
+            <div class="field">
+              <label for="text-phone">رقم الهاتف</label>
+              <input 
+                pInputText 
+                id="text-phone" 
+                [(ngModel)]="textPhone" 
+                name="textPhone"
+                placeholder="0509100726"
+                class="w-full" />
             </div>
-  
-            <div class="form-content" *ngIf="mobileActiveTab1 === 'password'">
-              <div class="field">
-                <label>اسم المستخدم</label>
+
+            <div class="field">
+              <label for="text-code">لم تستلم الكود؟ أرسل مرة أخرى</label>
+              <button 
+                pButton 
+                type="button"
+                label="إرسال الكود" 
+                class="send-code-btn w-full"
+                (click)="sendVerificationCode()"></button>
+            </div>
+          </form>
+        </p-tabPanel>
+
+        <!-- Tab 2: Password Login -->
+        <p-tabPanel header="تسجيل الدخول بكلمة المرور">
+          <form (ngSubmit)="onPasswordSubmit()" class="login-form">
+            <div class="field">
+              <label for="pwd-username">اسم المستخدم</label>
+              <input 
+                pInputText 
+                id="pwd-username" 
+                [(ngModel)]="passwordUsername" 
+                name="passwordUsername"
+                placeholder="مستخدم النظام"
+                class="w-full" />
+            </div>
+
+            <div class="field password-field">
+              <label for="pwd-password">كلمة المرور</label>
+              <div class="password-input-wrapper">
                 <input 
-                  pInputText
-                  [(ngModel)]="mobileUsername" 
-                  placeholder="مستخدم رئيسي"
-                  class="w-full" />
-              </div>
-              <div class="field">
-                <label>كلمة المرور</label>
-                <p-password
-                  [(ngModel)]="mobilePassword"
-                  placeholder="كلمة المرور"
-                  [toggleMask]="true"
-                  inputClass="w-full">
-                </p-password>
-              </div>
-              <div class="field">
-                <label>رقم الهوية</label>
-                <input 
-                  pInputText
-                  [(ngModel)]="mobileId" 
+                  [type]="showPassword ? 'text' : 'password'"
+                  pInputText 
+                  id="pwd-password" 
+                  [(ngModel)]="passwordValue" 
+                  name="passwordValue"
                   placeholder="123456789"
                   class="w-full" />
-              </div>
-              <button 
-                pButton
-                pRipple
-                type="button"
-                label="اتصال" 
-                class="w-full login-btn"
-                (click)="onMobileLogin()">
-              </button>
-            </div>
-  
-            <div class="form-content" *ngIf="mobileActiveTab1 === 'sms'">
-              <div class="field">
-                <label>رقم هاتف</label>
-                <input 
-                  pInputText
-                  [(ngModel)]="mobilePhoneNumber" 
-                  class="w-full" />
-              </div>
-              <button 
-                pButton
-                pRipple
-                type="button"
-                label="إرسال كود" 
-                class="w-full send-code-btn"
-                (click)="sendTextCode()">
-              </button>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Mobile Text Card -->
-        <div class="mobile-card">
-          <div class="card-header">
-            <div class="logo-section">
-              <div class="logo">S</div>
-              <span class="brand-text">Smart</span>
-              <div class="brand-subtitle">ברכים באים ל</div>
-            </div>
-            <div class="illustration">
-              <div class="truck-scene">
-                <div class="city-bg"></div>
-                <div class="truck"></div>
-                <div class="screen"></div>
-                <div class="boxes"></div>
+                <button 
+                  type="button" 
+                  class="toggle-password"
+                  (click)="togglePasswordVisibility()">
+                  <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                </button>
               </div>
             </div>
-          </div>
-          <div class="card-body">
-            <!-- Custom Tabs -->
-            <div class="custom-tabs">
+
+            <div class="field">
               <button 
                 pButton 
-                [text]="true"
-                [class.active]="mobileActiveTab2 === 'sms'"
-                (click)="mobileActiveTab2 = 'sms'"
-                icon="pi pi-comment"
-                label="دخول بنص">
-              </button>
-              <button 
-                pButton 
-                [text]="true"
-                [class.active]="mobileActiveTab2 === 'password'"
-                (click)="mobileActiveTab2 = 'password'"
-                icon="pi pi-lock"
-                label="دخول بكلمة مرور">
-              </button>
+                type="submit" 
+                label="تسجيل الدخول" 
+                class="submit-btn w-full"></button>
             </div>
-  
-            <div class="form-content" *ngIf="mobileActiveTab2 === 'sms'">
-              <div class="field">
-                <label>رقم المسلسل</label>
-                <input 
-                  pInputText
-                  [ngModel]="mobilePhoneNumber"
-                  [disabled]="true"
-                  class="w-full" />
-              </div>
-              <div class="field">
-                <label>رمز التحقق المرسل إليك</label>
-                <input 
-                  pInputText
-                  placeholder="أدخل الرمز هنا"
-                  class="w-full" />
-              </div>
-              <button 
-                pButton
-                pRipple
-                type="button"
-                label="اتصال" 
-                class="w-full login-btn"
-                (click)="onMobileLogin()">
-              </button>
-            </div>
-  
-            <div class="form-content" *ngIf="mobileActiveTab2 === 'password'">
-              <!-- Empty or add content if needed -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- Desktop Password Dialog -->
-    <p-dialog 
-      [(visible)]="passwordDialogVisible"
-      [modal]="true" 
-      [closable]="true"
-      [draggable]="false"
-      [resizable]="false"
-      styleClass="login-dialog password-dialog"
-      [showHeader]="false"
-      (onHide)="onPasswordDialogHide()">
-      
-      <div class="dialog-container">
-        <div class="dialog-left">
-          <button class="close-btn" (click)="hidePasswordDialog()">
-            <i class="pi pi-times"></i>
-          </button>
-          <div class="form-section">
-            <div class="form-content">
-              <div class="field">
-                <label>كلمة المرور الخاصة بك</label>
-                <p-password
-                  [(ngModel)]="desktopPassword"
-                  placeholder="كلمة المرور الخاصة بك"
-                  [toggleMask]="true"
-                  inputClass="w-full">
-                </p-password>
-              </div>
-              <div class="field">
-                <label>رقم الهوية</label>
-                <input 
-                  pInputText
-                  [(ngModel)]="desktopId"
-                  placeholder="12345678"
-                  class="w-full" />
-              </div>
-              <div class="field">
-                <a href="#" class="forgot-password">هل نسيت كلمة المرور؟</a>
-              </div>
-              <button 
-                pButton
-                pRipple
-                type="button"
-                label="اتصال" 
-                class="w-full login-btn"
-                (click)="onDesktopPasswordLogin()">
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div class="dialog-right">
-          <div class="logo-section">
-            <div class="logo">S</div>
-            <span class="brand-text">Smart</span>
-            <div class="brand-subtitle">ברכים באים ל</div>
-          </div>
-          <div class="illustration">
-            <div class="truck-scene">
-              <div class="city-bg"></div>
-              <div class="truck"></div>
-              <div class="screen"></div>
-              <div class="boxes"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </p-dialog>
-  
-    <!-- Desktop Text Dialog -->
-    <p-dialog 
-      [(visible)]="textDialogVisible"
-      [modal]="true" 
-      [closable]="true"
-      [draggable]="false"
-      [resizable]="false"
-      styleClass="login-dialog text-dialog"
-      [showHeader]="false"
-      (onHide)="onTextDialogHide()">
-      
-      <div class="dialog-container">
-        <div class="dialog-left">
-          <button class="close-btn" (click)="hideTextDialog()">
-            <i class="pi pi-times"></i>
-          </button>
-          <div class="form-section">
-            <div class="form-content">
-              <div class="field">
-                <label>رقم المسلسل الخاص بك</label>
-                <input 
-                  pInputText
-                  [(ngModel)]="desktopTextId"
-                  [disabled]="true"
-                  class="w-full" />
-              </div>
-              <div class="field">
-                <label>ما يأتي بعد كتابة الرقم التالي</label>
-                <input 
-                  pInputText
-                  [(ngModel)]="desktopTextCode"
-                  placeholder="أدخل الرمز هنا"
-                  class="w-full" />
-              </div>
-              <button 
-                pButton
-                pRipple
-                type="button"
-                label="اتصال" 
-                class="w-full login-btn"
-                (click)="onDesktopTextLogin()">
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div class="dialog-right">
-          <div class="logo-section">
-            <div class="logo">S</div>
-            <span class="brand-text">Smart</span>
-            <div class="brand-subtitle">ברכים באים ל</div>
-          </div>
-          <div class="illustration">
-            <div class="truck-scene">
-              <div class="city-bg"></div>
-              <div class="truck"></div>
-              <div class="screen"></div>
-              <div class="boxes"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </p-dialog>
-  
-    <!-- Action Buttons for Desktop Dialogs (for testing) -->
-    <div class="desktop-actions">
-      <button 
-        pButton
-        pRipple
-        type="button"
-        label="فتح نافذة كلمة المرور" 
-        (click)="showPasswordDialog()"
-        class="p-button-outlined">
-      </button>
-      <button 
-        pButton
-        pRipple
-        type="button"
-        label="فتح نافذة الرسائل النصية" 
-        (click)="showTextDialog()"
-        class="p-button-outlined">
-      </button>
+          </form>
+        </p-tabPanel>
+      </p-tabView>
     </div>
   </div>
+</div>
