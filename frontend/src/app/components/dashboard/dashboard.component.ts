@@ -68,9 +68,9 @@ export class DashboardComponent {
   ];
 
   menuItems = [
-    { icon: 'pi pi-th-large', label: 'الإدارة'},
-    { icon: 'pi pi-users', label: 'المستخدمون'},
-    { icon: 'pi pi-file', label: 'الطباعة'},
-    { icon: 'pi pi-star', label: 'الموقع'}
+    { icon: 'pi pi-chart-bar', label: 'الإدارة' },
+    { icon: 'pi pi-shopping-bag', label: 'المستخدمون' },
+    { icon: 'pi pi-print', label: 'الطباعة' },
+    { icon: 'pi pi-cog', label: 'الموقع' }
   ];
 }
