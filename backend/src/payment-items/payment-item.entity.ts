@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+
 @Entity('mng_paymentitems')
 @Index('FKIndex', ['paymentItemId', 'paymentId', 'paymentItemMethodId', 'paymentItemStatusId'])
 export class PaymentItem {

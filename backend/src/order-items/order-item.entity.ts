@@ -1,4 +1,3 @@
-// src/order-items/order-item.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('mng_orderitems')
