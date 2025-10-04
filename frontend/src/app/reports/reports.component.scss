@@ -1,0 +1,491 @@
+:host {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .reports-container {
+    padding: 2rem;
+    direction: rtl;
+    background: #F5F7FA;
+    min-height: 100vh;
+  }
+  
+  // Header Section
+  .header-section {
+    margin-bottom: 1.5rem;
+  
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2D3748;
+      margin: 0 0 0.25rem 0;
+    }
+  
+    .page-subtitle {
+      color: #718096;
+      font-size: 0.875rem;
+      margin: 0;
+    }
+  }
+  
+  // Filter Section
+  .filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  
+    .filter-dropdowns {
+      display: flex;
+      gap: 0.75rem;
+      order: 1;
+  
+      ::ng-deep .p-dropdown {
+        background: #D9D6FF !important;
+        border-color: #D9D6FF !important;
+  
+        .p-dropdown-label {
+          color: #5A5780;
+        }
+  
+        &:hover {
+          background: #ccc9f5 !important;
+          border-color: #ccc9f5 !important;
+        }
+      }
+    }
+  
+    .filter-actions {
+      display: flex;
+      gap: 0.5rem;
+      order: 2;
+  
+      .export-btn {
+        height: 40px;
+        padding: 0 1.25rem;
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+        background: white;
+        color: #4A5568;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+  
+        &:hover {
+          background: #F7FAFC;
+          border-color: #CBD5E0;
+        }
+      }
+  
+      .print-btn {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+        background: white;
+        color: #4A5568;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        &:hover {
+          background: #F7FAFC;
+          border-color: #CBD5E0;
+        }
+      }
+    }
+  }
+  
+  // Summary Cards
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  
+    .card-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 140px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      background: white;
+  
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+  
+      .card-content {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+  
+      .card-text {
+        text-align: left;
+        text-decoration-color: white;
+  
+        .card-amount {
+          color: white;
+          font-size: 1.875rem;
+          font-weight: 700;
+          margin: 0 0 0.5rem 0;
+          letter-spacing: -0.5px;
+  
+          &.negative {
+            color: white;
+          }
+        }
+  
+        .card-label {
+          color: white;
+          font-size: 0.875rem;
+          margin: 0;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+  
+  // Tables Section
+  .tables-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  
+    > div {
+      display: flex;
+      flex-direction: column;
+  
+      &:nth-child(3) {
+        .table-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.75rem;
+          padding: 0 0.5rem;
+        }
+  
+        .table-card {
+          background: #D9D6FF;
+  
+          ::ng-deep .custom-table {
+            .p-datatable-thead > tr > th {
+              background: #ccc9f5;
+              color: #5A5780;
+            }
+  
+            .p-datatable-tbody > tr {
+              > td {
+                color: #5A5780;
+              }
+  
+              &:hover {
+                background: #ccc9f5;
+              }
+            }
+  
+            .p-datatable-tbody > tr:not(:last-child) > td {
+              border-bottom: 1px solid #c0bce8;
+            }
+  
+            .status-badge {
+              background: #B8B3FD;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding: 0 0.5rem;
+  
+    .table-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #2D3748;
+      margin: 0;
+    }
+  
+    .backup-btn {
+      height: 36px;
+      width: auto;
+      padding: 0 1rem;
+      border-radius: 8px;
+      border: 1px solid #E2E8F0;
+      background: white;
+      color: #4A5568;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+  
+      &:hover {
+        background: #F7FAFC;
+        border-color: #CBD5E0;
+      }
+    }
+  
+    .table-subtitle {
+      color: #667eea;
+      font-size: 0.8125rem;
+      text-decoration: none;
+      transition: color 0.2s;
+      white-space: nowrap;
+  
+      &:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .table-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #2D3748;
+    margin: 0 0 0.75rem 0;
+    padding: 0 0.5rem;
+  }
+  
+  .table-card {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  // PrimeNG Table Styles
+  ::ng-deep {
+    .filter-dropdown {
+      width: 180px;
+  
+      .p-dropdown {
+        border-radius: 8px;
+        border: 1px solid #E2E8F0;
+        height: 40px;
+        background: white;
+        font-size: 0.875rem;
+  
+        &:hover {
+          border-color: #CBD5E0;
+        }
+  
+        &:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+      }
+  
+      .p-dropdown-label {
+        padding: 0.5rem 0.75rem;
+        color: #4A5568;
+      }
+    }
+  
+    .custom-table {
+      .p-datatable-wrapper {
+        border-radius: 12px;
+      }
+  
+      .p-datatable-thead > tr > th {
+        background: #F7FAFC;
+        border: none;
+        border-bottom: 1px solid #E2E8F0;
+        color: #718096;
+        font-weight: 600;
+        font-size: 0.8125rem;
+        padding: 0.875rem 1rem;
+        text-align: right;
+        text-transform: none;
+        letter-spacing: 0;
+  
+        &:first-child {
+          border-top-right-radius: 12px;
+        }
+  
+        &:last-child {
+          border-top-left-radius: 12px;
+        }
+      }
+  
+      .p-datatable-tbody > tr {
+        transition: background 0.15s;
+  
+        &:hover {
+          background: #F7FAFC;
+        }
+  
+        > td {
+          border: none;
+          padding: 0.875rem 1rem;
+          color: #2D3748;
+          font-size: 0.875rem;
+          text-align: right;
+        }
+      }
+  
+      .p-datatable-tbody > tr:not(:last-child) > td {
+        border-bottom: 1px solid #F1F5F9;
+      }
+  
+      .status-badge {
+        display: inline-block;
+        padding: 0.375rem 0.875rem;
+        border-radius: 6px;
+        background: #EDF2F7;
+        color: #4A5568;
+        font-size: 0.8125rem;
+        font-weight: 500;
+      }
+    }
+  
+    .p-button {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  }
+  
+  // Responsive Design
+  @media (max-width: 1200px) {
+    .tables-section {
+      grid-template-columns: 1fr;
+    }
+  
+    .summary-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .reports-container {
+      padding: 1rem;
+      padding-bottom: 5rem;
+    }
+  
+    .header-section {
+      margin-bottom: 1.25rem;
+  
+      .page-title {
+        font-size: 1.5rem;
+      }
+  
+      .page-subtitle {
+        font-size: 0.8125rem;
+      }
+    }
+  
+    .filter-section {
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: stretch;
+  
+      .filter-dropdowns {
+        width: 100%;
+        order: 2;
+  
+        ::ng-deep .filter-dropdown {
+          flex: 1;
+        }
+      }
+  
+      .filter-actions {
+        width: 100%;
+        order: 1;
+        justify-content: flex-end;
+      }
+    }
+  
+    .summary-cards {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+  
+      .card-item {
+        height: 120px;
+  
+        .card-content {
+          padding: 1.25rem;
+        }
+  
+        .card-text {
+          .card-label {
+            font-size: 0.8125rem;
+          }
+  
+          .card-amount {
+            font-size: 1.625rem;
+          }
+        }
+      }
+    }
+  
+    .tables-section {
+      gap: 1rem;
+    }
+  
+    .table-header {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0 0.25rem;
+      margin-bottom: 0.5rem;
+  
+      .table-title {
+        font-size: 1rem;
+      }
+  
+      .backup-btn {
+        font-size: 0.8125rem;
+        height: 32px;
+        padding: 0 0.75rem;
+      }
+  
+      .table-subtitle {
+        font-size: 0.75rem;
+      }
+    }
+  
+    .table-title {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      padding: 0 0.25rem;
+    }
+  
+    .table-card {
+      border-radius: 10px;
+    }
+  
+    ::ng-deep {
+      .custom-table {
+        .p-datatable-thead > tr > th {
+          padding: 0.625rem 0.75rem;
+          font-size: 0.75rem;
+        }
+  
+        .p-datatable-tbody > tr > td {
+          padding: 0.625rem 0.75rem;
+          font-size: 0.8125rem;
+        }
+  
+        .status-badge {
+          padding: 0.25rem 0.625rem;
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
