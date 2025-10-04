@@ -27,15 +27,13 @@
     gap: 0.5rem;
   }
   
-  .logo-icon img{
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1rem;
+  .logo-icon {
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: block;
+    }
   }
   
   .logo-text {
@@ -83,31 +81,73 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
   
-    ::ng-deep {
-      .p-component {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  ::ng-deep {
+    .p-component {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  
+    .p-button {
+      color: #94a3b8;
+      width: 40px;
+      height: 40px;
+      
+      &:hover {
+        background: #f8fafc;
+        color: #4f46e5;
       }
   
-      .p-button {
-        color: #94a3b8;
-        width: 40px;
-        height: 40px;
-        
-        &:hover {
-          background: #f8fafc;
-          color: #4f46e5;
-        }
-  
-        &:focus {
-          outline: none;
-          box-shadow: none;
-        }
+      &:focus {
+        outline: none;
+        box-shadow: none;
       }
+    }
   
-      .p-avatar {
-        width: 40px;
-        height: 40px;
+    .p-avatar {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  // Mobile Styles
+  @media (max-width: 768px) {
+    .header {
+      padding: 0.75rem 1rem;
+    }
+  
+    .header-content {
+      gap: 0;
+    }
+  
+    // Hide desktop navigation on mobile
+    .nav-menu {
+      display: none;
+    }
+  
+    // Keep logo and all header actions visible
+    .logo {
+      flex: 1;
+    }
+  
+    .logo-text {
+      font-size: 1rem;
+    }
+  
+    .header-actions {
+      gap: 0.25rem;
+  
+      ::ng-deep {
+        .p-button {
+          width: 36px;
+          height: 36px;
+          font-size: 1.1rem;
+        }
+  
+        .p-avatar {
+          width: 36px;
+          height: 36px;
+        }
       }
     }
   }

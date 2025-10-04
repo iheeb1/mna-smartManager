@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { HeaderComponent } from '../header/header.component';
+import { FooterNavComponent } from '../footer-nav/footer-nav.component';
 
 interface Customer {
   name: string;
@@ -18,58 +19,58 @@ interface Customer {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardModule, ButtonModule, TableModule, TagModule, HeaderComponent],
+  imports: [CommonModule, CardModule, ButtonModule, TableModule, TagModule, HeaderComponent, FooterNavComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
   customers: Customer[] = [
     {
-      name: 'דניאל',
-      email: 'Example@gmail.com',
-      phone: '03-6123456',
-      address: 'הבשמים 12, תל אביב',
+      name: 'أحمد',
+      email: 'ahmed@example.com',
+      phone: '02-27361234',
+      address: 'شارع التحرير 12، القاهرة',
       status: 'positive',
-      amount: '2495₪'
+      amount: '2495 ج.م'
     },
     {
-      name: 'מיכל',
-      email: 'info@anh-projects.co.il',
-      phone: '05-7654321',
-      address: 'רחוב הנשיא 45, תל אביב',
+      name: 'فاطمة',
+      email: 'fatima@projects.eg',
+      phone: '010-12345678',
+      address: 'شارع الجلاء 45، الإسكندرية',
       status: 'negative',
-      amount: '-20,450₪'
+      amount: '-20,450 ج.م'
     },
     {
-      name: 'יוסף',
-      email: 'contact@gaerbuild.co.il',
-      phone: '02-8765432',
-      address: 'רחוב הרצל 12, רעננה',
+      name: 'محمد',
+      email: 'mohamed@build.eg',
+      phone: '012-87654321',
+      address: 'شارع النيل 12، الجيزة',
       status: 'positive',
-      amount: '1458₪'
+      amount: '1458 ج.م'
     },
     {
-      name: 'שרה',
-      email: 'office@anv-building.co.il',
-      phone: '04-9876543',
-      address: 'רחוב הרצל 30, חיפה',
+      name: 'مريم',
+      email: 'maryam@construction.eg',
+      phone: '011-98765432',
+      address: 'شارع الهرم 30، الجيزة',
       status: 'negative',
-      amount: '-5498₪'
+      amount: '-5498 ج.م'
     },
     {
-      name: 'אברהם',
-      email: 'info@golan-infrastructure.co.il',
-      phone: '03-7654321',
-      address: 'רחוב הנשיא 22, פתח תקווה',
+      name: 'عمر',
+      email: 'omar@infrastructure.eg',
+      phone: '015-76543210',
+      address: 'شارع رمسيس 22، القاهرة',
       status: 'positive',
-      amount: '579₪'
+      amount: '579 ج.م'
     }
   ];
 
   menuItems = [
-    { icon: 'pi pi-th-large', label: 'ניהול'},
-    { icon: 'pi pi-users', label: 'משתמשים'},
-    { icon: 'pi pi-file', label: 'הדפסות'},
-    { icon: 'pi pi-star', label: 'מיקום'}
+    { icon: 'pi pi-th-large', label: 'الإدارة'},
+    { icon: 'pi pi-users', label: 'المستخدمون'},
+    { icon: 'pi pi-file', label: 'الطباعة'},
+    { icon: 'pi pi-star', label: 'الموقع'}
   ];
 }

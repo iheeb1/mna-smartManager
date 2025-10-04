@@ -1,126 +1,133 @@
 <app-header></app-header>
 <div class="dashboard">
     <div class="dashboard-container">
-      
-      <!-- Page Header -->
-      <div class="page-header">
-        <div class="header-title">
-          <h1>صباح الخير، محمد!</h1>
-          <p>مرحبًا بك في بيئة عملك المريحة، غدًا سيكون يومًا أفضل من اليوم</p>
-        </div>
-        
-        <div class="header-actions">
-          <button class="icon-btn">
-            <i class="pi pi-file"></i>
-          </button>
-          <button class="icon-btn">
-            <i class="pi pi-book"></i>
-          </button>
-          <button class="icon-btn">
-            <i class="pi pi-pencil"></i>
-          </button>
-        </div>
-      </div>
-  
-      <div class="activity-label">
-        <span>نشاط سريع</span>
-      </div>
-  
-      <!-- Feature Cards -->
-      <div class="feature-cards">
-        <div class="feature-card card-blue">
-          <div class="card-image">
-            <img src="assets/images/truck.png" alt="المركبات">
-          </div>
-          <div class="card-content">
-            <h3>المركبات</h3>
-            <p>سيارات، شاحنات، دراجات، نقل والمزيد</p>
-          </div>
-        </div>
-  
-        <div class="feature-card card-purple">
-          <div class="card-image">
-            <img src="assets/images/reports.png" alt="التقارير">
-          </div>
-          <div class="card-content">
-            <h3>التقارير</h3>
-            <p>تقارير المبيعات، الأرباح، الأداء والمزيد</p>
-          </div>
-        </div>
-  
-        <div class="feature-card card-blue-light">
-          <div class="card-image">
-            <img src="assets/images/payments.png" alt="المدفوعات">
-          </div>
-          <div class="card-content">
-            <h3>المدفوعات</h3>
-            <p>عمليات الدفع، التحويلات، الفواتير والمزيد</p>
-          </div>
-        </div>
-  
-        <div class="feature-card card-indigo">
-          <div class="card-image">
-            <img src="assets/images/register.png" alt="الانتظار">
-          </div>
-          <div class="card-content">
-            <h3>الانتظار</h3>
-            <p>عرض الطلبات المعلقة، تحديث الحالة، إدارة الإجراءات والمزيد</p>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Bottom Section - Swapped positions -->
-      <div class="bottom-section">
-        <!-- Customers Table - Now first/left -->
-        <div class="customers-card">
-          <div class="customers-header">
-            <h2>العملاء</h2>
-            <a href="#" class="view-all">عرض جميع العملاء ></a>
-          </div>
-  
-          <p-table [value]="customers" styleClass="custom-table">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>اسم العميل</th>
-                <th>البريد الإلكتروني</th>
-                <th>الهاتف</th>
-                <th>العنوان</th>
-                <th>حالة الدفع</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-customer>
-              <tr>
-                <td>{{ customer.name }}</td>
-                <td>{{ customer.email }}</td>
-                <td>{{ customer.phone }}</td>
-                <td>{{ customer.address }}</td>
-                <td>
-                  <p-tag 
-                    [value]="customer.amount" 
-                    [severity]="customer.status === 'positive' ? 'success' : 'danger'"
-                    [style]="{'background': customer.status === 'positive' ? '#DFF7EB' : '#FAE1F6', 'color': customer.status === 'positive' ? '#6CD697' : '#EE98BB', 'padding': '0.25rem 0.75rem', 'border-radius': '6px'}">
-                  </p-tag>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-title">
+                <h1>صباح الخير، محمد!</h1>
+                <p>مرحبًا بك في بيئة عملك المريحة، غدًا سيكون يومًا أفضل من اليوم</p>
+            </div>
+
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <i class="pi pi-file"></i>
+                </button>
+                <button class="icon-btn">
+                    <i class="pi pi-book"></i>
+                </button>
+                <button class="icon-btn">
+                    <i class="pi pi-pencil"></i>
+                </button>
+            </div>
         </div>
 
-        <!-- Settings Menu - Now second/right -->
-        <div class="settings-card">
-          <div class="settings-header">
-            <h2>الإعدادات</h2>
-            <a href="#" class="view-all">عرض جميع الإعدادات ></a>
-          </div>
-          
-          <div class="menu-grid">
-            <div *ngFor="let item of menuItems" class="menu-item">
-              <i [class]="item.icon"></i>
-              <span>{{ item.label }}</span>
-            </div>
-          </div>
+        <div class="activity-label">
+            <span>نشاط سريع</span>
         </div>
-      </div>
-  
+        
+        <!-- Feature Cards -->
+        <div class="feature-cards">
+            <div class="feature-card card-blue">
+                <div class="card-image">
+                    <img src="assets/images/truck.png" alt="المركبات">
+                </div>
+                <div class="card-content">
+                    <h3>المركبات</h3>
+                    <p>سيارات، شاحنات، دراجات، نقل والمزيد</p>
+                </div>
+            </div>
+
+            <div class="feature-card card-purple">
+                <div class="card-image">
+                    <img src="assets/images/reports.png" alt="التقارير">
+                </div>
+                <div class="card-content">
+                    <h3>التقارير</h3>
+                    <p>تقارير المبيعات، الأرباح، الأداء والمزيد</p>
+                </div>
+            </div>
+
+            <div class="feature-card card-blue-light">
+                <div class="card-image">
+                    <img src="assets/images/payments.png" alt="المدفوعات">
+                </div>
+                <div class="card-content">
+                    <h3>المدفوعات</h3>
+                    <p>عمليات الدفع، التحويلات، الفواتير والمزيد</p>
+                </div>
+            </div>
+
+            <div class="feature-card card-indigo">
+                <div class="card-image">
+                    <img src="assets/images/register.png" alt="الانتظار">
+                </div>
+                <div class="card-content">
+                    <h3>الانتظار</h3>
+                    <p>عرض الطلبات المعلقة، تحديث الحالة، إدارة الإجراءات والمزيد</p>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="bottom-section">
+            <div class="customers-card">
+                <div class="customers-header">
+                    <h2>العملاء</h2>
+                    <a href="#" class="view-all">عرض جميع العملاء ></a>
+                </div>
+
+                <p-table [value]="customers" styleClass="custom-table">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>اسم العميل</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>الهاتف</th>
+                            <th>العنوان</th>
+                            <th>حالة الدفع</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-customer>
+                        <tr>
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.phone }}</td>
+                            <td>{{ customer.address }}</td>
+                            <td>
+                                <p-tag [value]="customer.amount"
+                                    [severity]="customer.status === 'positive' ? 'success' : 'danger'"
+                                    [style]="{'background': customer.status === 'positive' ? '#DFF7EB' : '#FAE1F6', 'color': customer.status === 'positive' ? '#6CD697' : '#EE98BB', 'padding': '0.25rem 0.75rem', 'border-radius': '6px'}">
+                                </p-tag>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <div class="settings-card">
+                <div class="settings-header">
+                    <h2>الإعدادات</h2>
+                    <a href="#" class="view-all">عرض جميع الإعدادات ></a>
+                </div>
+
+                <div class="menu-grid">
+                    <div *ngFor="let item of menuItems" class="menu-item">
+                        <i [class]="item.icon"></i>
+                        <span>{{ item.label }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-card">
+                <div class="profile-image">
+                    <img src="assets/images/profile.png" alt="محمد">
+                </div>
+                <div class="profile-content">
+                    <h3>العملاء</h3>
+                    <p>إحصائيات، تحديثات والمزيد في الارتفاع</p>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </div>
+</div>
+<app-footer-nav></app-footer-nav>

@@ -1,0 +1,11 @@
+<nav class="footer-nav">
+    <a 
+      *ngFor="let item of navItems; let i = index"
+      [href]="item.route"
+      class="nav-item"
+      [class.active]="item.active"
+      (click)="onNavClick(i); $event.preventDefault()">
+      <img [src]="item.icon" [alt]="item.label" class="nav-icon">
+      <span class="nav-label">{{ item.label }}</span>
+    </a>
+  </nav>
