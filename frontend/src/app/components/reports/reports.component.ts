@@ -6,8 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
-import { HeaderComponent } from '../components/header/header.component';
-import { FooterNavComponent } from '../components/footer-nav/footer-nav.component';
+import { HeaderComponent } from '../header/header.component';
+import { FooterNavComponent } from '../footer-nav/footer-nav.component';
 
 interface Transaction {
   description: string;

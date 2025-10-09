@@ -1,10 +1,14 @@
+// src/app/features/login/login.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { PasswordModule } from 'primeng/password';
+import { MessageModule } from 'primeng/message';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +19,8 @@ import { PasswordModule } from 'primeng/password';
     InputTextModule,
     ButtonModule,
     TabViewModule,
-    PasswordModule
+    PasswordModule,
+    MessageModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -27,27 +32,60 @@ export class LoginComponent {
   
   // Password login
   passwordUsername: string = '';
-  passwordEmail: string = '';
-  passwordPhone: string = '';
   passwordValue: string = '';
   
   showPassword: boolean = false;
+  loading: boolean = false;
+  errorMessage: string = '';
+  returnUrl: string = '/';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    if (this.authService.isAuthenticated) {
+      this.router.navigate(['/dashboard']);
+    }
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
 
   onTextSubmit() {
     console.log('Text Login:', { phone: this.textPhone, code: this.textCode });
+    // TODO Implement SMS login 
   }
 
   onPasswordSubmit() {
-    console.log('Password Login:', {
-      username: this.passwordUsername,
-      email: this.passwordEmail,
-      phone: this.passwordPhone,
-      password: this.passwordValue
+    if (!this.passwordUsername || !this.passwordValue) {
+      this.errorMessage = 'الرجاء إدخال اسم المستخدم وكلمة المرور';
+      return;
+    }
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.authService.login(this.passwordUsername, this.passwordValue).subscribe({
+      next: (response) => {
+        if (response.success) {
+          console.log('Login successful:', response.data);
+          this.router.navigate([this.returnUrl]);
+        } else {
+          this.errorMessage = response.message || 'فشل تسجيل الدخول';
+          this.loading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Login error:', error);
+        this.errorMessage = error.error?.message || 'حدث خطأ أثناء تسجيل الدخول';
+        this.loading = false;
+      }
     });
   }
 
   sendVerificationCode() {
     console.log('Sending verification code to:', this.textPhone);
+    // TO DO Implement SMS verification logic 
   }
 
   togglePasswordVisibility() {
