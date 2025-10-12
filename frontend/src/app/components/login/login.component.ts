@@ -1,4 +1,3 @@
-// src/app/features/login/login.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -68,16 +67,16 @@ export class LoginComponent {
     this.authService.login(this.passwordUsername, this.passwordValue).subscribe({
       next: (response) => {
         if (response.success) {
-          console.log('Login successful:', response.data);
+          console.log('تم تسجيل الدخول بنجاح:', response.data);
           this.router.navigate([this.returnUrl]);
         } else {
-          this.errorMessage = response.message || 'فشل تسجيل الدخول';
+          this.errorMessage = response.message || 'فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد';
           this.loading = false;
         }
       },
       error: (error) => {
-        console.error('Login error:', error);
-        this.errorMessage = error.error?.message || 'حدث خطأ أثناء تسجيل الدخول';
+        console.error('خطأ في تسجيل الدخول:', error);
+        this.errorMessage = error.error?.message || 'حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى';
         this.loading = false;
       }
     });

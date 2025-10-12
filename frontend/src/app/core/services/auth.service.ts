@@ -36,7 +36,29 @@ export class AuthService {
   }
 
   get isAuthenticated(): boolean {
-    return !!this.token && !!this.currentUserValue;
+    const token = this.token;
+    if (!token || !this.currentUserValue) {
+      return false;
+    }
+
+    if (this.isTokenExpired(token)) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expiry = payload.exp;
+      const now = Math.floor(Date.now() / 1000);
+      
+      return expiry < now;
+    } catch (e) {
+      return true;
+    }
   }
 
   login(username: string, password: string): Observable<ApiResponse<LoginResponse>> {

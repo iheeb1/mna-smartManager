@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { EncryptionUtil } from './common/encryption.util';
+import { EncryptionUtil } from './shared/utils/encryption.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

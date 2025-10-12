@@ -5,7 +5,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <div class="header-title">
-                <h1>صباح الخير، محمد!</h1>
+                <h1>{{ greetingMessage }}، {{ userName }}!</h1>
                 <p>مرحبًا بك في بيئة عملك المريحة، غدًا سيكون يومًا أفضل من اليوم</p>
             </div>
 
@@ -76,8 +76,8 @@
                     <h2>العملاء</h2>
                     <a href="#" class="view-all">عرض جميع العملاء ></a>
                 </div>
-
-                <p-table [value]="customers" styleClass="custom-table">
+            
+                <p-table [value]="customers" [loading]="loading" styleClass="custom-table">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>اسم العميل</th>
@@ -89,15 +89,26 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-customer>
                         <tr>
-                            <td>{{ customer.name }}</td>
-                            <td>{{ customer.email }}</td>
-                            <td>{{ customer.phone }}</td>
-                            <td>{{ customer.address }}</td>
+                            <td>{{ customer.customerName }}</td>
+                            <td>{{ customer.customerEmails }}</td>
+                            <td>{{ customer.customerMobileNumber || customer.customerPhoneNumber }}</td>
+                            <td>{{ customer.customerAddressLine1 }}{{ customer.customerCity ? ', ' + customer.customerCity : '' }}</td>
                             <td>
-                                <p-tag [value]="customer.amount"
-                                    [severity]="customer.status === 'positive' ? 'success' : 'danger'"
-                                    [style]="{'background': customer.status === 'positive' ? '#DFF7EB' : '#FAE1F6', 'color': customer.status === 'positive' ? '#6CD697' : '#EE98BB', 'padding': '0.25rem 0.75rem', 'border-radius': '6px'}">
+                                <p-tag [value]="formatAmount(customer)"
+                                    [severity]="getPaymentStatus(customer) === 'positive' ? 'success' : 'danger'"
+                                    [style]="{'background': getPaymentStatus(customer) === 'positive' ? '#DFF7EB' : '#FAE1F6', 'color': getPaymentStatus(customer) === 'positive' ? '#6CD697' : '#EE98BB', 'padding': '0.25rem 0.75rem', 'border-radius': '6px'}">
                                 </p-tag>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem;">
+                                <div style="color: #6c757d;">
+                                    <i class="pi pi-users" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                                    <p style="margin: 0; font-size: 1.1rem; font-weight: 500;">لا يوجد عملاء متاحون</p>
+                                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">أضف المزيد لعرضهم هنا</p>
+                                </div>
                             </td>
                         </tr>
                     </ng-template>

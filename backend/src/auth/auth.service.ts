@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { EncryptionUtil } from '../common/encryption.util';
+import { EncryptionUtil } from '../shared/utils/encryption.util';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
