@@ -14,8 +14,6 @@ import { LookupsService } from '../../../services/lookups.service';
 import { OrdersService } from '../../../services/orders.service';
 import { ProductsService } from '../../../services/products.service';
 
-
-
 @Component({
   selector: 'app-add-order-dialog',
   templateUrl: './add-order-dialog.component.html',
@@ -48,16 +46,16 @@ export class AddOrderDialogComponent implements OnInit {
     notes: '',
   };
 
-  currentItem = {
-    productId: null as number | null,
-    quantity: 0,
-    price: 0,
-    totalBeforeTax: 0,
-    taxAmount: 0,
-    totalWithTax: 0,
-  };
+  // Array to hold multiple order item rows
+  orderItemRows: Array<{
+    productId: number | null;
+    quantity: number;
+    price: number;
+    totalBeforeTax: number;
+    taxAmount: number;
+    totalWithTax: number;
+  }> = [];
 
-  orderItems: OrderItem[] = [];
   taxRate: number = 0.17;
 
   customerOptions: DropdownOption[] = [];
@@ -77,11 +75,14 @@ export class AddOrderDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loadInitialData();
+    // Initialize with one empty row
+    this.addRow();
   }
 
   loadInitialData() {
     this.loading = true;
 
+    // Load tax rate
     this.lookupsService.getTaxRate().subscribe({
       next: (rate: number) => {
         this.taxRate = rate;
@@ -89,8 +90,9 @@ export class AddOrderDialogComponent implements OnInit {
       error: (err: any) => console.error('Error loading tax rate:', err),
     });
 
+    // Load customers
     this.customersService.getCustomersList({ itemsPerPage: 100 }).subscribe({
-      next: (response: { success: any; data: { rowsList: any[]; }; }) => {
+      next: (response: any) => {
         if (response.success && response.data?.rowsList) {
           this.customerOptions = response.data.rowsList.map((customer: any) => ({
             label: customer.customerName,
@@ -106,8 +108,9 @@ export class AddOrderDialogComponent implements OnInit {
       },
     });
 
+    // Load products
     this.productsService.getProductsList({ itemsPerPage: 100 }).subscribe({
-      next: (response: { success: any; data: { rowsList: any[]; }; }) => {
+      next: (response: any) => {
         if (response.success && response.data?.rowsList) {
           this.productOptions = response.data.rowsList.map((product: any) => ({
             label: `${product.productCode} - ${product.productName}`,
@@ -128,8 +131,9 @@ export class AddOrderDialogComponent implements OnInit {
       return;
     }
 
+    // Load vehicles for selected customer
     this.carsService.getCarsByCustomerId(customerId).subscribe({
-      next: (response: { success: any; data: any[]; }) => {
+      next: (response: any) => {
         if (response.success && response.data) {
           this.vehicleOptions = response.data.map((car: any) => ({
             label: car.carNumber,
@@ -141,8 +145,9 @@ export class AddOrderDialogComponent implements OnInit {
       error: (err: any) => console.error('Error loading vehicles:', err),
     });
 
+    // Load customer addresses
     this.customersService.getCustomerDetails(customerId).subscribe({
-      next: (response: { success: any; data: any; }) => {
+      next: (response: any) => {
         if (response.success && response.data) {
           const customer = response.data;
           this.addressOptions = [];
@@ -159,88 +164,112 @@ export class AddOrderDialogComponent implements OnInit {
     });
   }
 
-  onProductChange(event: any) {
+  onProductChange(rowIndex: number, event: any) {
     const selectedProduct = this.productOptions.find((p) => p.value === event.value);
     if (selectedProduct?.data) {
-      this.currentItem.price = selectedProduct.data.productPrice || 0;
-      this.calculateItemTotals();
+      this.orderItemRows[rowIndex].price = selectedProduct.data.productPrice || 0;
+      this.calculateRowTotals(rowIndex);
     }
   }
 
-  onQuantityChange() {
-    this.calculateItemTotals();
+  onQuantityChange(rowIndex: number) {
+    this.calculateRowTotals(rowIndex);
   }
 
-  onPriceChange() {
-    this.calculateItemTotals();
+  onPriceChange(rowIndex: number) {
+    this.calculateRowTotals(rowIndex);
   }
 
-  calculateItemTotals() {
-    const quantity = this.currentItem.quantity || 0;
-    const price = this.currentItem.price || 0;
+  calculateRowTotals(rowIndex: number) {
+    const row = this.orderItemRows[rowIndex];
+    const quantity = row.quantity || 0;
+    const price = row.price || 0;
 
-    this.currentItem.totalBeforeTax = quantity * price;
+    row.totalBeforeTax = quantity * price;
 
     if (this.orderData.includeVAT) {
-      this.currentItem.taxAmount = this.currentItem.totalBeforeTax * this.taxRate;
-      this.currentItem.totalWithTax = this.currentItem.totalBeforeTax + this.currentItem.taxAmount;
+      row.taxAmount = row.totalBeforeTax * this.taxRate;
+      row.totalWithTax = row.totalBeforeTax + row.taxAmount;
     } else {
-      this.currentItem.taxAmount = 0;
-      this.currentItem.totalWithTax = this.currentItem.totalBeforeTax;
+      row.taxAmount = 0;
+      row.totalWithTax = row.totalBeforeTax;
     }
+  }
+
+  onVATChange() {
+    // Recalculate all rows when VAT checkbox changes
+    this.orderItemRows.forEach((_, index) => {
+      this.calculateRowTotals(index);
+    });
   }
 
   addRow() {
-    if (!this.currentItem.productId || this.currentItem.quantity <= 0) {
-      alert('يرجى تحديد المنتج والكمية');
-      return;
-    }
-
-    const selectedProduct = this.productOptions.find((p) => p.value === this.currentItem.productId);
-
-    this.orderItems.push({
-      productId: this.currentItem.productId,
-      productCode: selectedProduct?.data?.productCode,
-      productName: selectedProduct?.data?.productName,
-      quantity: this.currentItem.quantity,
-      price: this.currentItem.price,
-      totalBeforeTax: this.currentItem.totalBeforeTax,
-      taxAmount: this.currentItem.taxAmount,
-      totalWithTax: this.currentItem.totalWithTax,
-    });
-
-    this.currentItem = {
+    this.orderItemRows.push({
       productId: null,
       quantity: 0,
       price: 0,
       totalBeforeTax: 0,
       taxAmount: 0,
       totalWithTax: 0,
-    };
+    });
+  }
+
+  removeRow(rowIndex: number) {
+    if (this.orderItemRows.length > 1) {
+      this.orderItemRows.splice(rowIndex, 1);
+    } else {
+      alert('يجب أن يحتوي الطلب على سطر واحد على الأقل');
+    }
   }
 
   getTotalBeforeTax(): number {
-    return this.orderItems.reduce((sum, item) => sum + item.totalBeforeTax, 0);
+    return this.orderItemRows.reduce((sum, row) => sum + (row.totalBeforeTax || 0), 0);
   }
 
   getTotalTax(): number {
-    return this.orderItems.reduce((sum, item) => sum + item.taxAmount, 0);
+    return this.orderItemRows.reduce((sum, row) => sum + (row.taxAmount || 0), 0);
   }
 
   getTotalWithTax(): number {
-    return this.orderItems.reduce((sum, item) => sum + item.totalWithTax, 0);
+    return this.orderItemRows.reduce((sum, row) => sum + (row.totalWithTax || 0), 0);
+  }
+
+  formatCurrency(value: number): string {
+    if (!value) return '0.00₪';
+    return `${value.toFixed(2)}₪`;
   }
 
   onSave() {
+    // Validation
     if (!this.orderData.customerId) {
       alert('يرجى اختيار العميل');
       return;
     }
 
-    if (this.orderItems.length === 0) {
-      alert('يرجى إضافة منتجات للطلب');
+    // Filter out empty rows and validate
+    const validRows = this.orderItemRows.filter(
+      (row) => row.productId && row.quantity > 0
+    );
+
+    if (validRows.length === 0) {
+      alert('يرجى إضافة منتج واحد على الأقل مع كمية صحيحة');
       return;
     }
+
+    // Map rows to OrderItem format
+    const orderItems: OrderItem[] = validRows.map((row) => {
+      const selectedProduct = this.productOptions.find((p) => p.value === row.productId);
+      return {
+        productId: row.productId!,
+        productCode: selectedProduct?.data?.productCode,
+        productName: selectedProduct?.data?.productName,
+        quantity: row.quantity,
+        price: row.price,
+        totalBeforeTax: row.totalBeforeTax,
+        taxAmount: row.taxAmount,
+        totalWithTax: row.totalWithTax,
+      };
+    });
 
     const saveRequest: SaveOrderRequest = {
       customerId: this.orderData.customerId,
@@ -250,12 +279,12 @@ export class AddOrderDialogComponent implements OnInit {
       includeVAT: this.orderData.includeVAT,
       contractNumber: this.orderData.contractNumber,
       notes: this.orderData.notes,
-      items: this.orderItems,
+      items: orderItems,
     };
 
     this.loading = true;
     this.ordersService.saveOrderItem(saveRequest).subscribe({
-      next: (response: { success: any; data: any; message: string; }) => {
+      next: (response: any) => {
         this.loading = false;
         if (response.success) {
           alert('تم حفظ الطلب بنجاح');
@@ -293,15 +322,10 @@ export class AddOrderDialogComponent implements OnInit {
       contractNumber: '',
       notes: '',
     };
-    this.orderItems = [];
-    this.currentItem = {
-      productId: null,
-      quantity: 0,
-      price: 0,
-      totalBeforeTax: 0,
-      taxAmount: 0,
-      totalWithTax: 0,
-    };
+    this.orderItemRows = [];
+    this.addRow(); // Add one empty row
+    this.vehicleOptions = [];
+    this.addressOptions = [];
   }
 
   onDialogHide() {

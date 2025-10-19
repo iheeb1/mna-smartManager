@@ -1,14 +1,13 @@
 <p-dialog 
   [(visible)]="visible" 
   [modal]="true" 
-  [closable]="false"
+  [closable]="true"
   [draggable]="false"
   [closeOnEscape]="true"
   [dismissableMask]="true"
   (onHide)="onDialogHide()"
   [baseZIndex]="10"
   styleClass="add-order-dialog"
-  [closable]="true"
   [style]="{width: '85vw', height: '90vh'}">
   
   <div class="dialog-wrapper">
@@ -25,20 +24,24 @@
           <div class="input-col">
             <span class="input-label">اسم العميل/المستفيد</span>
             <p-dropdown 
+              [(ngModel)]="orderData.customerId"
               [options]="customerOptions" 
-              placeholder="اختر عنوان"
+              placeholder="اختر عميل"
               [showClear]="true"
-              [filter]="true">
+              [filter]="true"
+              (onChange)="onCustomerChange($event)">
             </p-dropdown>
           </div>
           
           <div class="input-col">
             <span class="input-label">رقم المركبة</span>
             <p-dropdown 
+              [(ngModel)]="orderData.carId"
               [options]="vehicleOptions" 
               placeholder="اختر رقم"
               [showClear]="true"
-              [filter]="true">
+              [filter]="true"
+              [disabled]="!orderData.customerId">
             </p-dropdown>
           </div>
         </div>
@@ -57,10 +60,12 @@
           <div class="input-col">
             <span class="input-label">العنوان</span>
             <p-dropdown 
+              [(ngModel)]="orderData.addressLine1"
               [options]="addressOptions" 
               placeholder="اختر عنوان"
               [showClear]="true"
-              [filter]="true">
+              [filter]="true"
+              [disabled]="!orderData.customerId">
             </p-dropdown>
           </div>
           
@@ -75,13 +80,14 @@
           </div>
         </div>
 
-        <!-- Second Row: VAT Checkbox + Notes Input -->
+        <!-- Second Row: VAT Checkbox + Contract Number -->
         <div class="input-row">
           <div class="input-col">
             <div class="checkbox-wrapper-inline">
               <p-checkbox 
                 [(ngModel)]="orderData.includeVAT" 
-                [binary]="true">
+                [binary]="true"
+                (onChange)="onVATChange()">
               </p-checkbox>
               <label class="check-text">يشمل الضريبة</label>
             </div>
@@ -89,7 +95,11 @@
           
           <div class="input-col">
             <span class="input-label">ما هو رقم العقد؟</span>
-            <input pInputText type="text" placeholder="أدخل رقم العقد" />
+            <input 
+              pInputText 
+              type="text" 
+              [(ngModel)]="orderData.contractNumber"
+              placeholder="أدخل رقم العقد" />
           </div>
         </div>
       </div>
@@ -99,63 +109,116 @@
       <!-- Items Section -->
       <div class="section-block">
         <div class="header-row">
-          <h3 class="section-title">تفاصيل الطلب</h3>
+          <h3 class="section-title">تفاصيل المنتجات</h3>
         </div>
 
-        <div class="input-row">
-          <div class="input-col">
-            <span class="input-label">المنتج/كود المنتج</span>
-            <p-dropdown 
-              [options]="productOptions" 
-              placeholder="اختر منتج"
-              [showClear]="true"
-              [filter]="true">
-            </p-dropdown>
-          </div>
-          
-          <div class="input-col">
-            <span class="input-label">الكمية</span>
-            <input pInputText type="number" placeholder="0" min="0" />
-          </div>
-          
-          <div class="input-col">
-            <span class="input-label">السعر</span>
-            <input pInputText type="number" placeholder="0.00" min="0" step="0.01" />
-          </div>
-          
-          <div class="input-col">
-            <span class="input-label">الإجمالي</span>
-            <input pInputText type="text" placeholder="0.00₪" readonly />
-          </div>
-          
-          <div class="input-col">
-            <span class="input-label">الضريبة</span>
-            <input pInputText type="text" placeholder="0.00₪" readonly />
-          </div>
-          
-          <div class="input-col">
-            <span class="input-label">الإجمالي مع الضريبة</span>
-            <input pInputText type="text" placeholder="0.00₪" readonly />
+        <!-- Loop through each order item row -->
+        <div *ngFor="let row of orderItemRows; let i = index" class="item-row-container">
+          <div class="input-row">
+            <div class="input-col">
+              <span class="input-label">المنتج/كود المنتج</span>
+              <p-dropdown 
+                [(ngModel)]="row.productId"
+                [options]="productOptions" 
+                placeholder="اختر منتج"
+                [showClear]="true"
+                [filter]="true"
+                (onChange)="onProductChange(i, $event)">
+              </p-dropdown>
+            </div>
+            
+            <div class="input-col">
+              <span class="input-label">الكمية</span>
+              <input 
+                pInputText 
+                type="number" 
+                [(ngModel)]="row.quantity"
+                (ngModelChange)="onQuantityChange(i)"
+                placeholder="0" 
+                min="0" />
+            </div>
+            
+            <div class="input-col">
+              <span class="input-label">السعر</span>
+              <input 
+                pInputText 
+                type="number" 
+                [(ngModel)]="row.price"
+                (ngModelChange)="onPriceChange(i)"
+                placeholder="0.00" 
+                min="0" 
+                step="0.01" />
+            </div>
+            
+            <div class="input-col">
+              <span class="input-label">الإجمالي</span>
+              <input 
+                pInputText 
+                type="text" 
+                [value]="formatCurrency(row.totalBeforeTax)"
+                placeholder="0.00₪" 
+                readonly />
+            </div>
+            
+            <div class="input-col">
+              <span class="input-label">الضريبة</span>
+              <input 
+                pInputText 
+                type="text" 
+                [value]="formatCurrency(row.taxAmount)"
+                placeholder="0.00₪" 
+                readonly />
+            </div>
+            
+            <div class="input-col">
+              <span class="input-label">الإجمالي مع الضريبة</span>
+              <input 
+                pInputText 
+                type="text" 
+                [value]="formatCurrency(row.totalWithTax)"
+                placeholder="0.00₪" 
+                readonly />
+            </div>
+
+            <!-- Delete Row Button -->
+            <div class="input-col delete-col" *ngIf="orderItemRows.length > 1">
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-danger p-button-text p-button-sm delete-row-btn"
+                (click)="removeRow(i)"
+                pTooltip="حذف السطر">
+              </button>
+            </div>
           </div>
         </div>
 
+        <!-- Totals Row -->
         <div class="totals-row">
           <div class="total-item">
             <span>الإجمالي:</span>
-            <span class="total-value">0.00₪</span>
+            <span class="total-value">{{formatCurrency(getTotalBeforeTax())}}</span>
           </div>
           <div class="total-item">
             <span>الضريبة:</span>
-            <span class="total-value">0.00₪</span>
+            <span class="total-value">{{formatCurrency(getTotalTax())}}</span>
           </div>
           <div class="total-item">
             <span>الإجمالي مع الضريبة:</span>
-            <span class="total-value">0.00₪</span>
+            <span class="total-value">{{formatCurrency(getTotalWithTax())}}</span>
           </div>
         </div>
 
+        <!-- Add Line Button -->
         <div class="add-line-btn-wrapper">
-          <button pButton type="button" label="+ إضافة سطر" class="add-line-btn" (click)="addRow()"></button>
+          <button 
+            pButton 
+            type="button" 
+            label="+ إضافة سطر" 
+            class="add-line-btn" 
+            (click)="addRow()">
+          </button>
         </div>
       </div>
 
@@ -170,21 +233,31 @@
         <div class="input-row">
           <div class="input-col full">
             <span class="input-label">ملاحظات</span>
-            <input pInputText type="text" placeholder="أدخل ملاحظات" />
+            <input 
+              pInputText 
+              type="text" 
+              [(ngModel)]="orderData.notes"
+              placeholder="أدخل ملاحظات" />
           </div>
         </div>
       </div>
 
       <!-- Save Button -->
-      <button pButton label="حفظ" class="final-save-btn" (click)="onSave()"></button>
+      <button 
+        pButton 
+        label="حفظ" 
+        class="final-save-btn" 
+        (click)="onSave()"
+        [disabled]="loading">
+      </button>
     </div>
 
     <!-- Right Side - Illustration -->
-<div class="illustration-side">
-  <div class="image-overlay">
-    <img src="assets/images/add_orders.png" alt="Add Order Illustration" />
-    <h2>הוספת הזמנה חדשה</h2>
+    <div class="illustration-side">
+      <div class="image-overlay">
+        <img src="assets/images/add_orders.png" alt="Add Order Illustration" />
+        <h2>הוספת הזמנה חדשה</h2>
+      </div>
+    </div>
   </div>
-</div>
-  </div>
-</p-dialog> 
+</p-dialog>
