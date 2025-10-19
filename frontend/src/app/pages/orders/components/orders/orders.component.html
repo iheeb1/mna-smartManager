@@ -1,0 +1,155 @@
+<app-header></app-header>
+
+<div class="orders-container">
+  <!-- Header -->
+  <div class="orders-header">
+    <div class="header-actions">
+      <button pButton icon="pi pi-upload" label="تصدير" class="p-button export-btn"></button>
+      <button pButton label="إضافة طلب فوري" class="p-button immediate-order-btn"
+        (click)="openAddOrderDialog()"></button>
+      <button pButton label="إضافة طلب عادي" class="p-button regular-order-btn" 
+        (click)="openAddOrderDialog()"></button>
+      <button pButton icon="pi pi-print" class="p-button print-btn" pTooltip="طباعة"></button>
+    </div>
+    <h1 class="page-title">الطلبات</h1>
+  </div>
+
+  <!-- Content Card -->
+  <div class="content-card">
+    <!-- Filters -->
+    <div class="filters-section">
+      <div class="search-box">
+        <span class="p-input-icon-left search-input-wrapper">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" [(ngModel)]="searchValue" placeholder="البحث الحر عن الطلب"
+            class="search-input" />
+        </span>
+      </div>
+      <button pButton icon="pi pi-filter" label="تصفية" class="p-button filter-btn"></button>
+
+      <div class="date-filters">
+        <p-calendar [(ngModel)]="endDate" placeholder="حتى التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
+          class="date-input">
+        </p-calendar>
+
+        <span class="date-separator">—</span>
+
+        <p-calendar [(ngModel)]="startDate" placeholder="من التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
+          class="date-input">
+        </p-calendar>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+      <p-table [value]="orders" [expandedRowKeys]="expandedRows" dataKey="id" [responsive]="true"
+        styleClass="orders-table" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 40px"></th>
+            <th style="width: 40px"></th>
+            <th style="width: 40px"></th>
+            <th style="width: 60px">السعر</th>
+            <th style="width: 90px">المجموع</th>
+            <th style="width: 100px">قبل الضريبة</th>
+            <th style="width: 80px">الضريبة</th>
+            <th style="width: 100px">التثبيت</th>
+            <th style="width: 90px">الأرقام</th>
+            <th style="width: 110px">الصلاحية</th>
+            <th>العنوان</th>
+            <th style="width: 100px">السيارة</th>
+            <th style="width: 150px">اسم العميل</th>
+            <th style="width: 90px">التاريخ</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-order let-expanded="expanded">
+          <tr [class.expanded-parent]="expanded">
+            <td class="action-col">
+              <button pButton icon="pi pi-trash" class="p-button-text p-button-sm delete-btn"></button>
+            </td>
+            <td class="action-col">
+              <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm edit-btn"></button>
+            </td>
+            <td class="action-col">
+              <button type="button" pButton [pRowToggler]="order"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-left'"
+                class="p-button-text p-button-sm toggle-btn"></button>
+            </td>
+            <td class="price-col">السعر</td>
+            <td>{{order.total}}</td>
+            <td>{{order.preTax}}</td>
+            <td>{{order.tax}}</td>
+            <td>{{order.fixedType}}</td>
+            <td>{{order.parking}}</td>
+            <td>{{order.phoneNumber}}</td>
+            <td>{{order.address}}</td>
+            <td>{{order.vehicle}}</td>
+            <td class="customer-name">{{order.client}}</td>
+            <td>{{order.date}}</td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="rowexpansion" let-order>
+          <tr class="expanded-row">
+            <td colspan="14">
+              <div class="expansion-content">
+                <table class="nested-table">
+                  <thead>
+                    <tr>
+                      <th>ميوחر</th>
+                      <th>מחיר</th>
+                      <th>כמות</th>
+                      <th>לפני מע"מ</th>
+                      <th>מע"מ</th>
+                      <th>סה"כ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of order.items">
+                      <td class="item-description">{{item.description}}</td>
+                      <td>{{item.duration}}</td>
+                      <td>{{item.quantity}}</td>
+                      <td>{{item.beforeTax}}</td>
+                      <td>{{item.tax}}</td>
+                      <td>{{item.total}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="totals-row">
+                      <td class="totals-label">הסה"כ</td>
+                      <td></td>
+                      <td>{{order.items?.length || 0}}</td>
+                      <td>{{order.preTax}}</td>
+                      <td>{{order.tax}}</td>
+                      <td>{{order.total}}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <!-- Table Summary -->
+      <div class="table-summary">
+        <div class="summary-values">
+          <span>6,505₪</span>
+          <span>945₪</span>
+          <span>5,560₪</span>
+        </div>
+        <span class="summary-label">الإجمالي:</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Order Dialog -->
+  <app-add-order-dialog 
+    [(visible)]="showAddOrderDialog"
+    (onHide)="onDialogHide()">
+  </app-add-order-dialog>
+</div>
+
+<app-footer-nav></app-footer-nav>

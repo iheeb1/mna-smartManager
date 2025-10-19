@@ -4,9 +4,9 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { HeaderComponent } from '../header/header.component';
-import { FooterNavComponent } from '../footer-nav/footer-nav.component';
-import { Customer, CustomerService } from '../../core/services/customers.service';
+import { HeaderComponent } from '../../../shared/components/header/header.component'; 
+import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component'; 
+import { Customer, CustomerService } from '../../../core/services/customers.service';
 
 interface UserData {
   userId: number;
@@ -102,7 +102,6 @@ export class DashboardComponent implements OnInit {
 
     this.customerService.getCustomersList(searchParams).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
         this.customers = response.RowsList || [];
         this.totalRecords = response.TotalLength;
         this.loading = false;

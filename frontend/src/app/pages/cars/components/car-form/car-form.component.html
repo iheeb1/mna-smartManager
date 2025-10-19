@@ -1,0 +1,51 @@
+<div class="form-container">
+  <!-- Left Form Panel -->
+  <div class="form-content">
+    <div class="form-fields">
+      <!-- Two Inputs Side-by-Side -->
+      <div class="input-row">
+        <div class="field-group">
+          <label>סוג רכב</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.model" 
+            placeholder="קיה פיקנטו" 
+            class="form-input">
+        </div>
+
+        <div class="field-group">
+          <label>מספר רכב</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.plateNumber" 
+            placeholder="123456789" 
+            class="form-input">
+        </div>
+      </div>
+
+      <!-- Toggle Switch -->
+      <div class="toggle-group">
+        <label>פעיל</label>
+        <p-inputSwitch [(ngModel)]="formData.active"></p-inputSwitch>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="form-actions">
+      <button 
+        pButton 
+        label="שמירה" 
+        (click)="onSubmit()" 
+        class="save-button">
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Image & Text Panel -->
+  <div class="form-image">
+    <img src="assets/truck-gift.png" alt="Truck">
+    <h2>הוספת רכב<br>חדש</h2>
+  </div>
+</div>

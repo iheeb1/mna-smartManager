@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { OrderItem } from 'src/order-items/order-item.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
 
 @Entity('mng_orders')
 @Index('FKIndex', ['orderId', 'customerId', 'orderStatusId', 'orderDate'])
@@ -84,4 +85,7 @@ export class Order {
 
   @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
   modifiedDate: Date;
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.orderId)
+  orderItems?: OrderItem[];
 }

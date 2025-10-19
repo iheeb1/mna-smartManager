@@ -45,7 +45,7 @@ export class AuthController {
             return {
               success: false,
               code: -1,
-              message: 'User is not exist',
+              message: 'حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى',
               data: null,
             };
           }

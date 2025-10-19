@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse, ApiRequest } from '../models/api-response.model';
-import { User } from '../models/user.model';
+import { ApiResponse, ApiRequest } from '../../shared/models/api-response.model';
+import { User } from '../../shared/models/user.model';
 import { API_ENDPOINTS } from '../../shared/constants/api-endpoints';
 import { environment } from '../../environments/environment';
 

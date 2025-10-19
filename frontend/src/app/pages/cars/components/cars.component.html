@@ -1,0 +1,109 @@
+<app-header></app-header>
+<!-- car.component.html -->
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>רשימת רכבים</h1>
+    <div class="header-actions">
+      <button pButton label="ייצוא" icon="pi pi-download" class="p-button-outlined export-btn"></button>
+      <button pButton label="הוספת רכב חדש" (click)="addNewCar()" class="p-button-primary add-btn"></button>
+    </div>
+  </div>
+
+  <!-- Main Content Card -->
+  <div class="content-card">
+    <!-- Search and Filter Bar -->
+    <div class="search-bar">
+      <span class="p-input-icon-left search-input">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText placeholder="חיפוש חופשי של רכב" [(ngModel)]="searchTerm">
+      </span>
+      <button pButton icon="pi pi-filter" class="p-button-text filter-btn"></button>
+      <button pButton label="סינון" class="p-button-text filter-text-btn"></button>
+    </div>
+
+    <!-- Table Header Row -->
+    <div class="table-header">
+      <div class="header-cell action">פעולה</div>
+      <div class="header-cell status">פעיל</div>
+      <div class="header-cell model">סוג רכב</div>
+      <div class="header-cell plate">מספר רכב</div>
+    </div>
+
+    <!-- Table Body Rows -->
+    <div class="table-body">
+      <div class="table-row" *ngFor="let car of cars">
+        <div class="row-cell action">
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-rounded p-button-sm delete-btn" (click)="deleteCar(car)"></button>
+          <button pButton icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm edit-btn" (click)="editCar(car)"></button>
+        </div>
+        <div class="row-cell status">
+          <p-inputSwitch [(ngModel)]="car.isActive" (onChange)="toggleActive(car)"></p-inputSwitch>
+        </div>
+        <div class="row-cell model">{{ car.model }}</div>
+        <div class="row-cell plate">
+          <a href="#" class="plate-link" (click)="viewDetails(car, $event)">{{ car.plateNumber }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Car Dialog -->
+<p-dialog 
+  header="הוספת רכב חדש" 
+  [(visible)]="showDialog" 
+  [modal]="true" 
+  [closable]="true"
+  [draggable]="false"
+  [style]="{width: '800px'}"
+  styleClass="vehicle-dialog">
+  
+  <!-- Inline Form in Dialog -->
+  <div class="form-container">
+    <div class="form-content">
+      <div class="form-fields">
+        <div class="field-group">
+          <label>מספר רכב</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.plateNumber" 
+            placeholder="123456789" 
+            class="form-input">
+        </div>
+
+        <div class="field-group">
+          <label>סוג רכב</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.model" 
+            placeholder="קיה פיקנטו" 
+            class="form-input">
+        </div>
+
+        <div class="toggle-group">
+          <label>פעיל</label>
+          <p-inputSwitch [(ngModel)]="formData.isActive"></p-inputSwitch>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          pButton 
+          label="שמירה" 
+          (click)="onSubmit()" 
+          class="save-button">
+        </button>
+      </div>
+    </div>
+
+    <div class="form-image">
+      <img src="assets/truck-gift.png" alt="Truck">
+      <h2>הוספת רכב<br>חדש</h2>
+    </div>
+  </div>
+</p-dialog>
+
+<app-footer-nav></app-footer-nav>

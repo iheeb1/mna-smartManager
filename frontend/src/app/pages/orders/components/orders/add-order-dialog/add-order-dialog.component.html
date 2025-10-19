@@ -1,0 +1,190 @@
+<p-dialog 
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="false"
+  [draggable]="false"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  (onHide)="onDialogHide()"
+  [baseZIndex]="10"
+  styleClass="add-order-dialog"
+  [closable]="true"
+  [style]="{width: '85vw', height: '90vh'}">
+  
+  <div class="dialog-wrapper">
+    <!-- Left Side - Form -->
+    <div class="form-side">
+      
+      <!-- Customer Details Section -->
+      <div class="section-block">
+        <div class="header-row">
+          <h3 class="section-title">تفاصيل العميل</h3>
+        </div>
+
+        <div class="input-row">
+          <div class="input-col">
+            <span class="input-label">اسم العميل/المستفيد</span>
+            <p-dropdown 
+              [options]="customerOptions" 
+              placeholder="اختر عنوان"
+              [showClear]="true"
+              [filter]="true">
+            </p-dropdown>
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">رقم المركبة</span>
+            <p-dropdown 
+              [options]="vehicleOptions" 
+              placeholder="اختر رقم"
+              [showClear]="true"
+              [filter]="true">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="line-divider"></div>
+
+      <!-- Order Details Section -->
+      <div class="section-block">
+        <div class="header-row">
+          <h3 class="section-title">تفاصيل الطلب</h3>
+        </div>
+
+        <!-- First Row: Address + Date -->
+        <div class="input-row">
+          <div class="input-col">
+            <span class="input-label">العنوان</span>
+            <p-dropdown 
+              [options]="addressOptions" 
+              placeholder="اختر عنوان"
+              [showClear]="true"
+              [filter]="true">
+            </p-dropdown>
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">تاريخ الطلب</span>
+            <p-calendar 
+              [(ngModel)]="orderData.orderDate" 
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              placeholder="—/—/—">
+            </p-calendar>
+          </div>
+        </div>
+
+        <!-- Second Row: VAT Checkbox + Notes Input -->
+        <div class="input-row">
+          <div class="input-col">
+            <div class="checkbox-wrapper-inline">
+              <p-checkbox 
+                [(ngModel)]="orderData.includeVAT" 
+                [binary]="true">
+              </p-checkbox>
+              <label class="check-text">يشمل الضريبة</label>
+            </div>
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">ما هو رقم العقد؟</span>
+            <input pInputText type="text" placeholder="أدخل رقم العقد" />
+          </div>
+        </div>
+      </div>
+
+      <div class="line-divider"></div>
+
+      <!-- Items Section -->
+      <div class="section-block">
+        <div class="header-row">
+          <h3 class="section-title">تفاصيل الطلب</h3>
+        </div>
+
+        <div class="input-row">
+          <div class="input-col">
+            <span class="input-label">المنتج/كود المنتج</span>
+            <p-dropdown 
+              [options]="productOptions" 
+              placeholder="اختر منتج"
+              [showClear]="true"
+              [filter]="true">
+            </p-dropdown>
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">الكمية</span>
+            <input pInputText type="number" placeholder="0" min="0" />
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">السعر</span>
+            <input pInputText type="number" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">الإجمالي</span>
+            <input pInputText type="text" placeholder="0.00₪" readonly />
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">الضريبة</span>
+            <input pInputText type="text" placeholder="0.00₪" readonly />
+          </div>
+          
+          <div class="input-col">
+            <span class="input-label">الإجمالي مع الضريبة</span>
+            <input pInputText type="text" placeholder="0.00₪" readonly />
+          </div>
+        </div>
+
+        <div class="totals-row">
+          <div class="total-item">
+            <span>الإجمالي:</span>
+            <span class="total-value">0.00₪</span>
+          </div>
+          <div class="total-item">
+            <span>الضريبة:</span>
+            <span class="total-value">0.00₪</span>
+          </div>
+          <div class="total-item">
+            <span>الإجمالي مع الضريبة:</span>
+            <span class="total-value">0.00₪</span>
+          </div>
+        </div>
+
+        <div class="add-line-btn-wrapper">
+          <button pButton type="button" label="+ إضافة سطر" class="add-line-btn" (click)="addRow()"></button>
+        </div>
+      </div>
+
+      <div class="line-divider"></div>
+
+      <!-- Notes Section -->
+      <div class="section-block">
+        <div class="header-row">
+          <h3 class="section-title">ملاحظات وملخص</h3>
+        </div>
+
+        <div class="input-row">
+          <div class="input-col full">
+            <span class="input-label">ملاحظات</span>
+            <input pInputText type="text" placeholder="أدخل ملاحظات" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <button pButton label="حفظ" class="final-save-btn" (click)="onSave()"></button>
+    </div>
+
+    <!-- Right Side - Illustration -->
+<div class="illustration-side">
+  <div class="image-overlay">
+    <img src="assets/images/add_orders.png" alt="Add Order Illustration" />
+    <h2>הוספת הזמנה חדשה</h2>
+  </div>
+</div>
+  </div>
+</p-dialog> 

@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ReportsComponent } from './components/reports/reports.component';
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard } from './core/guards/auth.guard'; // Update path as needed
 
 export const routes: Routes = [
     { 
@@ -11,18 +8,28 @@ export const routes: Routes = [
         pathMatch: 'full' 
     },
     { 
-        path: 'login', 
-        component: LoginComponent 
+        path: 'login',
+        loadChildren: () => import('./pages/login/login.routes').then(m => m.LOGIN_ROUTES)
     },
     { 
-        path: 'dashboard', 
-        component: DashboardComponent, 
-        canActivate: [authGuard] 
+        path: 'dashboard',
+        loadChildren: () => import('./pages/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
+        canActivate: [authGuard]
     },
     { 
-        path: 'reports', 
-        component: ReportsComponent, 
-        canActivate: [authGuard] 
+        path: 'reports',
+        loadChildren: () => import('./pages/reports/reports.routes').then(m => m.REPORTS_ROUTES),
+        canActivate: [authGuard]
+    },
+    { 
+        path: 'orders',
+        loadChildren: () => import('./pages/orders/order.routes').then(m => m.ORDER_ROUTES),
+        canActivate: [authGuard]
+    },
+    { 
+        path: 'cars',
+        loadChildren: () => import('./pages/cars/cars.routes').then(m => m.CARS_ROUTES),
+        canActivate: [authGuard]
     },
     {
         path: '**',
