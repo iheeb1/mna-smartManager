@@ -75,9 +75,17 @@ export class OrdersComponent implements OnInit {
     this.ordersService.getOrderItemsList(params).subscribe({
       next: (response) => {
         this.loading = false;
-        if (response.success && response.data?.rowsList) {
-          this.orders = this.mapOrderItems(response.data.rowsList);
+        console.log('API Response:', response); // Debug log
+        
+        // Handle both response formats
+        const rowsList = response.result_data?.rowsList || response.data?.rowsList;
+        
+        if (rowsList) {
+          this.orders = this.mapOrderItems(rowsList);
           this.calculateGrandTotals();
+        } else {
+          console.error('No rowsList found in response');
+          this.orders = [];
         }
       },
       error: (err) => {
@@ -89,29 +97,33 @@ export class OrdersComponent implements OnInit {
 
   mapOrderItems(data: any[]): Order[] {
     return data.map((group: any) => {
+      // Get the first item from subList
       const firstItem = group.subList[0];
+      
+      // Map all items in the order
       const items = group.subList.map((item: any) => ({
-        description: item.product?.productName || '',
-        duration: item.duration || '-',
-        quantity: item.quantity || 0,
-        beforeTax: item.totalBeforeTax || 0,
-        tax: item.taxAmount || 0,
-        total: item.totalWithTax || 0,
+        description: item.orderType?.productName || 'N/A',
+        duration: '-', // Not available in API response
+        quantity: parseFloat(item.orderUnitsNumber) || 0,
+        beforeTax: parseFloat(item.orderPrice?.totalItemPriceWithOutVat) || 0,
+        tax: parseFloat(item.orderPrice?.totalItemPriceVat) || 0,
+        total: parseFloat(item.orderPrice?.totalItemPriceWithVat) || 0,
       }));
 
-      const totalBeforeTax = group.subList.reduce((sum: number, item: any) => sum + (item.totalBeforeTax || 0), 0);
-      const totalTax = group.subList.reduce((sum: number, item: any) => sum + (item.taxAmount || 0), 0);
-      const totalWithTax = group.subList.reduce((sum: number, item: any) => sum + (item.totalWithTax || 0), 0);
+      // Calculate totals for this order
+      const totalBeforeTax = items.reduce((sum: any, item: { beforeTax: any; }) => sum + item.beforeTax, 0);
+      const totalTax = items.reduce((sum: any, item: { tax: any; }) => sum + item.tax, 0);
+      const totalWithTax = items.reduce((sum: any, item: { total: any; }) => sum + item.total, 0);
 
       return {
-        id: firstItem.orderId || group.item,
-        date: firstItem.orderDate?.shortDate || '',
-        client: firstItem.customer?.customerName || '',
-        vehicle: firstItem.order?.car?.carNumber || '',
-        address: firstItem.order?.addressLine1 || '',
-        phoneNumber: firstItem.customer?.phoneNumber || '',
-        fixedType: firstItem.order?.fixedType || '',
-        parking: firstItem.order?.parking || '',
+        id: firstItem.order?.orderId || group.item,
+        date: firstItem.orderDate?.shortDate || group.orderDate || '',
+        client: '-', // Not in API response, you'll need to fetch customer data separately
+        vehicle: '-', // Not in API response
+        address: '-', // Not in API response
+        phoneNumber: '-', // Not in API response
+        fixedType: '-', // Not in API response
+        parking: '-', // Not in API response
         taxAmount: totalTax,
         totalBeforeTax: totalBeforeTax,
         totalWithTax: totalWithTax,

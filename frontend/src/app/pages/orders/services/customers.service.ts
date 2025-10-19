@@ -12,6 +12,20 @@ interface ApiResponse<T = any> {
   errorMessage?: string;
 }
 
+export interface GetCustomersListRequest {
+  customerIds?: string;
+  customerName?: string;
+  customerIdz?: string;
+  phoneNumber?: string;
+  customerStatusIds?: string;
+  fromCreatedDate?: string;
+  toCreatedDate?: string;
+  itemsPerPage?: number;
+  pageNumber?: number;
+  includeTotalRowsLength?: boolean;
+  groupBy?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,10 +34,10 @@ export class CustomersService {
 
   constructor(private http: HttpClient) {}
 
-  getCustomersList(params: any = {}): Observable<any> {
+  getCustomersList(params: GetCustomersListRequest = {}): Observable<any> {
     return this.http.post<ApiResponse>(this.apiUrl, {
-      reqType: 'GetCustomersList',
-      reqObject: {
+      ReqType: 'GetCustomersList',
+      ReqObject: {
         itemsPerPage: params.itemsPerPage || 100,
         pageNumber: params.pageNumber || 0,
         customerStatusIds: params.customerStatusIds || '1',
@@ -41,8 +55,40 @@ export class CustomersService {
 
   getCustomerDetails(customerId: number): Observable<any> {
     return this.http.post<ApiResponse>(this.apiUrl, {
-      reqType: 'GetCustomerDetails',
-      reqObject: { customerId }
+      ReqType: 'GetCustomerDetails',
+      ReqObject: { 
+        CustomerId: customerId 
+      }
+    }).pipe(
+      map(response => ({
+        success: response.result,
+        data: response.result_data,
+        message: response.message
+      }))
+    );
+  }
+
+  getCustomerAddresses(customerId: number): Observable<any> {
+    return this.http.post<ApiResponse>(this.apiUrl, {
+      ReqType: 'GetCustomerAddresses',
+      ReqObject: { 
+        CustomerId: customerId 
+      }
+    }).pipe(
+      map(response => ({
+        success: response.result,
+        data: response.result_data,
+        message: response.message
+      }))
+    );
+  }
+
+  getCustomerCars(customerId: number): Observable<any> {
+    return this.http.post<ApiResponse>(this.apiUrl, {
+      ReqType: 'GetCustomerCars',
+      ReqObject: { 
+        CustomerId: customerId 
+      }
     }).pipe(
       map(response => ({
         success: response.result,
@@ -54,8 +100,8 @@ export class CustomersService {
 
   saveCustomer(customerData: any): Observable<any> {
     return this.http.post<ApiResponse>(this.apiUrl, {
-      reqType: 'SaveCustomerDetails',
-      reqObject: customerData
+      ReqType: 'SaveCustomerDetails',
+      ReqObject: customerData
     }).pipe(
       map(response => ({
         success: response.result,
@@ -67,8 +113,10 @@ export class CustomersService {
 
   deleteCustomer(customerId: number): Observable<any> {
     return this.http.post<ApiResponse>(this.apiUrl, {
-      reqType: 'DeleteCustomer',
-      reqObject: { customerId }
+      ReqType: 'DeleteCustomer',
+      ReqObject: { 
+        CustomerId: customerId 
+      }
     }).pipe(
       map(response => ({
         success: response.result,
@@ -77,4 +125,4 @@ export class CustomersService {
       }))
     );
   }
-}
+} 

@@ -51,10 +51,10 @@ export class OrdersService {
     );
   }
 
-  deleteOrderItem(orderItemId: number): Observable<any> {
+  deleteOrderItem(orderId : number): Observable<any> {
     return this.http.post<ApiResponse>(this.apiUrl, {
       reqType: 'DeleteOrderItem',
-      reqObject: { orderItemId }
+      reqObject: { orderId }
     }).pipe(
       map(response => ({
         success: response.result,
