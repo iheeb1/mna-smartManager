@@ -1,8 +1,7 @@
+// src/app/features/orders/pages/orders/orders.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// PrimeNG imports
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,32 +9,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../../shared/components/footer-nav/footer-nav.component';
-
-// Your components
 import { AddOrderDialogComponent } from './add-order-dialog/add-order-dialog.component';
-
-interface OrderItem {
-  description: string;
-  duration: string;
-  quantity: number;
-  beforeTax: string;
-  tax: string;
-  total: string;
-}
-
-interface Order {
-  id: number;
-  date: string;
-  client: string;
-  vehicle: string;
-  address: string;
-  phoneNumber: string;
-  fixedType: string;
-  tax: string;
-  preTax: string;
-  total: string;
-  items?: OrderItem[];
-}
+import { Order } from '../../models/order.model';
+import { OrdersService } from '../../services/orders.service';
 
 @Component({
   selector: 'app-orders',
@@ -52,127 +28,159 @@ interface Order {
     TooltipModule,
     AddOrderDialogComponent,
     HeaderComponent,
-    FooterNavComponent
-  ]
+    FooterNavComponent,
+  ],
 })
 export class OrdersComponent implements OnInit {
-  // Dialog visibility state
   showAddOrderDialog = false;
-
-  // Search and filter
   searchValue = '';
   startDate: Date | null = null;
   endDate: Date | null = null;
-
-  // Table data
   orders: Order[] = [];
   expandedRows: { [key: string]: boolean } = {};
+  loading = false;
+
+  // Totals
+  grandTotalBeforeTax = 0;
+  grandTotalTax = 0;
+  grandTotalWithTax = 0;
+
+  constructor(private ordersService: OrdersService) {}
 
   ngOnInit() {
-    // Initialize with sample data
-    this.orders = [
-      {
-        id: 1,
-        date: '15/01/2024',
-        client: 'أحمد محمد',
-        vehicle: '12-345-67',
-        address: 'شارع الملك فهد، الرياض',
-        phoneNumber: '0501234567',
-        fixedType: 'نعم',
-        tax: '150₪',
-        preTax: '1,000₪',
-        total: '1,150₪',
-        items: [
-          {
-            description: 'خدمة صيانة شاملة',
-            duration: '2 ساعات',
-            quantity: 1,
-            beforeTax: '800₪',
-            tax: '120₪',
-            total: '920₪'
-          },
-          {
-            description: 'قطع غيار',
-            duration: '-',
-            quantity: 3,
-            beforeTax: '200₪',
-            tax: '30₪',
-            total: '230₪'
-          }
-        ]
-      },
-      {
-        id: 2,
-        date: '16/01/2024',
-        client: 'فاطمة علي',
-        vehicle: '98-765-43',
-        address: 'شارع العليا، جدة',
-        phoneNumber: '0559876543',
-        fixedType: 'لا',
-        tax: '225₪',
-        preTax: '1,500₪',
-        total: '1,725₪',
-        items: [
-          {
-            description: 'فحص دوري',
-            duration: '1 ساعة',
-            quantity: 1,
-            beforeTax: '500₪',
-            tax: '75₪',
-            total: '575₪'
-          },
-          {
-            description: 'تغيير زيت',
-            duration: '30 دقيقة',
-            quantity: 1,
-            beforeTax: '1,000₪',
-            tax: '150₪',
-            total: '1,150₪'
-          }
-        ]
-      },
-      {
-        id: 3,
-        date: '17/01/2024',
-        client: 'خالد عبدالله',
-        vehicle: '55-888-99',
-        address: 'شارع التحلية، الدمام',
-        phoneNumber: '0505551234',
-        fixedType: 'نعم',
-        tax: '180₪',
-        preTax: '1,200₪',
-        total: '1,380₪',
-        items: [
-          {
-            description: 'إصلاح المحرك',
-            duration: '4 ساعات',
-            quantity: 1,
-            beforeTax: '1,200₪',
-            tax: '180₪',
-            total: '1,380₪'
-          }
-        ]
-      }
-    ];
+    this.loadOrders();
   }
 
-  // Dialog methods
+  loadOrders() {
+    this.loading = true;
+
+    const params: any = {
+      itemsPerPage: 50,
+      pageNumber: 0,
+      groupBy: 'OrderId',
+    };
+
+    if (this.searchValue) {
+      params.searchText = this.searchValue;
+    }
+
+    if (this.startDate) {
+      params.fromDate = this.formatDate(this.startDate);
+    }
+
+    if (this.endDate) {
+      params.toDate = this.formatDate(this.endDate);
+    }
+
+    this.ordersService.getOrderItemsList(params).subscribe({
+      next: (response) => {
+        this.loading = false;
+        if (response.success && response.data?.rowsList) {
+          this.orders = this.mapOrderItems(response.data.rowsList);
+          this.calculateGrandTotals();
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Error loading orders:', err);
+      },
+    });
+  }
+
+  mapOrderItems(data: any[]): Order[] {
+    return data.map((group: any) => {
+      const firstItem = group.subList[0];
+      const items = group.subList.map((item: any) => ({
+        description: item.product?.productName || '',
+        duration: item.duration || '-',
+        quantity: item.quantity || 0,
+        beforeTax: item.totalBeforeTax || 0,
+        tax: item.taxAmount || 0,
+        total: item.totalWithTax || 0,
+      }));
+
+      const totalBeforeTax = group.subList.reduce((sum: number, item: any) => sum + (item.totalBeforeTax || 0), 0);
+      const totalTax = group.subList.reduce((sum: number, item: any) => sum + (item.taxAmount || 0), 0);
+      const totalWithTax = group.subList.reduce((sum: number, item: any) => sum + (item.totalWithTax || 0), 0);
+
+      return {
+        id: firstItem.orderId || group.item,
+        date: firstItem.orderDate?.shortDate || '',
+        client: firstItem.customer?.customerName || '',
+        vehicle: firstItem.order?.car?.carNumber || '',
+        address: firstItem.order?.addressLine1 || '',
+        phoneNumber: firstItem.customer?.phoneNumber || '',
+        fixedType: firstItem.order?.fixedType || '',
+        parking: firstItem.order?.parking || '',
+        taxAmount: totalTax,
+        totalBeforeTax: totalBeforeTax,
+        totalWithTax: totalWithTax,
+        items,
+      };
+    });
+  }
+
+  calculateGrandTotals() {
+    this.grandTotalBeforeTax = this.orders.reduce((sum, order) => sum + (order.totalBeforeTax || 0), 0);
+    this.grandTotalTax = this.orders.reduce((sum, order) => sum + (order.taxAmount || 0), 0);
+    this.grandTotalWithTax = this.orders.reduce((sum, order) => sum + (order.totalWithTax || 0), 0);
+  }
+
+  formatCurrency(value: number): string {
+    if (!value) return '0₪';
+    return `${value.toFixed(2)}₪`;
+  }
+
+  formatDate(date: Date): string {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${year}-${month}-${day}`;
+  }
+
+  onSearch() {
+    this.loadOrders();
+  }
+
+  onDateFilterChange() {
+    this.loadOrders();
+  }
+
   openAddOrderDialog() {
     this.showAddOrderDialog = true;
-    console.log('Opening dialog, showAddOrderDialog:', this.showAddOrderDialog);
   }
 
   onDialogHide() {
     this.showAddOrderDialog = false;
-    console.log('Dialog hidden, showAddOrderDialog:', this.showAddOrderDialog);
   }
 
-  // Table expansion methods
+  onOrderSaved(orderData: any) {
+    this.loadOrders();
+  }
+
   onRowExpand(event: any) {
     console.log('Row expanded:', event.data);
   }
 
   onRowCollapse(event: any) {
     console.log('Row collapsed:', event.data);
+  }
+
+  deleteOrder(orderId: number) {
+    if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) {
+      this.ordersService.deleteOrderItem(orderId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('تم حذف الطلب بنجاح');
+            this.loadOrders();
+          }
+        },
+        error: (err) => {
+          console.error('Error deleting order:', err);
+          alert('حدث خطأ أثناء حذف الطلب');
+        },
+      });
+    }
   }
 }

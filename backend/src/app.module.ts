@@ -21,6 +21,7 @@ import { QuotesModule } from './quotes/quotes.module';
 import { QuoteItemsModule } from './quote-items/quote-items.module';
 import { TransportationsModule } from './transportations/transportations.module';
 import { TransportationItemsModule } from './transportation-items/transportation-items.module';
+import { LookupsModule } from './lookups/lookups.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { TransportationItemsModule } from './transportation-items/transportation
     QuoteItemsModule,
     TransportationsModule,
     TransportationItemsModule,
+    LookupsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -22,20 +22,20 @@
         <span class="p-input-icon-left search-input-wrapper">
           <i class="pi pi-search"></i>
           <input pInputText type="text" [(ngModel)]="searchValue" placeholder="البحث الحر عن الطلب"
-            class="search-input" />
+            class="search-input" (keyup.enter)="onSearch()" />
         </span>
       </div>
-      <button pButton icon="pi pi-filter" label="تصفية" class="p-button filter-btn"></button>
+      <button pButton icon="pi pi-filter" label="تصفية" class="p-button filter-btn" (click)="onSearch()"></button>
 
       <div class="date-filters">
         <p-calendar [(ngModel)]="endDate" placeholder="حتى التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
-          class="date-input">
+          class="date-input" (onSelect)="onDateFilterChange()">
         </p-calendar>
 
         <span class="date-separator">—</span>
 
         <p-calendar [(ngModel)]="startDate" placeholder="من التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
-          class="date-input">
+          class="date-input" (onSelect)="onDateFilterChange()">
         </p-calendar>
       </div>
     </div>
@@ -43,7 +43,8 @@
     <!-- Table -->
     <div class="table-wrapper">
       <p-table [value]="orders" [expandedRowKeys]="expandedRows" dataKey="id" [responsive]="true"
-        styleClass="orders-table" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)">
+        [loading]="loading" styleClass="orders-table" (onRowExpand)="onRowExpand($event)" 
+        (onRowCollapse)="onRowCollapse($event)">
 
         <ng-template pTemplate="header">
           <tr>
@@ -67,7 +68,8 @@
         <ng-template pTemplate="body" let-order let-expanded="expanded">
           <tr [class.expanded-parent]="expanded">
             <td class="action-col">
-              <button pButton icon="pi pi-trash" class="p-button-text p-button-sm delete-btn"></button>
+              <button pButton icon="pi pi-trash" class="p-button-text p-button-sm delete-btn" 
+                (click)="deleteOrder(order.id)"></button>
             </td>
             <td class="action-col">
               <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm edit-btn"></button>
@@ -78,9 +80,9 @@
                 class="p-button-text p-button-sm toggle-btn"></button>
             </td>
             <td class="price-col">السعر</td>
-            <td>{{order.total}}</td>
-            <td>{{order.preTax}}</td>
-            <td>{{order.tax}}</td>
+            <td>{{formatCurrency(order.totalWithTax)}}</td>
+            <td>{{formatCurrency(order.totalBeforeTax)}}</td>
+            <td>{{formatCurrency(order.taxAmount)}}</td>
             <td>{{order.fixedType}}</td>
             <td>{{order.parking}}</td>
             <td>{{order.phoneNumber}}</td>
@@ -98,12 +100,12 @@
                 <table class="nested-table">
                   <thead>
                     <tr>
-                      <th>ميوחر</th>
-                      <th>מחיר</th>
-                      <th>כמות</th>
-                      <th>לפני מע"מ</th>
-                      <th>מע"מ</th>
-                      <th>סה"כ</th>
+                      <th>الوصف</th>
+                      <th>المدة</th>
+                      <th>الكمية</th>
+                      <th>قبل الضريبة</th>
+                      <th>الضريبة</th>
+                      <th>الإجمالي</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -111,19 +113,19 @@
                       <td class="item-description">{{item.description}}</td>
                       <td>{{item.duration}}</td>
                       <td>{{item.quantity}}</td>
-                      <td>{{item.beforeTax}}</td>
-                      <td>{{item.tax}}</td>
-                      <td>{{item.total}}</td>
+                      <td>{{formatCurrency(item.beforeTax)}}</td>
+                      <td>{{formatCurrency(item.tax)}}</td>
+                      <td>{{formatCurrency(item.total)}}</td>
                     </tr>
                   </tbody>
                   <tfoot>
                     <tr class="totals-row">
-                      <td class="totals-label">הסה"כ</td>
+                      <td class="totals-label">الإجمالي</td>
                       <td></td>
                       <td>{{order.items?.length || 0}}</td>
-                      <td>{{order.preTax}}</td>
-                      <td>{{order.tax}}</td>
-                      <td>{{order.total}}</td>
+                      <td>{{formatCurrency(order.totalBeforeTax)}}</td>
+                      <td>{{formatCurrency(order.taxAmount)}}</td>
+                      <td>{{formatCurrency(order.totalWithTax)}}</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -136,9 +138,9 @@
       <!-- Table Summary -->
       <div class="table-summary">
         <div class="summary-values">
-          <span>6,505₪</span>
-          <span>945₪</span>
-          <span>5,560₪</span>
+          <span>{{formatCurrency(grandTotalWithTax)}}</span>
+          <span>{{formatCurrency(grandTotalTax)}}</span>
+          <span>{{formatCurrency(grandTotalBeforeTax)}}</span>
         </div>
         <span class="summary-label">الإجمالي:</span>
       </div>
@@ -148,7 +150,8 @@
   <!-- Add Order Dialog -->
   <app-add-order-dialog 
     [(visible)]="showAddOrderDialog"
-    (onHide)="onDialogHide()">
+    (onHide)="onDialogHide()"
+    (onOrderSaved)="onOrderSaved($event)">
   </app-add-order-dialog>
 </div>
 
