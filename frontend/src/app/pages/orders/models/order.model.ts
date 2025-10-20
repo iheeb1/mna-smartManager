@@ -1,5 +1,3 @@
-// src/app/features/orders/models/order.model.ts
-
 // API Response wrapper
 export interface ApiListResponse<T = any> {
     totalLength: number;
@@ -10,6 +8,8 @@ export interface ApiListResponse<T = any> {
   export interface Order {
     id: number;
     date: string;
+    customerId?: number | null;
+    carId?: number | null;
     client: string;
     vehicle: string;
     address: string;
@@ -22,7 +22,7 @@ export interface ApiListResponse<T = any> {
     items: OrderItem[];
   }
   
-  // Order Item interface - UPDATED to match component usage
+  // Order Item interface
   export interface OrderItem {
     orderItemId?: number;
     orderId?: number;
@@ -33,9 +33,12 @@ export interface ApiListResponse<T = any> {
     duration?: string;
     quantity: number;
     price: number;
-    totalBeforeTax: number;  // Changed from beforeTax
-    taxAmount: number;       // Changed from tax
-    totalWithTax: number;    // Changed from total
+    totalBeforeTax: number; 
+    taxAmount: number; 
+    totalWithTax: number;
+    beforeTax?: number;
+    tax?: number;
+    total?: number;
   }
   
   // Raw Order Item from API (before mapping)
@@ -67,6 +70,8 @@ export interface ApiListResponse<T = any> {
     };
     order?: {
       orderId: number;
+      customerId?: number;
+      carId?: number;
       addressLine1: string;
       fixedType: string;
       parking: string;
@@ -80,6 +85,7 @@ export interface ApiListResponse<T = any> {
   // Grouped Order Items from API
   export interface GroupedOrderItems {
     item: string | number;
+    orderDate?: string;
     subList: RawOrderItem[];
   }
   
@@ -114,7 +120,7 @@ export interface ApiListResponse<T = any> {
     items: SaveOrderItemRequest[];
   }
   
-  // Save Order Item Request - matches OrderItem structure
+  // Save Order Item Request
   export interface SaveOrderItemRequest {
     orderItemId?: number;
     productId?: number | null;
@@ -154,9 +160,11 @@ export interface ApiListResponse<T = any> {
   export interface Car {
     carId: number;
     carNumber: string;
+    carPlateNumber?: string;
     carNotes?: string;
     objectId?: number;
     carStatusId?: number;
+    customerId?: number;
     customer?: {
       customerId: number;
       customerName: string;
