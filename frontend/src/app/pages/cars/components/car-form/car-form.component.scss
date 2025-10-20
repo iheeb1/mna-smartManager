@@ -126,13 +126,16 @@
             margin: 0;
           }
 
-          p-inputswitch {
+          .p-inputswitch {
+
+      
+            .p-inputswitch-slider {
+              background: #c5c5d8 !important;
+            }
+      
             &.p-inputswitch-checked .p-inputswitch-slider {
               background: #6c63ff !important;
-            }
 
-            .p-inputswitch-slider {
-              background: #cbd5e0 !important;
             }
           }
         }
