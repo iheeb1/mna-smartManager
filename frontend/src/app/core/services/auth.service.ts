@@ -86,7 +86,6 @@ export class AuthService {
     if (userData.token) {
       localStorage.setItem(this.tokenKey, userData.token);
       
-      // Don't store password
       const { password, token, ...userWithoutSensitiveData } = userData;
       localStorage.setItem(this.userKey, JSON.stringify(userWithoutSensitiveData));
       
