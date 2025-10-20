@@ -1,153 +1,168 @@
 :host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e9f0;
+  padding: 0.75rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease-in-out;
+  
+  &.hidden {
+    transform: translateY(-100%);
+  }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo-icon {
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     display: block;
+  }
+}
+
+.logo-text {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-item {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #4f46e5;
+  }
+
+  &.active {
+    color: #4f46e5;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #4f46e5;
+    }
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+::ng-deep {
+  .p-component {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
-  
+
+  .p-button {
+    color: #94a3b8;
+    width: 40px;
+    height: 40px;
+    
+    &:hover {
+      background: #f8fafc;
+      color: #4f46e5;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .p-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// Mobile Styles
+@media (max-width: 768px) {
   .header {
-    background: white;
-    border-bottom: 1px solid #e5e9f0;
-    padding: 0.75rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 0.75rem 1rem;
   }
-  
+
   .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1400px;
-    margin: 0 auto;
+    gap: 0;
   }
-  
+
+  // Hide desktop navigation on mobile
+  .nav-menu {
+    display: none;
+  }
+
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    flex: 1;
   }
-  
+
   .logo-icon {
     img {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: block;
+      width: 28px;
+      height: 28px;
     }
   }
-  
+
   .logo-text {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #2d3748;
+    font-size: 1rem;
   }
-  
-  .nav-menu {
-    display: flex;
-    gap: 2rem;
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .nav-item {
-    color: #64748b;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.5rem 0;
-    position: relative;
-    transition: color 0.2s;
-  
-    &:hover {
-      color: #4f46e5;
-    }
-  
-    &.active {
-      color: #4f46e5;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -0.75rem;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #4f46e5;
-      }
-    }
-  }
-  
+
   .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  ::ng-deep {
-    .p-component {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    }
-  
-    .p-button {
-      color: #94a3b8;
-      width: 40px;
-      height: 40px;
-      
-      &:hover {
-        background: #f8fafc;
-        color: #4f46e5;
+    gap: 0.25rem;
+
+    ::ng-deep {
+      .p-button {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
       }
-  
-      &:focus {
-        outline: none;
-        box-shadow: none;
-      }
-    }
-  
-    .p-avatar {
-      width: 40px;
-      height: 40px;
-    }
-  }
-  
-  // Mobile Styles
-  @media (max-width: 768px) {
-    .header {
-      padding: 0.75rem 1rem;
-    }
-  
-    .header-content {
-      gap: 0;
-    }
-  
-    // Hide desktop navigation on mobile
-    .nav-menu {
-      display: none;
-    }
-  
-    // Keep logo and all header actions visible
-    .logo {
-      flex: 1;
-    }
-  
-    .logo-text {
-      font-size: 1rem;
-    }
-  
-    .header-actions {
-      gap: 0.25rem;
-  
-      ::ng-deep {
-        .p-button {
-          width: 36px;
-          height: 36px;
-          font-size: 1.1rem;
-        }
-  
-        .p-avatar {
-          width: 36px;
-          height: 36px;
-        }
+
+      .p-avatar {
+        width: 36px;
+        height: 36px;
       }
     }
   }
+}

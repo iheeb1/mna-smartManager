@@ -1,27 +1,26 @@
-<header class="header">
-    <div class="header-content">
-      <div class="logo">
-        <div class="logo-icon">
-          <img src="/assets/images/logo.png" alt="smart logo">
-        </div>
-        <span class="logo-text">Smart</span>
+<header class="header" [class.hidden]="isHeaderHidden">
+  <div class="header-content">
+    <a href="/dashboard" class="logo">
+      <div class="logo-icon">
+        <img src="/assets/images/logo.png" alt="smart logo">
       </div>
-  
-      <!-- Desktop Navigation (hidden on mobile) -->
-      <nav class="nav-menu">
-        <a href="#" class="nav-item">الانتظار</a>
-        <a href="#" class="nav-item">العملاء</a>
-        <a href="#" class="nav-item">المركبات</a>
-        <a href="#" class="nav-item">التقارير</a>
-        <a href="#" class="nav-item">المدفوعات</a>
-        <a href="#" class="nav-item active">الإعدادات</a>
-      </nav>
-  
-      <!-- Header Actions (always visible) -->
-      <div class="header-actions">
-        <button pButton icon="pi pi-search" class="p-button-text p-button-rounded"></button>
-        <button pButton icon="pi pi-bell" class="p-button-text p-button-rounded"></button>
-        <p-avatar image="https://via.placeholder.com/40" shape="circle"></p-avatar>
-      </div>
+      <span class="logo-text">Smart</span>
+    </a>
+
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <nav class="nav-menu">
+      <a href="/orders" class="nav-item" [class.active]="isRouteActive('/orders')">الانتظار</a>
+      <a href="/customers" class="nav-item" [class.active]="isRouteActive('/customers')">العملاء</a>
+      <a href="/cars" class="nav-item" [class.active]="isRouteActive('/cars')">المركبات</a>
+      <a href="/reports" class="nav-item" [class.active]="isRouteActive('/reports')">التقارير</a>
+      <a href="/payments" class="nav-item" [class.active]="isRouteActive('/payments')">المدفوعات</a>
+      <a href="/settings" class="nav-item" [class.active]="isRouteActive('/settings')">الإعدادات</a>
+    </nav>
+
+    <div class="header-actions">
+      <button pButton icon="pi pi-search" class="p-button-text p-button-rounded"></button>
+      <button pButton icon="pi pi-bell" class="p-button-text p-button-rounded"></button>
+      <p-avatar image="https://via.placeholder.com/40" shape="circle"></p-avatar>
     </div>
-  </header>
+  </div>
+</header>
