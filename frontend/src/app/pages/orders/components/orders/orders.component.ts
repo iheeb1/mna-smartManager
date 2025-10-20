@@ -1,4 +1,3 @@
-// src/app/features/orders/pages/orders/orders.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -44,12 +43,10 @@ export class OrdersComponent implements OnInit {
   expandedRows: { [key: string]: boolean } = {};
   loading = false;
 
-  // Totals
   grandTotalBeforeTax = 0;
   grandTotalTax = 0;
   grandTotalWithTax = 0;
 
-  // Cache for customer data
   private customersCache: Map<number, any> = new Map();
   private carsCache: Map<number, any> = new Map();
 
@@ -91,10 +88,8 @@ export class OrdersComponent implements OnInit {
         const rowsList = response.result_data?.rowsList || response.data?.rowsList;
         
         if (rowsList && rowsList.length > 0) {
-          // First map the orders with basic data
           const basicOrders = this.mapOrderItems(rowsList);
           
-          // Then enrich with customer data
           this.enrichOrdersWithCustomerData(basicOrders);
         } else {
           console.log('No orders found');
@@ -115,13 +110,11 @@ export class OrdersComponent implements OnInit {
     console.log('Mapping order items, raw data:', data);
     
     return data.map((group: GroupedOrderItems) => {
-      // Get the first item from subList for order-level data
       const firstItem = group.subList[0];
       
       console.log('First item in group:', firstItem);
       console.log('Order data:', firstItem.order);
       
-      // Map all items in the order
       const items: OrderItem[] = group.subList.map((item: any) => {
         const beforeTax = parseFloat(item.orderPrice?.totalItemPriceWithOutVat) || 0;
         const tax = parseFloat(item.orderPrice?.totalItemPriceVat) || 0;
@@ -140,7 +133,6 @@ export class OrdersComponent implements OnInit {
           totalBeforeTax: beforeTax,
           taxAmount: tax,
           totalWithTax: total,
-          // Add aliases for template compatibility
           beforeTax: beforeTax,
           tax: tax,
           total: total,
@@ -149,12 +141,10 @@ export class OrdersComponent implements OnInit {
 
       console.log('Mapped items:', items);
 
-      // Calculate totals for this order
       const totalBeforeTax = items.reduce((sum, item) => sum + item.totalBeforeTax, 0);
       const totalTax = items.reduce((sum, item) => sum + item.taxAmount, 0);
       const totalWithTax = items.reduce((sum, item) => sum + item.totalWithTax, 0);
 
-      // Extract customer and car IDs from the order data
       const customerId = firstItem.order?.customerId || null;
       const carId = firstItem.order?.carId || null;
 
@@ -215,7 +205,6 @@ export class OrdersComponent implements OnInit {
     // Prepare all requests
     const requests: Observable<any>[] = [];
 
-    // Add customer requests
     customerIds.forEach(customerId => {
       requests.push(
         this.customersService.getCustomerDetails(customerId).pipe(
@@ -233,7 +222,6 @@ export class OrdersComponent implements OnInit {
       );
     });
 
-    // Add car requests
     carIds.forEach(carId => {
       requests.push(
         this.carsService.getCarDetails(carId).pipe(
@@ -251,12 +239,10 @@ export class OrdersComponent implements OnInit {
       );
     });
 
-    // Execute all requests in parallel
     forkJoin(requests).subscribe({
       next: (responses) => {
         console.log('Received responses:', responses);
         
-        // Update caches with new data
         responses.forEach((response: any) => {
           if (response.success && response.data) {
             if (response.type === 'customer') {
@@ -272,7 +258,6 @@ export class OrdersComponent implements OnInit {
         console.log('Customers cache:', this.customersCache);
         console.log('Cars cache:', this.carsCache);
 
-        // Enrich all orders with data from caches
         this.orders = orders.map(order => this.enrichOrderFromCache(order));
         console.log('Final enriched orders:', this.orders);
         this.calculateGrandTotals();
@@ -280,7 +265,6 @@ export class OrdersComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching data:', err);
-        // Still show orders without enriched data
         this.orders = orders;
         this.calculateGrandTotals();
         this.loading = false;
@@ -291,10 +275,8 @@ export class OrdersComponent implements OnInit {
   enrichOrderFromCache(order: Order): Order {
     console.log('Enriching order:', order.id, 'customerId:', order.customerId, 'carId:', order.carId);
     
-    // Start with the original order
     const enrichedOrder = { ...order };
 
-    // Enrich customer data
     if (order.customerId && this.customersCache.has(order.customerId)) {
       const customerData = this.customersCache.get(order.customerId);
       console.log('Found customer data:', customerData);
@@ -308,7 +290,6 @@ export class OrdersComponent implements OnInit {
       console.log('No customer data found for:', order.customerId);
     }
 
-    // Enrich car data
     if (order.carId && this.carsCache.has(order.carId)) {
       const carData = this.carsCache.get(order.carId);
       console.log('Found car data:', carData);
@@ -361,7 +342,6 @@ export class OrdersComponent implements OnInit {
   }
 
   onOrderSaved(orderData: any) {
-    // Clear caches to force refresh of data
     this.customersCache.clear();
     this.carsCache.clear();
     this.loadOrders();
@@ -395,13 +375,11 @@ export class OrdersComponent implements OnInit {
   }
 
   exportOrders() {
-    // TODO: Implement export functionality
     console.log('Export orders');
     alert('وظيفة التصدير قيد التطوير');
   }
 
   printOrders() {
-    // TODO: Implement print functionality
     window.print();
   }
 }
