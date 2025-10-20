@@ -1,7 +1,11 @@
-import { IsOptional, IsInt, IsString, IsBoolean } from 'class-validator';
+import { IsOptional, IsInt, IsString, IsBoolean, IsNotEmpty } from 'class-validator';
 
 export class CarRequestDto {
+  @IsString()
+  @IsNotEmpty()
   reqType: string;
+  
+  @IsOptional()
   reqObject?: any;
 }
 
@@ -57,6 +61,10 @@ export class GetCarsListDto {
   @IsOptional()
   @IsBoolean()
   includeTotalRowsLength?: boolean;
+  
+  @IsOptional()
+  @IsString()
+  searchTerm?: string;
 }
 
 export class SaveCarDto {
@@ -65,7 +73,7 @@ export class SaveCarDto {
   carId?: number;
 
   @IsInt()
-  objectId: number; // Customer ID
+  objectId: number;
 
   @IsOptional()
   @IsInt()

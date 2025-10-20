@@ -2,28 +2,37 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Car } from '../models/car.models';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Car, CarsListParams } from '../models/car.models';
+import { CarsService, CarResponse } from '../services/car.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component';
+import { CarFormComponent } from './car-form/car-form.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-cars',
   standalone: true,
   imports: [
+    CommonModule,
+    FormsModule,
     ButtonModule,
     InputTextModule,
     InputSwitchModule,
-    DialogModule,
-    FormsModule,
-    CommonModule,
     HeaderComponent,
-    FooterNavComponent
+    FooterNavComponent,
+    CarFormComponent,
+    ToastModule,
+    ProgressSpinnerModule
   ],
+  providers: [MessageService],
   templateUrl: './cars.component.html',
-  styleUrls: ['./cars.component.scss']
+  styleUrl: './cars.component.scss'
 })
 export class CarsComponent implements OnInit, OnDestroy {
   cars: Car[] = [];
@@ -31,22 +40,39 @@ export class CarsComponent implements OnInit, OnDestroy {
   showDialog = false;
   searchTerm = '';
   isMobile = window.innerWidth < 768;
+  loading = false;
+  totalCars = 0;
+  currentPage = 0;
+  itemsPerPage = 50;
 
-  // Form data
-  formData = {
-    plateNumber: '',
-    model: '',
-    isActive: false
-  };
+  private destroy$ = new Subject<void>();
+  private searchSubject$ = new Subject<string>();
+
+  constructor(
+    private carsService: CarsService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
     this.loadCars();
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
+    
+    // Setup search debouncing
+    this.searchSubject$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(searchTerm => {
+      this.currentPage = 0;
+      this.loadCars();
+    });
   }
 
   ngOnDestroy() {
     window.removeEventListener('resize', this.checkScreenSize.bind(this));
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private checkScreenSize() {
@@ -54,108 +80,213 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   loadCars() {
-    // Mock data - replace with API call
-    this.cars = [
-      { id: 1, model: 'מיקון', plateNumber: '1234567', isActive: true, location: 'חברת בנייה א.נ.ש, פרוייקטים' },
-      { id: 2, model: 'טויוטה ראב 4', plateNumber: '1234567', isActive: false, location: 'בנייה ירקה בע"מ' },
-      { id: 3, model: 'כבלניה ויהודה בע"מ', plateNumber: '4', isActive: false, location: 'חברת בנייה א.נ.ש, פרוייקטים' },
-      { id: 4, model: 'נ.ע. קבלני בניין', plateNumber: '911', isActive: true, location: 'פרשת 911' },
-      { id: 5, model: 'תשתיות בנייה גולן', plateNumber: 'מיקון', isActive: false, location: 'תשתיות ובנייה גולן' },
-      { id: 6, model: 'משאבות מאור', plateNumber: '4', isActive: true, location: 'טויוטה ראב 4' },
-      { id: 7, model: 'חברת בנייה א.נ.ש, פרוייקטים', plateNumber: 'קיה פיקנטו', isActive: true, location: 'קיה פיקנטו' }
-    ];
+    this.loading = true;
+    
+    const params: CarsListParams = {
+      itemsPerPage: this.itemsPerPage,
+      pageNumber: this.currentPage,
+      searchTerm: this.searchTerm,
+      includeTotalRowsLength: true
+    };
+
+    this.carsService.getCarsList(params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: { rowsList: CarResponse[]; totalLength: number; }) => {
+          this.cars = this.mapCarResponses(response.rowsList);
+          this.totalCars = response.totalLength;
+          this.loading = false;
+        },
+        error: (error: any) => {
+          console.error('Error loading cars:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'خطأ',
+            detail: 'فشل في تحميل المركبات'
+          });
+          this.cars = [];
+          this.loading = false;
+        }
+      });
+  }
+
+  private mapCarResponses(responses: CarResponse[]): Car[] {
+    return responses.map(r => ({
+      id: r.carId,
+      carId: r.carId,
+      plateNumber: r.carNumber || '',
+      carNumber: r.carNumber,
+      model: r.carNotes || 'غير محدد',
+      carNotes: r.carNotes,
+      isActive: r.carStatusId === 1,
+      carStatusId: r.carStatusId,
+      location: '', // Can be mapped from objectId if needed
+      objectId: r.objectId,
+      createdBy: r.createdBy,
+      modifiedBy: r.modifiedBy,
+      createdDate: r.createdDate,
+      modifiedDate: r.modifiedDate
+    }));
+  }
+
+  private mapCarToBackend(car: Car): Partial<CarResponse> {
+    return {
+      carId: car.carId || car.id,
+      carNumber: car.plateNumber || car.carNumber,
+      carNotes: car.model || car.carNotes,
+      carStatusId: car.isActive ? 1 : 0,
+      objectId: car.objectId || 0,
+      createdBy: car.createdBy || 1,
+      modifiedBy: car.modifiedBy || 1
+    };
+  }
+
+  onSearchChange(value: string) {
+    this.searchSubject$.next(value);
   }
 
   addNewCar() {
     this.selectedCar = null;
-    this.formData = {
-      plateNumber: '',
-      model: '',
-      isActive: false
-    };
     this.showDialog = true;
   }
 
   editCar(car: Car) {
     this.selectedCar = { ...car };
-    this.formData = {
-      plateNumber: car.plateNumber,
-      model: car.model,
-      isActive: car.isActive
-    };
     this.showDialog = true;
   }
 
   deleteCar(car: Car) {
     if (confirm(`האם למחוק את הרכב ${car.model}?`)) {
-      this.cars = this.cars.filter(c => c.id !== car.id);
+      this.loading = true;
+      const carId = car.carId || car.id;
+      
+      if (!carId) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'خطأ',
+          detail: 'معرف المركبة غير صالح'
+        });
+        return;
+      }
+
+      this.carsService.deleteCar(carId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'نجح',
+              detail: 'تم حذف المركبة بنجاح'
+            });
+            this.loadCars();
+          },
+          error: (error: any) => {
+            console.error('Error deleting car:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'خطأ',
+              detail: 'فشل في حذف المركبة'
+            });
+            this.loading = false;
+          }
+        });
     }
   }
 
   toggleActive(car: Car) {
-    // The two-way binding handles the toggle automatically
-    // You can add additional logic here if needed (e.g., API call)
-    console.log(`Car ${car.id} active status changed to: ${car.isActive}`);
+    const carData = this.mapCarToBackend(car);
+    this.loading = true;
+
+    this.carsService.saveCar(carData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'نجح',
+            detail: `تم ${car.isActive ? 'تفعيل' : 'إلغاء تفعيل'} المركبة`
+          });
+          this.loading = false;
+        },
+        error: (error: any) => {
+          console.error('Error toggling car status:', error);
+          car.isActive = !car.isActive; // Revert the change
+          this.messageService.add({
+            severity: 'error',
+            summary: 'خطأ',
+            detail: 'فشل في تحديث حالة المركبة'
+          });
+          this.loading = false;
+        }
+      });
   }
 
-  onSubmit() {
-    if (!this.formData.plateNumber || !this.formData.model) {
-      alert('נא למלא את כל השדות');
-      return;
-    }
+  onCarSaved(car: Car) {
+    const carData = this.mapCarToBackend(car);
+    this.loading = true;
 
-    if (this.selectedCar) {
-      // Edit existing car
-      const index = this.cars.findIndex(c => c.id === this.selectedCar!.id);
-      if (index !== -1) {
-        this.cars[index] = {
-          ...this.cars[index],
-          plateNumber: this.formData.plateNumber,
-          model: this.formData.model,
-          isActive: this.formData.isActive
-        };
-      }
-    } else {
-      // Add new car
-      const newId = Math.max(...this.cars.map(c => c.id || 0), 0) + 1;
-      this.cars.push({
-        id: newId,
-        plateNumber: this.formData.plateNumber,
-        model: this.formData.model,
-        isActive: this.formData.isActive,
-        location: 'לא ידוע'
+    this.carsService.saveCar(carData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'نجح',
+            detail: car.carId ? 'تم تحديث المركبة بنجاح' : 'تم إضافة المركبة بنجاح'
+          });
+          this.showDialog = false;
+          this.selectedCar = null;
+          this.loadCars();
+        },
+        error: (error: any) => {
+          console.error('Error saving car:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'خطأ',
+            detail: 'فشل في حفظ المركبة'
+          });
+          this.loading = false;
+        }
       });
-    }
+  }
 
+  onDialogClose() {
     this.showDialog = false;
     this.selectedCar = null;
-    this.resetForm();
-  }
-
-  resetForm() {
-    this.formData = {
-      plateNumber: '',
-      model: '',
-      isActive: false
-    };
   }
 
   viewDetails(car: Car, event: Event) {
     event.preventDefault();
-    console.log('View details for car:', car);
-    // Navigate to details page or show details dialog
+    const carId = car.carId || car.id;
+    
+    if (!carId) return;
+
+    this.loading = true;
+    this.carsService.getCarDetails(carId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: any) => {
+          console.log('Car details:', response);
+          // Navigate to details page or show details in dialog
+          this.loading = false;
+        },
+        error: (error: any) => {
+          console.error('Error fetching car details:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'خطأ',
+            detail: 'فشل في تحميل تفاصيل المركبة'
+          });
+          this.loading = false;
+        }
+      });
   }
 
   get filteredCars() {
-    if (!this.searchTerm) {
-      return this.cars;
-    }
-    
-    const term = this.searchTerm.toLowerCase();
-    return this.cars.filter(car => 
-      car.model.toLowerCase().includes(term) ||
-      car.plateNumber.toLowerCase().includes(term) ||
-      car.location?.toLowerCase().includes(term)
-    );
+    return this.cars;
+  }
+
+  get isEmpty() {
+    return !this.loading && this.cars.length === 0;
   }
 }

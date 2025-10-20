@@ -1,58 +1,96 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { CommonModule } from '@angular/common';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { DialogModule } from 'primeng/dialog';
 import { Car } from '../../models/car.models';
 
 @Component({
   selector: 'app-car-form',
   standalone: true,
   imports: [
+    CommonModule,
+    FormsModule,
     ButtonModule,
     InputTextModule,
-    ToggleButtonModule,
-    ReactiveFormsModule,
-    CommonModule
+    InputSwitchModule,
+    DialogModule
   ],
   templateUrl: './car-form.component.html',
-  styleUrls: ['./car-form.component.scss']
+  styleUrl: './car-form.component.scss'
 })
-export class CarFormComponent implements OnInit {
-  @Input() car: Car | null = null;
-  @Input() isMobile = false;
-  @Output() saved = new EventEmitter<Car>();
-  @Output() cancelled = new EventEmitter<void>();
+export class CarFormComponent implements OnChanges {
+  @Input() visible: boolean = false;
+  @Input() carToEdit: Car | null = null;
+  @Output() visibleChange = new EventEmitter<boolean>();
+  @Output() onSave = new EventEmitter<Car>();
+  @Output() onClose = new EventEmitter<void>();
 
-  carForm!: FormGroup;
+  formData: Car = this.getEmptyForm();
 
-  ngOnInit() {
-    this.carForm = new FormBuilder().group({
-      model: ['', Validators.required],
-      plateNumber: ['', Validators.required],
-      isActive: [true]
-    });
-
-    if (this.car) {
-      this.carForm.patchValue(this.car);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['carToEdit'] && changes['carToEdit'].currentValue) {
+      // Editing existing car
+      this.formData = { ...changes['carToEdit'].currentValue };
+    } else if (changes['visible'] && changes['visible'].currentValue && !this.carToEdit) {
+      // Adding new car
+      this.resetForm();
     }
   }
 
-  onSubmit() {
-    if (this.carForm.valid) {
-      const formValue = this.carForm.value;
-      const savedCar: Car = {
-        id: this.car?.id,
-        model: formValue.model,
-        plateNumber: formValue.plateNumber,
-        isActive: formValue.isActive
-      };
-      this.saved.emit(savedCar);
-    }
+  private getEmptyForm(): Car {
+    return {
+      id: undefined,
+      carId: undefined,
+      plateNumber: '',
+      carNumber: '',
+      model: '',
+      carNotes: '',
+      isActive: true,
+      carStatusId: 1,
+      location: '',
+      objectId: 0,
+      createdBy: 1,
+      modifiedBy: 1
+    };
   }
 
-  onCancel() {
-    this.cancelled.emit();
+  resetForm(): void {
+    this.formData = this.getEmptyForm();
+  }
+
+  onSubmit(): void {
+    // Validate form data
+    if (!this.formData.plateNumber?.trim()) {
+      alert('נא להזין מספר רכב');
+      return;
+    }
+
+    if (!this.formData.model?.trim()) {
+      alert('נא להזין סוג רכב');
+      return;
+    }
+
+    // Prepare data for backend
+    const carData: Car = {
+      ...this.formData,
+      carNumber: this.formData.plateNumber,
+      carNotes: this.formData.model,
+      carStatusId: this.formData.isActive ? 1 : 0
+    };
+
+    // Emit the saved car data
+    this.onSave.emit(carData);
+    
+    // Dialog will be closed by parent component after successful save
+  }
+
+  closeDialog(): void {
+    this.visible = false;
+    this.visibleChange.emit(false);
+    this.onClose.emit();
+    this.resetForm();
   }
 }

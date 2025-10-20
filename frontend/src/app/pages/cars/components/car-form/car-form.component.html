@@ -1,63 +1,53 @@
-<p-dialog
-   [(visible)]="visible"
-   [modal]="true"
-   [closable]="true"
-   [showHeader]="false"
-   [draggable]="false"
-   [closeOnEscape]="true"
-   [dismissableMask]="true"
-   (onHide)="onDialogHide()"
-   [baseZIndex]="10"
-   styleClass="car-form-dialog"
-   [style]="{ width: '90vw', height: '92vh' }">
-   
-   <div class="dialog-wrapper">
-    <!-- Left Side - Form -->
-    <div class="form-side">
-      <div class="section-block">
-         <div class="input-row">
-          <div class="input-col">
-            <span class="input-label">מספר רכב</span>
-            <input
-               type="text"
-               pInputText
-               [(ngModel)]="formData.plateNumber"
-               placeholder="123456789"
-               class="form-input">
-          </div>
-           
-          <div class="input-col">
-            <span class="input-label">סוג רכב</span>
-            <input
-               type="text"
-               pInputText
-               [(ngModel)]="formData.model"
-               placeholder="קיה פיקנטו"
-               class="form-input">
-          </div>
+<p-dialog 
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true"
+  [draggable]="false"
+  [style]="{width: '800px'}"
+  styleClass="vehicle-dialog"
+  (onHide)="closeDialog()">
+  
+  <div class="form-container">
+    <div class="form-image">
+      <img src="assets/images/truck_gift.png" alt="شاحنة">
+      <h2>{{ carToEdit ? 'تعديل مركبة' : 'إضافة مركبة' }}<br>جديدة</h2>
+    </div>
+
+    <div class="form-content">
+      <div class="form-fields">
+        <div class="field-group">
+          <label>رقم المركبة</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.plateNumber" 
+            placeholder="123456789" 
+            class="form-input">
         </div>
-         
-        <div class="input-row">
-          <div class="input-col">
-            <div class="checkbox-wrapper-inline">
-              <p-checkbox
-                 [(ngModel)]="formData.active"
-                 [binary]="true">
-              </p-checkbox>
-              <label class="check-text">פעיל</label>
-            </div>
-          </div>
+
+        <div class="field-group">
+          <label>نوع المركبة</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.model" 
+            placeholder="كيا بيكانتو" 
+            class="form-input">
+        </div>
+
+        <div class="toggle-group">
+          <label>نشط</label>
+          <p-inputSwitch [(ngModel)]="formData.isActive"></p-inputSwitch>
         </div>
       </div>
-       
-      <button pButton label="שמירה" class="final-save-btn" (click)="onSubmit()"></button>
-    </div>
-     
-    <!-- Right Side - Illustration -->
-    <div class="illustration-side">
-      <div class="image-overlay">
-        <img src="assets/truck-gift.png" alt="Truck Illustration" />
-        <h2>הוספת רכב<br>חדש</h2>
+
+      <div class="form-actions">
+        <button 
+          pButton 
+          label="حفظ" 
+          (click)="onSubmit()" 
+          class="save-button">
+        </button>
       </div>
     </div>
   </div>

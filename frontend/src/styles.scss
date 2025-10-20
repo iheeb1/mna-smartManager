@@ -1,8 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import PrimeNG themes and resources */
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
+
+/* Import Rubik font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+
+/* Global styles */
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+  text-align: right;
+  background-color: #FAFBFF;
 }
