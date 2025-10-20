@@ -22,7 +22,6 @@ export class HeaderComponent {
   currentRoute = '';
 
   constructor(private router: Router) {
-    // Track current route
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
