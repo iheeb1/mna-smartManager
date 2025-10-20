@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AvatarModule } from 'primeng/avatar';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./header.component.scss'],
   imports: [
     CommonModule,
-    AvatarModule
+    AvatarModule,
+    ButtonModule
   ]
 })
 export class HeaderComponent {
