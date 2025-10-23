@@ -15,3 +15,9 @@ body {
   text-align: right;
   background-color: #FAFBFF;
 }
+
+@media (max-width: 768px) {
+  body{
+    margin-top: 0px;
+  }
+}

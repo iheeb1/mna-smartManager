@@ -1,11 +1,45 @@
 <app-header></app-header>
+<div class="mobile-hero-section">
+  <div class="mobile-hero-content">
+    <img src="assets/images/truck_blue.png" alt="Truck" class="hero-image">
+    <h1 class="hero-title">مركبات</h1>
+  </div>
+
+  <div class="mobile-action-bar">
+    <button class="action-btn">
+      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+    </button>
+    <button class="action-btn filter-mobile-btn">
+      <img src="assets/icons/filters_icon.svg" alt="Filter">
+    </button>
+    <div class="mobile-search-input">
+      <div class="search-icon">
+        <img src="assets/icons/search_icon.svg" alt="search">
+      </div>
+      <input 
+        type="text" 
+        placeholder="بحث حر عن مركبة"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange($event)">
+    </div>
+  </div>
+  <button class="mobile-add-btn" (click)="addNewCar()">
+    <img src="assets/icons/plus_sign_icon.svg" alt="+">
+  </button>
+</div>
 
 <p-toast position="top-center"></p-toast>
 
 <div class="container">
   <div class="header">
     <div class="header-actions">
-      <button pButton label="تصدير" icon="pi pi-download" class="p-button-outlined export-btn"></button>
+      <button pButton class="export-btn">
+        <img src="assets/icons/export_icon.svg" alt="export">
+        <span>تصدير</span>
+      </button>
+      <button pButton class="p-button-text print-btn">
+        <img src="assets/icons/print_icon.svg" alt="print">
+      </button>
       <button pButton label="إضافة مركبة جديدة" (click)="addNewCar()" class="p-button-primary add-btn"></button>
     </div>
     <h1>قائمة المركبات</h1>
@@ -13,8 +47,14 @@
 
   <div class="content-card">
     <div class="search-bar">
+      <button class="filter-text-btn">تصفية</button>
+      <button pButton class="filter-btn">
+        <img src="assets/icons/filters_icon.svg" alt="filter">
+      </button>
       <span class="p-input-icon-left search-input">
-        <i class="pi pi-search"></i>
+        <div class="search-icon">
+          <img src="assets/icons/search_icon.svg" alt="search">
+        </div>
         <input 
           type="text" 
           pInputText 
@@ -22,16 +62,11 @@
           [(ngModel)]="searchTerm"
           (ngModelChange)="onSearchChange($event)">
       </span>
-      <button pButton icon="pi pi-filter" class="p-button-text filter-btn"></button>
-      <button pButton label="تصفية" class="p-button-text filter-text-btn"></button>
     </div>
 
     <!-- Loading spinner -->
     <div *ngIf="loading" class="loading-container">
-      <p-progressSpinner 
-        styleClass="custom-spinner"
-        strokeWidth="4"
-        animationDuration="1s">
+      <p-progressSpinner styleClass="custom-spinner" strokeWidth="4" animationDuration="1s">
       </p-progressSpinner>
       <p>جاري تحميل المركبات...</p>
     </div>
@@ -45,7 +80,7 @@
     <!-- Table with data -->
     <div *ngIf="!loading && !isEmpty">
       <div class="table-header">
-        <div class="header-cell action">إجراء</div>
+        <div class="header-cell action"></div>
         <div class="header-cell status">نشط</div>
         <div class="header-cell model">نوع المركبة</div>
         <div class="header-cell plate">رقم المركبة</div>
@@ -54,27 +89,27 @@
       <div class="table-body">
         <div class="table-row" *ngFor="let car of filteredCars">
           <div class="row-cell action">
-            <button 
-              pButton 
-              icon="pi pi-trash" 
-              class="p-button-text p-button-rounded p-button-sm delete-btn" 
-              (click)="deleteCar(car)"
-              [disabled]="loading">
+            <!-- Desktop buttons -->
+            <button pButton icon="pi pi-trash" class="p-button-text p-button-rounded p-button-sm delete-btn"
+              (click)="deleteCar(car)" [disabled]="loading">
             </button>
-            <button 
-              pButton 
-              icon="pi pi-pencil" 
-              class="p-button-text p-button-rounded p-button-sm edit-btn" 
-              (click)="editCar(car)"
+            <button pButton icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm edit-btn"
+              (click)="editCar(car)" [disabled]="loading">
+            </button>
+            
+            <!-- Mobile menu button -->
+            <button pButton icon="pi pi-ellipsis-v" 
+              class="p-button-text p-button-rounded p-button-sm menu-btn"
+              (click)="showCarMenu($event, car)"
               [disabled]="loading">
             </button>
           </div>
           <div class="row-cell status">
-            <p-inputSwitch 
-              [(ngModel)]="car.isActive" 
-              (onChange)="toggleActive(car)"
-              [disabled]="loading">
-            </p-inputSwitch>
+            <div class="status-wrapper">
+              <p-inputSwitch [(ngModel)]="car.isActive" (onChange)="toggleActive(car)" [disabled]="loading">
+              </p-inputSwitch>
+              <span class="status-label">{{ car.isActive ? 'فعال' : 'غير فعال' }}</span>
+            </div>
           </div>
           <div class="row-cell model">{{ car.model }}</div>
           <div class="row-cell plate">
@@ -91,10 +126,10 @@
   </div>
 </div>
 
-<app-car-form 
-  [(visible)]="showDialog" 
-  [carToEdit]="selectedCar"
-  (onSave)="onCarSaved($event)"
+<!-- Single menu component placed outside the loop -->
+<p-menu #carMenu [model]="carMenuItems" [popup]="true" appendTo="body" styleClass="car-menu"></p-menu>
+
+<app-car-form [(visible)]="showDialog" [carToEdit]="selectedCar" (onSave)="onCarSaved($event)"
   (onClose)="onDialogClose()">
 </app-car-form>
 

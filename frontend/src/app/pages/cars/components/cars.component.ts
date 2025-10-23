@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -11,9 +11,11 @@ import { CarsService, CarResponse } from '../services/car.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component';
 import { CarFormComponent } from './car-form/car-form.component';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MenuModule } from 'primeng/menu';
+import { Menu } from 'primeng/menu';
 
 @Component({
   selector: 'app-cars',
@@ -28,15 +30,19 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     FooterNavComponent,
     CarFormComponent,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    MenuModule
   ],
   providers: [MessageService],
   templateUrl: './cars.component.html',
   styleUrl: './cars.component.scss'
 })
 export class CarsComponent implements OnInit, OnDestroy {
+  @ViewChild('carMenu') carMenu!: Menu;
+  
   cars: Car[] = [];
   selectedCar: Car | null = null;
+  selectedCarForMenu: Car | null = null;
   showDialog = false;
   searchTerm = '';
   isMobile = window.innerWidth < 768;
@@ -44,6 +50,7 @@ export class CarsComponent implements OnInit, OnDestroy {
   totalCars = 0;
   currentPage = 0;
   itemsPerPage = 50;
+  carMenuItems: MenuItem[] = [];
 
   private destroy$ = new Subject<void>();
   private searchSubject$ = new Subject<string>();
@@ -54,6 +61,7 @@ export class CarsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.initializeMenuItems();
     this.loadCars();
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
@@ -77,6 +85,37 @@ export class CarsComponent implements OnInit, OnDestroy {
 
   private checkScreenSize() {
     this.isMobile = window.innerWidth < 768;
+  }
+
+  private initializeMenuItems() {
+    this.carMenuItems = [
+      {
+        label: 'تعديل',
+        icon: 'pi pi-pencil',
+        command: () => {
+          if (this.selectedCarForMenu) {
+            this.editCar(this.selectedCarForMenu);
+          }
+        }
+      },
+      {
+        label: 'حذف',
+        icon: 'pi pi-trash',
+        styleClass: 'delete-item',
+        command: () => {
+          if (this.selectedCarForMenu) {
+            this.deleteCar(this.selectedCarForMenu);
+          }
+        }
+      }
+    ];
+  }
+
+  showCarMenu(event: Event, car: Car) {
+    this.selectedCarForMenu = car;
+    if (this.carMenu) {
+      this.carMenu.toggle(event);
+    }
   }
 
   loadCars() {
@@ -156,7 +195,7 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   deleteCar(car: Car) {
-    if (confirm(`האם למחוק את הרכב ${car.model}?`)) {
+    if (confirm(`هل تريد حذف المركبة ${car.model}؟`)) {
       this.loading = true;
       const carId = car.carId || car.id;
       
