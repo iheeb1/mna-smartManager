@@ -11,11 +11,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class FooterNavComponent {
   navItems = [
-    { icon: 'assets/images/icons/settings_icon.svg', label: 'الإعدادات', route: '/settings' },
-    { icon: 'assets/images/icons/profile_icon.svg', label: 'العملاء', route: '/customers' },
-    { icon: 'assets/images/icons/truck_icon.svg', label: 'المركبات', route: '/cars' },
-    { icon: 'assets/images/icons/register_icon.svg', label: 'التقارير', route: '/reports' },
-    { icon: 'assets/images/icons/payments_icon.svg', label: 'المدفوعات', route: '/payments' },
-    { icon: 'assets/images/icons/box_icon.svg', label: 'الطلبات', route: '/orders' }
+    { icon: 'assets/icons/settings_icon.svg', label: 'الإعدادات', route: '/settings' },
+    { icon: 'assets/icons/profile_icon.svg', label: 'العملاء', route: '/customers' },
+    { icon: 'assets/icons/truck_icon.svg', label: 'المركبات', route: '/cars' },
+    { icon: 'assets/icons/register_icon.svg', label: 'التقارير', route: '/reports' },
+    { icon: 'assets/icons/payments_icon.svg', label: 'المدفوعات', route: '/payments' },
+    { icon: 'assets/icons/box_icon.svg', label: 'الطلبات', route: '/orders' }
   ];
 }

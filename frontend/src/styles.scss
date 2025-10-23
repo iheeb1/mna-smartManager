@@ -3,14 +3,15 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-/* Import Rubik font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+/* Import Tajawal font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800;900&display=swap');
 
 /* Global styles */
 body {
   margin: 0;
+  margin-top: 100px;
   padding: 0;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Tajawal', sans-serif;
   text-align: right;
   background-color: #FAFBFF;
 }

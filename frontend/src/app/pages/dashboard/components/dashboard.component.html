@@ -11,13 +11,13 @@
 
             <div class="header-actions">
                 <button class="icon-btn">
-                    <i class="pi pi-file"></i>
+                    <img src="assets/icons/hand_icon.svg" alt="File">
                 </button>
                 <button class="icon-btn">
-                    <i class="pi pi-book"></i>
+                    <img src="assets/icons/file_icon.svg" alt="Book">
                 </button>
                 <button class="icon-btn">
-                    <i class="pi pi-pencil"></i>
+                    <img src="assets/icons/car_fix_icon.svg" alt="Pencil">
                 </button>
             </div>
         </div>
@@ -123,10 +123,11 @@
 
                 <div class="menu-grid">
                     <div *ngFor="let item of menuItems" class="menu-item">
-                        <i [class]="item.icon"></i>
+                        <img [src]="item.svgPath" [alt]="item.label">
                         <span>{{ item.label }}</span>
                     </div>
                 </div>
+                <h4 class="settings-title">الإعدادات</h4>
             </div>
             <div class="profile-card">
                 <div class="profile-image">

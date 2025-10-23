@@ -31,6 +31,11 @@ interface UserData {
   modifiedDate: string;
 }
 
+interface MenuItem {
+  svgPath: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -53,11 +58,23 @@ export class DashboardComponent implements OnInit {
   userName = 'محمد';
   greetingMessage = 'صباح الخير';
 
-  menuItems = [
-    { icon: 'pi pi-chart-bar', label: 'الإدارة' },
-    { icon: 'pi pi-shopping-bag', label: 'المستخدمون' },
-    { icon: 'pi pi-print', label: 'الطباعة' },
-    { icon: 'pi pi-cog', label: 'الموقع' }
+  menuItems: MenuItem[] = [
+    { 
+      svgPath: 'assets/icons/bag_icon.svg',
+      label: 'الإدارة' 
+    },
+    { 
+      svgPath: 'assets/icons/users_icon.svg',
+      label: 'المستخدمون' 
+    },
+    { 
+      svgPath: 'assets/icons/print_icon.svg',
+      label: 'الطباعة' 
+    },
+    { 
+      svgPath: 'assets/icons/settings_icon_v2.svg',
+      label: 'الموقع' 
+    }
   ];
 
   constructor(private customerService: CustomerService) {}
