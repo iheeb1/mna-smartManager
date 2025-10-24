@@ -124,7 +124,10 @@
 }
 
 .content-card {
-
+  background-color: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0px 3px 20px rgba(45, 60, 229, 0.161);
   .search-bar {
     display: flex;
     align-items: center;
@@ -344,7 +347,6 @@
       padding: 10px 16px;
       align-items: center;
       transition: background 0.2s;
-      border-bottom: 1px solid #f0f0f0;
 
       &:hover {
         background: #fafbfc;
@@ -359,7 +361,18 @@
         text-align: right;
         font-size: 13px;
         color: #2d3748;
-
+        .status-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-left: auto;
+          
+          .status-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #2d3748;
+          }
+        }
         &.action {
           flex: 0 0 100px;
           display: flex;

@@ -46,23 +46,6 @@
   </div>
 
   <div class="content-card">
-    <div class="search-bar">
-      <button class="filter-text-btn">تصفية</button>
-      <button pButton class="filter-btn">
-        <img src="assets/icons/filters_icon.svg" alt="filter">
-      </button>
-      <span class="p-input-icon-left search-input">
-        <div class="search-icon">
-          <img src="assets/icons/search_icon.svg" alt="search">
-        </div>
-        <input 
-          type="text" 
-          pInputText 
-          placeholder="بحث حر عن مركبة" 
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onSearchChange($event)">
-      </span>
-    </div>
 
     <!-- Loading spinner -->
     <div *ngIf="loading" class="loading-container">
@@ -79,6 +62,23 @@
 
     <!-- Table with data -->
     <div *ngIf="!loading && !isEmpty">
+      <div class="search-bar">
+        <button class="filter-text-btn">تصفية</button>
+        <button pButton class="filter-btn">
+          <img src="assets/icons/filters_icon.svg" alt="filter">
+        </button>
+        <span class="p-input-icon-left search-input">
+          <div class="search-icon">
+            <img src="assets/icons/search_icon.svg" alt="search">
+          </div>
+          <input 
+            type="text" 
+            pInputText 
+            placeholder="بحث حر عن مركبة" 
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange($event)">
+        </span>
+      </div>
       <div class="table-header">
         <div class="header-cell action"></div>
         <div class="header-cell status">نشط</div>

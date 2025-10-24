@@ -57,7 +57,7 @@
         margin: 0;
         z-index: 1;
         padding: 0 20px;
-        max-width: 80%;
+        max-width: 100%;
       }
     }
 
@@ -72,9 +72,10 @@
       border-radius: 24px 0 0 24px;
 
       .form-fields {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 24px;
+        column-gap: 32px;
 
         .field-group {
           display: flex;
@@ -98,6 +99,7 @@
             color: #4a4a6a;
             font-weight: 500;
             transition: all 0.2s ease;
+            max-width: 180px;
 
             &:focus {
               outline: none;
@@ -108,8 +110,6 @@
             &::placeholder {
               color: #a8a8c0;
             }
-
-
           }
         }
 
@@ -133,7 +133,6 @@
       
             &.p-inputswitch-checked .p-inputswitch-slider {
               background: #6c63ff !important;
-
             }
           }
         }
