@@ -58,7 +58,7 @@
   <!-- Mobile Form -->
 <div class="mobile-form-container" *ngIf="isMobile">
   <div class="mobile-form-image">
-    <img src="assets/images/truck_gift.png" alt="Truck">
+    <img src="assets/images/truck_gift_mobile.png" alt="Truck">
     <button class="mobile-back-btn" (click)="closeDialog()">
       <i class="pi pi-arrow-right"></i>
     </button>
@@ -83,7 +83,7 @@
         [(ngModel)]="formData.model" 
         placeholder="كيا بيكانتو">
     </div>
-
+    <label>نشط?</label>
     <div class="mobile-toggle-group">
       <p-inputSwitch [(ngModel)]="formData.isActive"></p-inputSwitch>
       <label>نشط</label>
