@@ -986,3 +986,71 @@
     stroke-dashoffset: -124px;
   }
 }
+
+// Mobile FAB Menu Overlay
+.mobile-fab-overlay {
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+}
+
+.mobile-fab-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px 40px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10000;
+  
+  @media (max-width: 768px) {
+    display: block;
+  }
+
+  .fab-menu-item {
+    width: 100%;
+    background: white;
+    border: none;
+    border-radius: 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #5A5780;
+    transition: all 0.2s ease;
+    font-size: 20px;
+    box-shadow: none;
+    text-align: center;
+    direction: rtl;
+
+    &:hover {
+      background: #F5F5F5;
+    }
+
+    &:active {
+      background: #EBEBEB;
+    }
+  }
+}
+
+// Hide on desktop
+@media (min-width: 769px) {
+  .mobile-fab-overlay,
+  .mobile-fab-menu {
+    display: none !important;
+  }
+}

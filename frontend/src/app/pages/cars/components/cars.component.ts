@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -35,7 +36,18 @@ import { Menu } from 'primeng/menu';
   ],
   providers: [MessageService],
   templateUrl: './cars.component.html',
-  styleUrl: './cars.component.scss'
+  styleUrl: './cars.component.scss',
+  animations: [
+    trigger('slideUp', [
+      transition(':enter', [
+        style({ transform: 'translateY(100%)', opacity: 0 }),
+        animate('300ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ transform: 'translateY(100%)', opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class CarsComponent implements OnInit, OnDestroy {
   @ViewChild('carMenu') carMenu!: Menu;
@@ -44,6 +56,7 @@ export class CarsComponent implements OnInit, OnDestroy {
   selectedCar: Car | null = null;
   selectedCarForMenu: Car | null = null;
   showDialog = false;
+  showMobileFabMenu = false;
   searchTerm = '';
   isMobile = window.innerWidth < 768;
   loading = false;
@@ -159,7 +172,7 @@ export class CarsComponent implements OnInit, OnDestroy {
       carNotes: r.carNotes,
       isActive: r.carStatusId === 1,
       carStatusId: r.carStatusId,
-      location: '', // Can be mapped from objectId if needed
+      location: '',
       objectId: r.objectId,
       createdBy: r.createdBy,
       modifiedBy: r.modifiedBy,
@@ -185,8 +198,24 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   addNewCar() {
-    this.selectedCar = null;
-    this.showDialog = true;
+    if (this.isMobile) {
+      this.showMobileFabMenu = true;
+    } else {
+      this.selectedCar = null;
+      this.showDialog = true;
+    }
+  }
+
+  addNewCarFromMobile() {
+    this.closeMobileFabMenu();
+    setTimeout(() => {
+      this.selectedCar = null;
+      this.showDialog = true;
+    }, 200);
+  }
+
+  closeMobileFabMenu() {
+    this.showMobileFabMenu = false;
   }
 
   editCar(car: Car) {
@@ -249,7 +278,7 @@ export class CarsComponent implements OnInit, OnDestroy {
         },
         error: (error: any) => {
           console.error('Error toggling car status:', error);
-          car.isActive = !car.isActive; // Revert the change
+          car.isActive = !car.isActive;
           this.messageService.add({
             severity: 'error',
             summary: 'خطأ',
@@ -306,7 +335,6 @@ export class CarsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           console.log('Car details:', response);
-          // Navigate to details page or show details in dialog
           this.loading = false;
         },
         error: (error: any) => {

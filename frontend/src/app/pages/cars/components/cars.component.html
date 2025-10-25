@@ -16,16 +16,19 @@
       <div class="search-icon">
         <img src="assets/icons/search_icon.svg" alt="search">
       </div>
-      <input 
-        type="text" 
-        placeholder="بحث حر عن مركبة"
-        [(ngModel)]="searchTerm"
+      <input type="text" placeholder="بحث حر عن مركبة" [(ngModel)]="searchTerm"
         (ngModelChange)="onSearchChange($event)">
     </div>
   </div>
   <button class="mobile-add-btn" (click)="addNewCar()">
     <img src="assets/icons/plus_sign_icon.svg" alt="+">
   </button>
+  <div class="mobile-fab-overlay" *ngIf="showMobileFabMenu" (click)="closeMobileFabMenu()">
+    <div class="mobile-fab-menu" (click)="$event.stopPropagation()" [@slideUp]>
+      <button class="fab-menu-item" (click)="addNewCarFromMobile()">
+        إضافة مركبة جديدة </button>
+    </div>
+  </div>
 </div>
 
 <p-toast position="top-center"></p-toast>
@@ -71,11 +74,7 @@
           <div class="search-icon">
             <img src="assets/icons/search_icon.svg" alt="search">
           </div>
-          <input 
-            type="text" 
-            pInputText 
-            placeholder="بحث حر عن مركبة" 
-            [(ngModel)]="searchTerm"
+          <input type="text" pInputText placeholder="بحث حر عن مركبة" [(ngModel)]="searchTerm"
             (ngModelChange)="onSearchChange($event)">
         </span>
       </div>
@@ -96,12 +95,10 @@
             <button pButton icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm edit-btn"
               (click)="editCar(car)" [disabled]="loading">
             </button>
-            
+
             <!-- Mobile menu button -->
-            <button pButton icon="pi pi-ellipsis-v" 
-              class="p-button-text p-button-rounded p-button-sm menu-btn"
-              (click)="showCarMenu($event, car)"
-              [disabled]="loading">
+            <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm menu-btn"
+              (click)="showCarMenu($event, car)" [disabled]="loading">
             </button>
           </div>
           <div class="row-cell status">
