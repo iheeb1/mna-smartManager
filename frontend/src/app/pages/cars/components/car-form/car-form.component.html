@@ -2,13 +2,15 @@
   [(visible)]="visible" 
   [modal]="true" 
   [closable]="true"
-  [dismissableMask]="true"
   [draggable]="false"
-  [style]="{width: '800px'}"
-  styleClass="vehicle-dialog"
+  [dismissableMask]="true"
+  [style]="{width: isMobile ? '100%' : '800px', maxWidth: isMobile ? '100%' : '90vw'}"
+  [styleClass]="isMobile ? 'mobile-vehicle-dialog' : 'vehicle-dialog'"
+  [position]="isMobile ? 'bottom' : 'center'"
   (onHide)="closeDialog()">
   
-  <div class="form-container">
+  <!-- Desktop Form -->
+  <div class="form-container" *ngIf="!isMobile">
     <div class="form-image">
       <img src="assets/images/truck_gift.png" alt="شاحنة">
       <h2>{{ carToEdit ? 'تعديل مركبة' : 'إضافة مركبة' }}<br>جديدة</h2>
@@ -52,4 +54,49 @@
       </div>
     </div>
   </div>
+
+  <!-- Mobile Form -->
+<div class="mobile-form-container" *ngIf="isMobile">
+  <div class="mobile-form-image">
+    <img src="assets/images/truck_gift.png" alt="Truck">
+    <button class="mobile-back-btn" (click)="closeDialog()">
+      <i class="pi pi-arrow-right"></i>
+    </button>
+    <h2>{{ carToEdit ? 'تعديل مركبة' : 'إضافة مركبة' }}<br>جديدة</h2>
+  </div>
+
+  <div class="mobile-form-content">
+    <div class="mobile-field-group">
+      <label>رقم المركبة</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="formData.plateNumber" 
+        placeholder="123456789">
+    </div>
+
+    <div class="mobile-field-group">
+      <label>نوع المركبة</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="formData.model" 
+        placeholder="كيا بيكانتو">
+    </div>
+
+    <div class="mobile-toggle-group">
+      <p-inputSwitch [(ngModel)]="formData.isActive"></p-inputSwitch>
+      <label>نشط</label>
+    </div>
+  </div>
+
+  <div class="mobile-form-actions">
+    <button 
+      pButton 
+      label="حفظ" 
+      (click)="onSubmit()" 
+      class="mobile-save-button">
+    </button>
+  </div>
+</div>
 </p-dialog>

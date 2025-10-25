@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -21,7 +21,7 @@ import { Car } from '../../models/car.models';
   templateUrl: './car-form.component.html',
   styleUrl: './car-form.component.scss'
 })
-export class CarFormComponent implements OnChanges {
+export class CarFormComponent implements OnChanges, OnInit, OnDestroy {
   @Input() visible: boolean = false;
   @Input() carToEdit: Car | null = null;
   @Output() visibleChange = new EventEmitter<boolean>();
@@ -29,6 +29,20 @@ export class CarFormComponent implements OnChanges {
   @Output() onClose = new EventEmitter<void>();
 
   formData: Car = this.getEmptyForm();
+  isMobile: boolean = false;
+
+  ngOnInit(): void {
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.checkScreenSize.bind(this));
+  }
+
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['carToEdit'] && changes['carToEdit'].currentValue) {
