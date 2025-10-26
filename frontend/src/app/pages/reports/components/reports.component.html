@@ -3,7 +3,6 @@
     <!-- Title -->
     <div class="header-section">
       <h1 class="page-title">التقارير</h1>
-      <p class="page-subtitle">للمؤسسة</p>
     </div>
   
     <!-- Filter Section -->
@@ -24,7 +23,10 @@
       </div>
       <div class="filter-actions">
         <button pButton type="button" icon="pi pi-print" class="p-button-outlined print-btn"></button>
-        <button pButton type="button" icon="pi pi-upload" class="p-button-outlined export-btn"></button>
+        <button pButton class="export-btn">
+          <span>تصدير</span>
+          <img src="assets/icons/export_icon.svg" alt="export">
+        </button>
       </div>
     </div>
   
@@ -63,59 +65,7 @@
   
     <!-- Tables Section -->
     <div class="tables-section">
-      <!-- System Backup Table -->
-      <div>
-        <div class="table-header">
-          <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
-          <button pButton type="button" label="نسخ احتياطي" class="p-button-sm p-button-outlined backup-btn"></button>
-        </div>
-        <div class="table-card">
-          <p-table [value]="systemEvaluation" styleClass="p-datatable-sm custom-table">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>التاريخ</th>
-                <th>الوقت</th>
-                <th>تم الإنشاء بواسطة</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-              <tr>
-                <td>{{ item.date }}</td>
-                <td>{{ item.time }}</td>
-                <td>
-                  <span class="status-badge">{{ item.createdBy }}</span>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
-  
-      <!-- Alerts and Claims Table -->
-      <div>
-        <div class="table-header">
-          <h3 class="table-title">التنبيهات والمطالبات</h3>
-          <a href="#" class="table-subtitle">لجميع التنبيهات والتحديثات ></a>
-        </div>
-        <div class="table-card">
-          <p-table [value]="alertsAndClaims" styleClass="p-datatable-sm custom-table">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>التاريخ</th>
-                <th>اسم العميل</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-              <tr>
-                <td>{{ item.date }}</td>
-                <td>{{ item.description }}</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
-  
-      <!-- Cleared Checks Table -->
+      <!-- Cleared Checks Table (Now First - Purple) -->
       <div>
         <div class="table-header">
           <h3 class="table-title">الشيكات المحصلة</h3>
@@ -141,6 +91,58 @@
                 <td>{{ item.amount }}₪</td>
                 <td>{{ item.description }}</td>
                 <td>{{ item.checkNumber }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+      <!-- Alerts and Claims Table (Now Second) -->
+      <div>
+        <div class="table-header">
+          <h3 class="table-title">التنبيهات والمطالبات</h3>
+          <a href="#" class="table-subtitle">لجميع التنبيهات والتحديثات ></a>
+        </div>
+        <div class="table-card">
+          <p-table [value]="alertsAndClaims" styleClass="p-datatable-sm custom-table">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>التاريخ</th>
+                <th>اسم العميل</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.description }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+  
+      <!-- System Backup Table (Now Last) -->
+      <div>
+        <div class="table-header">
+          <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
+          <button pButton type="button" label="نسخ احتياطي" class="p-button-sm p-button-outlined backup-btn"></button>
+        </div>
+        <div class="table-card">
+          <p-table [value]="systemEvaluation" styleClass="p-datatable-sm custom-table">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>تم الإنشاء بواسطة</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.time }}</td>
+                <td>
+                  <span class="status-badge">{{ item.createdBy }}</span>
+                </td>
               </tr>
             </ng-template>
           </p-table>
