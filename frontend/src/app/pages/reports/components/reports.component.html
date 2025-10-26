@@ -1,11 +1,34 @@
 <app-header></app-header>
+
+<!-- Mobile Hero Section - Only visible on mobile -->
+<div class="mobile-hero-section">
+  <div class="mobile-hero-content">
+    <img src="assets/images/reports_hero_bg.png" alt="Reports Background" class="hero-image">
+    <h1 class="hero-title">التقارير</h1>
+  </div>
+
+  <div class="mobile-action-bar">
+    <button class="action-btn">
+      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+    </button>
+    <div class="mobile-department-dropdown">
+      <p-dropdown 
+        [options]="departments" 
+        [(ngModel)]="selectedDepartment" 
+        placeholder="اختر القسم"
+        [showClear]="false">
+      </p-dropdown>
+    </div>
+  </div>
+</div>
+
 <div class="reports-container">
-    <!-- Title -->
+    <!-- Title - Desktop Only -->
     <div class="header-section">
       <h1 class="page-title">التقارير</h1>
     </div>
   
-    <!-- Filter Section -->
+    <!-- Filter Section - Desktop Only -->
     <div class="filter-section">
       <div class="filter-dropdowns">
         <div class="filter-item">
@@ -71,13 +94,14 @@
   
     <!-- Tables Section -->
     <div class="tables-section">
-      <!-- Cleared Checks Table (Now First - Purple) -->
+      <!-- Cleared Checks Table (First) -->
       <div>
         <div class="table-header">
           <h3 class="table-title">الشيكات المحصلة</h3>
           <a href="#" class="table-subtitle">لعرض جميع الشيكات المحصلة ></a>
         </div>
         <div class="table-card">
+          <!-- Desktop Table -->
           <p-table [value]="clearedChecks" styleClass="p-datatable-sm custom-table">
             <ng-template pTemplate="header">
               <tr>
@@ -100,10 +124,34 @@
               </tr>
             </ng-template>
           </p-table>
+
+          <!-- Mobile Horizontal Scroll Cards -->
+          <div class="mobile-checks-scroll">
+            <div class="check-card" *ngFor="let check of clearedChecks">
+              <div class="check-header">
+                <span class="check-status">{{ check.description }}</span>
+                <span class="check-date">{{ check.date }}</span>
+              </div>
+              <div class="check-details">
+                <div class="detail-item">
+                  <div class="detail-label">تاريخ التحصيل</div>
+                  <div class="detail-value">{{ check.collectionDate }}</div>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">مسفر شيك</div>
+                  <div class="detail-value">{{ check.checkNumber }}</div>
+                </div>
+                <div class="detail-item full-width">
+                  <div class="detail-label">سكوم</div>
+                  <div class="detail-value">{{ check.amount }}₪</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Alerts and Claims Table (Now Second) -->
+      <!-- Alerts and Claims Table (Second) -->
       <div>
         <div class="table-header">
           <h3 class="table-title">التنبيهات والمطالبات</h3>
@@ -127,7 +175,7 @@
         </div>
       </div>
   
-      <!-- System Backup Table (Now Last) -->
+      <!-- System Backup Table (Third) -->
       <div>
         <div class="table-header">
           <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
