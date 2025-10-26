@@ -1,143 +1,151 @@
 <app-header></app-header>
 <div class="reports-container">
-  <!-- Title -->
-  <div class="header-section">
-    <h1 class="page-title">التقارير</h1>
-    <p class="page-subtitle">للمؤسسة</p>
-  </div>
-
-  <!-- Filter Section -->
-  <div class="filter-section">
-    <div class="filter-dropdowns">
-      <p-dropdown 
-        [options]="departments" 
-        [(ngModel)]="selectedDepartment" 
-        placeholder="جميع الأقسام"
-        styleClass="filter-dropdown">
-      </p-dropdown>
-      <p-dropdown 
-        [options]="timeRanges" 
-        [(ngModel)]="selectedTimeRange" 
-        placeholder="جميع الأوقات"
-        styleClass="filter-dropdown">
-      </p-dropdown>
+    <!-- Title -->
+    <div class="header-section">
+      <h1 class="page-title">التقارير</h1>
+      <p class="page-subtitle">للمؤسسة</p>
     </div>
-    <div class="filter-actions">
-      <button pButton type="button" icon="pi pi-print" class="p-button-outlined print-btn"></button>
-      <button pButton type="button" icon="pi pi-upload" class="p-button-outlined export-btn"></button>
-    </div>
-  </div>
-
-  <!-- Summary Cards -->
-  <div class="summary-cards">
-    <div class="card-item card-cyan">
-      <img src="assets/images/reports_card_1.png" alt="Card Background">
-      <div class="card-content">
-        <div class="card-text">
-          <p class="card-label">إجمالي رصيد الحساب</p>
-          <h2 class="card-amount negative">-3,638.70₪</h2>
-        </div>
+  
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <div class="filter-dropdowns">
+        <p-dropdown 
+          [options]="departments" 
+          [(ngModel)]="selectedDepartment" 
+          placeholder="جميع الأقسام"
+          styleClass="filter-dropdown">
+        </p-dropdown>
+        <p-dropdown 
+          [options]="timeRanges" 
+          [(ngModel)]="selectedTimeRange" 
+          placeholder="جميع الأوقات"
+          styleClass="filter-dropdown">
+        </p-dropdown>
+      </div>
+      <div class="filter-actions">
+        <button pButton type="button" icon="pi pi-print" class="p-button-outlined print-btn"></button>
+        <button pButton type="button" icon="pi pi-upload" class="p-button-outlined export-btn"></button>
       </div>
     </div>
-
-    <div class="card-item card-blue">
-      <img src="assets/images/reports_card_2.png" alt="Card Background">
-      <div class="card-content">
-        <div class="card-text">
-          <p class="card-label">إجمالي المدفوعات</p>
-          <h2 class="card-amount">0.00₪</h2>
-        </div>
-      </div>
-    </div>
-
-    <div class="card-item card-light-blue">
-      <img src="assets/images/reports_card_3.png" alt="Card Background">
-      <div class="card-content">
-        <div class="card-text">
-          <p class="card-label">إجمالي الإيداعات شامل ضريبة القيمة المضافة</p>
-          <h2 class="card-amount">3,638.70₪</h2>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tables Section -->
-  <div class="tables-section">
-    <!-- System Backup Cards -->
-    <div>
-      <div class="table-header">
-        <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
-        <button pButton type="button" label="نسخ احتياطي" class="p-button-sm p-button-outlined backup-btn"></button>
-      </div>
-      <div class="backup-cards-container">
-        <div class="backup-card" *ngFor="let item of systemEvaluation">
-          <div class="backup-card-header">
-            <span class="backup-date">{{ item.date }}</span>
-            <span class="backup-time">{{ item.time }}</span>
+  
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="card-item card-cyan">
+        <img src="assets/images/reports_card_1.png" alt="Card Background">
+        <div class="card-content">
+          <div class="card-text">
+            <p class="card-label">إجمالي رصيد الحساب</p>
+            <h2 class="card-amount negative">-3,638.70₪</h2>
           </div>
-          <div class="backup-card-body">
-            <span class="backup-label">تم الإنشاء بواسطة</span>
-            <span class="backup-creator">{{ item.createdBy }}</span>
+        </div>
+      </div>
+  
+      <div class="card-item card-blue">
+        <img src="assets/images/reports_card_2.png" alt="Card Background">
+        <div class="card-content">
+          <div class="card-text">
+            <p class="card-label">إجمالي المدفوعات</p>
+            <h2 class="card-amount">0.00₪</h2>
+          </div>
+        </div>
+      </div>
+  
+      <div class="card-item card-light-blue">
+        <img src="assets/images/reports_card_3.png" alt="Card Background">
+        <div class="card-content">
+          <div class="card-text">
+            <p class="card-label">إجمالي الإيداعات شامل ضريبة القيمة المضافة</p>
+            <h2 class="card-amount">3,638.70₪</h2>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Alerts and Claims Table -->
-    <div>
-      <div class="table-header">
-        <h3 class="table-title">التنبيهات والمطالبات</h3>
-        <a href="#" class="table-subtitle">لجميع التنبيهات والتحديثات ></a>
+  
+    <!-- Tables Section -->
+    <div class="tables-section">
+      <!-- System Backup Table -->
+      <div>
+        <div class="table-header">
+          <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
+          <button pButton type="button" label="نسخ احتياطي" class="p-button-sm p-button-outlined backup-btn"></button>
+        </div>
+        <div class="table-card">
+          <p-table [value]="systemEvaluation" styleClass="p-datatable-sm custom-table">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>تم الإنشاء بواسطة</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.time }}</td>
+                <td>
+                  <span class="status-badge">{{ item.createdBy }}</span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
-      <div class="compact-table-card">
-        <p-table [value]="alertsAndClaims" styleClass="p-datatable-sm compact-table">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>التاريخ</th>
-              <th>اسم العميل</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-item>
-            <tr>
-              <td>{{ item.date }}</td>
-              <td>{{ item.description }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
+  
+      <!-- Alerts and Claims Table -->
+      <div>
+        <div class="table-header">
+          <h3 class="table-title">التنبيهات والمطالبات</h3>
+          <a href="#" class="table-subtitle">لجميع التنبيهات والتحديثات ></a>
+        </div>
+        <div class="table-card">
+          <p-table [value]="alertsAndClaims" styleClass="p-datatable-sm custom-table">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>التاريخ</th>
+                <th>اسم العميل</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.description }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
-    </div>
-
-    <!-- Cleared Checks Table -->
-    <div>
-      <div class="table-header">
-        <h3 class="table-title">الشيكات المحصلة</h3>
-        <a href="#" class="table-subtitle">لعرض جميع الشيكات المحصلة ></a>
-      </div>
-      <div class="compact-table-card">
-        <p-table [value]="clearedChecks" styleClass="p-datatable-sm compact-table">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>التاريخ</th>
-              <th>تاريخ التحصيل</th>
-              <th>رقم الشيك</th>
-              <th>المبلغ</th>
-              <th>وصف التحصيل</th>
-              <th>رقم الحساب</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-item>
-            <tr>
-              <td>{{ item.date }}</td>
-              <td>{{ item.collectionDate }}</td>
-              <td>{{ item.accountNumber }}</td>
-              <td>{{ item.amount }}₪</td>
-              <td>{{ item.description }}</td>
-              <td>{{ item.checkNumber }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
+  
+      <!-- Cleared Checks Table -->
+      <div>
+        <div class="table-header">
+          <h3 class="table-title">الشيكات المحصلة</h3>
+          <a href="#" class="table-subtitle">لعرض جميع الشيكات المحصلة ></a>
+        </div>
+        <div class="table-card">
+          <p-table [value]="clearedChecks" styleClass="p-datatable-sm custom-table">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>التاريخ</th>
+                <th>تاريخ التحصيل</th>
+                <th>رقم الشيك</th>
+                <th>المبلغ</th>
+                <th>وصف التحصيل</th>
+                <th>رقم الحساب</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.collectionDate }}</td>
+                <td>{{ item.accountNumber }}</td>
+                <td>{{ item.amount }}₪</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.checkNumber }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<app-footer-nav></app-footer-nav>
+  <app-footer-nav></app-footer-nav>
