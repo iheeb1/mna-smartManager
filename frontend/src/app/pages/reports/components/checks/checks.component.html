@@ -1,0 +1,124 @@
+<app-header></app-header>
+
+<p-toast position="top-center"></p-toast>
+
+<div class="container">
+  <div class="header">
+    <div class="header-actions">
+      <button pButton class="export-btn" (click)="exportData()">
+        <img src="assets/icons/export_icon.svg" alt="export">
+        <span>تصدير</span>
+      </button>
+      <button pButton class="p-button-text print-btn" (click)="printTable()">
+        <img src="assets/icons/print_icon.svg" alt="print">
+      </button>
+    </div>
+    <div class="header-title">
+        <a href="javascript:void(0)" class="back-link" (click)="goBack()">
+            <span>العودة للتقارير</span>
+            <i class="pi pi-angle-left"></i>
+          </a>
+        <h1>الشيكات المحصلة</h1>
+      </div>
+  </div>
+
+  <div class="content-card">
+
+    <!-- Loading spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <p-progressSpinner styleClass="custom-spinner" strokeWidth="4" animationDuration="1s">
+      </p-progressSpinner>
+      <p>جاري تحميل الشيكات...</p>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && filteredChecks.length === 0 && !searchQuery" class="empty-state">
+      <h2>لا توجد شيكات محصلة حتى الآن</h2>
+      <p>ابدأ بإضافة شيك جديد لإدارة المعاملات المالية</p>
+    </div>
+
+    <!-- Table with data -->
+    <div *ngIf="!isLoading && (filteredChecks.length > 0 || searchQuery)">
+      <div class="search-bar">
+        <button class="filter-text-btn" (click)="clearSearch()">مسح الكل</button>
+        <button pButton class="filter-btn">
+          <img src="assets/icons/filters_icon.svg" alt="filter">
+        </button>
+        <span class="p-input-icon-left search-input">
+          <div class="search-icon">
+            <img src="assets/icons/search_icon.svg" alt="search">
+          </div>
+          <input type="text" pInputText placeholder="بحث عن شيك..." [(ngModel)]="searchQuery"
+            (ngModelChange)="onSearch()">
+        </span>
+      </div>
+
+      <!-- No search results -->
+      <div *ngIf="filteredChecks.length === 0 && searchQuery" class="empty-state">
+        <h2>لا توجد نتائج</h2>
+        <p>لم يتم العثور على شيكات تطابق بحثك</p>
+      </div>
+
+      <!-- Table content -->
+      <div *ngIf="filteredChecks.length > 0">
+        <div class="table-header">
+          <div class="header-cell action"></div>
+          <div class="header-cell amount">المبلغ</div>
+          <div class="header-cell notes">ملاحظات</div>
+          <div class="header-cell payment-date">تاريخ الدفع</div>
+          <div class="header-cell check-num">رقم الشيك</div>
+          <div class="header-cell account">رقم الحساب</div>
+          <div class="header-cell bank">البنك</div>
+          <div class="header-cell customer">اسم العميل</div>
+          <div class="header-cell date">التاريخ</div>
+        </div>
+
+        <div class="table-body">
+          <div class="table-row" *ngFor="let check of filteredChecks">
+            <div class="row-cell action">
+              <!-- Desktop buttons -->
+              <button pButton icon="pi pi-trash" class="p-button-text p-button-rounded p-button-sm delete-btn"
+                (click)="deleteCheck(check)">
+              </button>
+              <button pButton icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm edit-btn"
+                (click)="editCheck(check)">
+              </button>
+
+              <!-- Mobile menu button -->
+              <button pButton icon="pi pi-ellipsis-v" class="p-button-text p-button-rounded p-button-sm menu-btn"
+                (click)="showCheckMenu($event, check)">
+              </button>
+            </div>
+            <div class="row-cell amount">{{ check.amount }}₪</div>
+            <div class="row-cell notes">{{ check.notes || '-' }}</div>
+            <div class="row-cell payment-date">{{ check.paymentDate }}</div>
+            <div class="row-cell check-num">{{ check.checkNumber }}</div>
+            <div class="row-cell account">{{ check.accountNumber }}</div>
+            <div class="row-cell bank">{{ check.bank }}</div>
+            <div class="row-cell customer">
+              <a href="#" class="plate-link" (click)="viewCheckDetails(check, $event)">{{ check.customerName }}</a>
+            </div>
+            <div class="row-cell date">{{ check.date }}</div>
+          </div>
+        </div>
+
+        <!-- Table Footer with Total -->
+        <div class="table-footer">
+          <div class="footer-cell action"></div>
+          <div class="footer-cell amount"><span class="total-badge">{{ getTotalAmount() }}₪</span></div><div class="footer-cell notes"><span class="total-badge">:المجموع الكلي</span></div>
+          <div class="footer-cell payment-date"></div>
+          <div class="footer-cell check-num"></div>
+          <div class="footer-cell account"></div>
+          <div class="footer-cell bank"></div>
+          <div class="footer-cell customer"></div>
+          <div class="footer-cell date"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Single menu component placed outside the loop -->
+<p-menu #checkMenu [model]="checkMenuItems" [popup]="true" appendTo="body" styleClass="car-menu"></p-menu>
+
+<app-footer-nav></app-footer-nav>

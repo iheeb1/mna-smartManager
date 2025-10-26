@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
@@ -26,6 +27,7 @@ interface Transaction {
     CommonModule,
     FormsModule,
     CardModule,
+    RouterLink,
     ButtonModule,
     TableModule,
     DropdownModule,
