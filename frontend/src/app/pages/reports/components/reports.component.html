@@ -8,18 +8,24 @@
     <!-- Filter Section -->
     <div class="filter-section">
       <div class="filter-dropdowns">
-        <p-dropdown 
-          [options]="departments" 
-          [(ngModel)]="selectedDepartment" 
-          placeholder="جميع الأقسام"
-          styleClass="filter-dropdown">
-        </p-dropdown>
-        <p-dropdown 
-          [options]="timeRanges" 
-          [(ngModel)]="selectedTimeRange" 
-          placeholder="جميع الأوقات"
-          styleClass="filter-dropdown">
-        </p-dropdown>
+        <div class="filter-item">
+          <label class="filter-label">القسم</label>
+          <p-dropdown 
+            [options]="departments" 
+            [(ngModel)]="selectedDepartment" 
+            placeholder="جميع الأقسام"
+            styleClass="filter-dropdown">
+          </p-dropdown>
+        </div>
+        <div class="filter-item">
+          <label class="filter-label">الفترة الزمنية</label>
+          <p-dropdown 
+            [options]="timeRanges" 
+            [(ngModel)]="selectedTimeRange" 
+            placeholder="جميع الأوقات"
+            styleClass="filter-dropdown">
+          </p-dropdown>
+        </div>
       </div>
       <div class="filter-actions">
         <button pButton type="button" icon="pi pi-print" class="p-button-outlined print-btn"></button>
