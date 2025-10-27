@@ -6,8 +6,8 @@
     <div class="mobile-hero-header">
       <h1 class="hero-title">شيقات لم تنفرع</h1>
       <a href="javascript:void(0)" class="back-link" (click)="goBack()">
+          <i class="pi pi-angle-left"></i>
         <span>العودة للتقارير</span>
-        <i class="pi pi-angle-left"></i>
       </a>
     </div>
   </div>
@@ -145,58 +145,62 @@
       </div>
 
       <!-- Mobile Cards View -->
-      <div *ngIf="filteredChecks.length > 0" class="mobile-cards">
-        <div class="check-card" *ngFor="let check of filteredChecks" [class.expanded]="check.id === expandedCheckId">
-          <div class="card-header" (click)="toggleCard(check.id)">
-            <div class="card-header-content">
-                <div class="card-title">
-                    <button class="menu-btn" (click)="showCheckMenu($event, check); $event.stopPropagation()">
-                        <i class="pi pi-ellipsis-v"></i>
-                    </button>
-                    <span class="date-label">{{ check.date }}</span>
-                    <span class="status-label">משתאבת מאור</span>
-                  </div>
-              <div class="card-info-row">
-                <div class="info-item">
-                  <span class="info-label">יתרה</span>
-                  <span class="info-value amount-highlight">{{ check.amount }}₪</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">תאריך פרעון</span>
-                  <span class="info-value">{{ check.paymentDate }}</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">מספר שיק</span>
-                  <span class="info-value">{{ check.checkNumber }}</span>
-                </div>
-              </div>
-              
-            </div>
-            <div class="expand-icon">
-              <i class="pi" [class.pi-chevron-down]="check.id !== expandedCheckId" 
-                 [class.pi-chevron-up]="check.id === expandedCheckId"></i>
-            </div>
+<div *ngIf="filteredChecks.length > 0" class="mobile-cards">
+    <div class="check-card" *ngFor="let check of filteredChecks" [class.expanded]="check.id === expandedCheckId">
+      <div class="card-header">
+        <div class="card-header-content">
+          <div class="card-title">
+            <button class="menu-btn" (click)="showCheckMenu($event, check); $event.stopPropagation()">
+              <i class="pi pi-ellipsis-v"></i>
+            </button>
+            <span class="date-label">{{ check.date }}</span>
+            <span class="status-label">{{ check.customerName }}</span>
           </div>
-
-          <div class="card-details" *ngIf="check.id === expandedCheckId">
-            <div class="detail-row">
-              <div class="detail-item">
-                <span class="detail-label">בנק</span>
-                <span class="detail-value">{{ check.bank }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">מספר חשבון</span>
-                <span class="detail-value">{{ check.accountNumber }}</span>
-              </div>
+          
+          <div class="card-info-row">
+            <div class="info-item">
+              <span class="info-label">מספר שיק</span>
+              <span class="info-value">{{ check.checkNumber }}</span>
             </div>
-            <div class="detail-full">
-              <span class="detail-label">הערות</span>
-              <p class="detail-text">{{ check.notes || 'לורם איפסום דולור סיט אמט, קונסקטור אדיפיסינג' }}</p>
+            <div class="info-item">
+              <span class="info-label">תאריך פרעון</span>
+              <span class="info-value">{{ check.paymentDate }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">יתרה</span>
+              <span class="info-value amount-highlight">{{ check.amount }}₪</span>
             </div>
           </div>
         </div>
       </div>
+  
+      <div class="card-details" *ngIf="check.id === expandedCheckId">
+        <div class="detail-row">
+          <div class="detail-item">
+            <span class="detail-label">מספר חשבון</span>
+            <span class="detail-value">{{ check.accountNumber }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">מספר סריג</span>
+            <span class="detail-value">{{ check.checkNumber }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">בנק</span>
+            <span class="detail-value">{{ check.bank }}</span>
+          </div>
+        </div>
+        <div class="detail-full">
+          <span class="detail-label">הערות</span>
+          <p class="detail-text">{{ check.notes || 'אין הערות' }}</p>
+        </div>
+      </div>
+      
+      <div class="expand-icon" (click)="toggleCard(check.id)">
+        <i class="pi" [class.pi-chevron-down]="check.id !== expandedCheckId" 
+           [class.pi-chevron-up]="check.id === expandedCheckId"></i>
+      </div>
     </div>
+  </div>
   </div>
 </div>
 
