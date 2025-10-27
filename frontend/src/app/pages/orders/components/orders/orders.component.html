@@ -4,12 +4,15 @@
   <!-- Header -->
   <div class="orders-header">
     <div class="header-actions">
-      <button pButton icon="pi pi-upload" label="تصدير" class="p-button export-btn"></button>
+      <button pButton class="export-btn">
+        <img src="assets/icons/export_icon.svg" alt="export">
+        <span>تصدير</span>
+      </button>
+      <button pButton icon="pi pi-print" class="p-button print-btn" pTooltip="طباعة"></button>
       <button pButton label="إضافة طلب فوري" class="p-button immediate-order-btn"
         (click)="openAddOrderDialog()"></button>
       <button pButton label="إضافة طلب عادي" class="p-button regular-order-btn" 
         (click)="openAddOrderDialog()"></button>
-      <button pButton icon="pi pi-print" class="p-button print-btn" pTooltip="طباعة"></button>
     </div>
     <h1 class="page-title">الطلبات</h1>
   </div>
