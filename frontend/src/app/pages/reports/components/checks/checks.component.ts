@@ -56,6 +56,7 @@ export class ChecksComponent implements OnInit {
   isLoading: boolean = true;
   selectedCheck: ClearedCheck | null = null;
   checkMenuItems: MenuItem[] = [];
+  expandedCheckId: string | null = null;
 
   constructor(
     private router: Router,
@@ -287,5 +288,9 @@ export class ChecksComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/reports']);
+  }
+  
+  toggleCard(checkId: string) {
+    this.expandedCheckId = this.expandedCheckId === checkId ? null : checkId;
   }
 }

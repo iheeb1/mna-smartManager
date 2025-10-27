@@ -1,5 +1,33 @@
 <app-header></app-header>
 
+<!-- Mobile Hero Section -->
+<div class="mobile-hero-section">
+  <div class="mobile-hero-content">
+    <div class="mobile-hero-header">
+      <h1 class="hero-title">شيقات لم تنفرع</h1>
+      <a href="javascript:void(0)" class="back-link" (click)="goBack()">
+        <span>العودة للتقارير</span>
+        <i class="pi pi-angle-left"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="mobile-action-bar">
+    <button class="action-btn">
+      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+    </button>
+    <button class="action-btn filter-mobile-btn">
+      <img src="assets/icons/filters_icon.svg" alt="Filter">
+    </button>
+    <div class="mobile-search-input">
+      <div class="search-icon">
+        <img src="assets/icons/search_icon.svg" alt="search">
+      </div>
+      <input type="text" placeholder="بحث عن شيك" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()">
+    </div>
+  </div>
+</div>
+
 <p-toast position="top-center"></p-toast>
 
 <div class="container">
@@ -12,14 +40,15 @@
       <button pButton class="p-button-text print-btn" (click)="printTable()">
         <img src="assets/icons/print_icon.svg" alt="print">
       </button>
+      <button pButton label="إضافة شيك جديد" (click)="addNewCheck()" class="p-button-primary add-btn"></button>
     </div>
     <div class="header-title">
-        <a href="javascript:void(0)" class="back-link" (click)="goBack()">
-            <span>العودة للتقارير</span>
-            <i class="pi pi-angle-left"></i>
-          </a>
-        <h1>الشيكات المحصلة</h1>
-      </div>
+      <h1>الشيكات المحصلة</h1>
+      <a href="javascript:void(0)" class="back-link" (click)="goBack()">
+        <span>العودة للتقارير</span>
+        <i class="pi pi-angle-left"></i>
+      </a>
+    </div>
   </div>
 
   <div class="content-card">
@@ -59,8 +88,8 @@
         <p>لم يتم العثور على شيكات تطابق بحثك</p>
       </div>
 
-      <!-- Table content -->
-      <div *ngIf="filteredChecks.length > 0">
+      <!-- Desktop Table content -->
+      <div *ngIf="filteredChecks.length > 0" class="desktop-table">
         <div class="table-header">
           <div class="header-cell action"></div>
           <div class="header-cell amount">المبلغ</div>
@@ -112,6 +141,59 @@
           <div class="footer-cell bank"></div>
           <div class="footer-cell customer"></div>
           <div class="footer-cell date"></div>
+        </div>
+      </div>
+
+      <!-- Mobile Cards View -->
+      <div *ngIf="filteredChecks.length > 0" class="mobile-cards">
+        <div class="check-card" *ngFor="let check of filteredChecks" [class.expanded]="check.id === expandedCheckId">
+          <div class="card-header" (click)="toggleCard(check.id)">
+            <div class="card-header-content">
+                <div class="card-title">
+                    <button class="menu-btn" (click)="showCheckMenu($event, check); $event.stopPropagation()">
+                        <i class="pi pi-ellipsis-v"></i>
+                    </button>
+                    <span class="date-label">{{ check.date }}</span>
+                    <span class="status-label">משתאבת מאור</span>
+                  </div>
+              <div class="card-info-row">
+                <div class="info-item">
+                  <span class="info-label">יתרה</span>
+                  <span class="info-value amount-highlight">{{ check.amount }}₪</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">תאריך פרעון</span>
+                  <span class="info-value">{{ check.paymentDate }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">מספר שיק</span>
+                  <span class="info-value">{{ check.checkNumber }}</span>
+                </div>
+              </div>
+              
+            </div>
+            <div class="expand-icon">
+              <i class="pi" [class.pi-chevron-down]="check.id !== expandedCheckId" 
+                 [class.pi-chevron-up]="check.id === expandedCheckId"></i>
+            </div>
+          </div>
+
+          <div class="card-details" *ngIf="check.id === expandedCheckId">
+            <div class="detail-row">
+              <div class="detail-item">
+                <span class="detail-label">בנק</span>
+                <span class="detail-value">{{ check.bank }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">מספר חשבון</span>
+                <span class="detail-value">{{ check.accountNumber }}</span>
+              </div>
+            </div>
+            <div class="detail-full">
+              <span class="detail-label">הערות</span>
+              <p class="detail-text">{{ check.notes || 'לורם איפסום דולור סיט אמט, קונסקטור אדיפיסינג' }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
