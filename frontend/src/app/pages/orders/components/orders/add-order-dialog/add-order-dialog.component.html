@@ -112,7 +112,6 @@
           <h3 class="section-title">تفاصيل المنتجات</h3>
         </div>
 
-        <!-- Loop through each order item row -->
         <div *ngFor="let row of orderItemRows; let i = index" class="item-row-container">
           <div class="input-row">
             <div class="input-col">
@@ -149,7 +148,21 @@
                 min="0" 
                 step="0.01" />
             </div>
-            
+
+            <div class="input-col delete-col" *ngIf="orderItemRows.length > 1">
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-danger p-button-text p-button-sm delete-row-btn"
+                (click)="removeRow(i)"
+                pTooltip="حذف السطر">
+              </button>
+            </div>
+          </div>
+
+          <!-- Second Row: Total + Tax + Total with Tax -->
+          <div class="input-row">
             <div class="input-col">
               <span class="input-label">الإجمالي</span>
               <input 
@@ -178,18 +191,6 @@
                 [value]="formatCurrency(row.totalWithTax)"
                 placeholder="0.00₪" 
                 readonly />
-            </div>
-
-            <!-- Delete Row Button -->
-            <div class="input-col delete-col" *ngIf="orderItemRows.length > 1">
-              <button 
-                pButton 
-                type="button" 
-                icon="pi pi-trash" 
-                class="p-button-danger p-button-text p-button-sm delete-row-btn"
-                (click)="removeRow(i)"
-                pTooltip="حذف السطر">
-              </button>
             </div>
           </div>
         </div>

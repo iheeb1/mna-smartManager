@@ -21,26 +21,29 @@
   <div class="content-card">
     <!-- Filters -->
     <div class="filters-section">
-      <div class="search-box">
-        <span class="p-input-icon-left search-input-wrapper">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text" [(ngModel)]="searchValue" placeholder="البحث الحر عن الطلب"
-            class="search-input" (keyup.enter)="onSearch()" />
-        </span>
-      </div>
-      <button pButton icon="pi pi-filter" label="تصفية" class="p-button filter-btn" (click)="onSearch()"></button>
-
       <div class="date-filters">
-        <p-calendar [(ngModel)]="endDate" placeholder="حتى التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
-          class="date-input" (onSelect)="onDateFilterChange()">
+        <p-calendar [(ngModel)]="startDate" placeholder="من التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
+          [iconDisplay]="'input'" class="date-input" (onSelect)="onDateFilterChange()">
         </p-calendar>
 
         <span class="date-separator">—</span>
 
-        <p-calendar [(ngModel)]="startDate" placeholder="من التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
-          class="date-input" (onSelect)="onDateFilterChange()">
+        <p-calendar [(ngModel)]="endDate" placeholder="حتى التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
+          [iconDisplay]="'input'" class="date-input" (onSelect)="onDateFilterChange()">
         </p-calendar>
+        <div class="search-box">
+          <span class="p-input-icon-left search-input-wrapper">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" [(ngModel)]="searchValue" placeholder="البحث الحر عن الطلب"
+              class="search-input" (keyup.enter)="onSearch()" />
+          </span>
+        </div>
+        <button class="filter-text-btn">تصفية</button>
+        <button pButton class="filter-btn">
+          <img src="assets/icons/filters_icon.svg" alt="filter">
+        </button>
       </div>
+      
     </div>
 
     <!-- Table -->
@@ -103,7 +106,7 @@
                 <table class="nested-table">
                   <thead>
                     <tr>
-                      <th>الوصف</th>
+                      <th style="width: 10px">الوصف</th>
                       <th>المدة</th>
                       <th>الكمية</th>
                       <th>قبل الضريبة</th>
