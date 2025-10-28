@@ -71,8 +71,9 @@
 .input-row {
   display: flex;
   gap: 0.875rem;
-  direction: rtl;
   margin-bottom: 1rem;
+  flex-direction: row-reverse;
+  direction: rtl;
   
   &.single-row {
     align-items: flex-end;
@@ -441,63 +442,48 @@
     }
   }
   
-  // Calendar
+  // Calendar - Updated to match input style
   .p-calendar {
-    width: 100%;
-    position: relative;
+    width: 87%;
     
     .p-inputtext {
-      width: 70% !important;
-      font-size: 14px !important;
-      padding: 11px 50px 11px 14px !important;
-      height: 42px !important;
-      border-radius: 50px !important;
-      background: white !important;
-      color: #15123C !important;
+      width: 100% !important;
+      height: 40px !important;
+      border: 1px solid #E0DEFA !important;
+      border-radius: 22px !important;
+      background: #E8E6F9 !important;
+      padding: 0 1rem !important;
+      font-size: 0.875rem !important;
+      color: #1e293b !important;
       font-weight: 400 !important;
       direction: rtl !important;
       text-align: right !important;
       transition: all 0.2s ease !important;
+      font-family: inherit !important;
+      box-shadow: none !important;
+      
+      &:hover {
+        background: #E0DEFA !important;
+        border-color: #D0CFF4 !important;
+        box-shadow: none !important;
+      }
+      
+      &:focus {
+        outline: none !important;
+        border-color: #B5AEF1 !important;
+        background: white !important;
+        box-shadow: none !important;
+      }
       
       &::placeholder {
-        color: #15123C !important;
-        font-weight: 400 !important;
-      }
-      
-      &:enabled:hover {
-        border-color: #574DFF !important;
-      }
-      
-      &:enabled:focus {
-        border-color: #574DFF !important;
-        box-shadow: 0px 3px 20px rgba(45, 60, 229, 0.25) !important;
+        color: #D0CFF4 !important;
+        text-align: right !important;
       }
     }
     
+    // Hide the calendar icon button
     .p-datepicker-trigger {
-      position: absolute !important;
-      left: auto !important;
-      right: 8px !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-      width: 28px !important;
-      height: 28px !important;
-      background: #574DFF !important;
-      border-radius: 50% !important;
-      color: white !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
-      min-width: 28px !important;
-    }
-    
-    .p-datepicker-trigger-icon,
-    .p-button-icon,
-    .pi-calendar {
-      font-size: 10px !important;
+      display: none !important;
     }
   }
   
