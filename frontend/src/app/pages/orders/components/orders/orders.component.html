@@ -8,39 +8,104 @@
   </div>
 
   <div class="mobile-action-bar">
-    <!-- Search Button -->
-    <button class="action-btn search-toggle-btn" 
-            (click)="toggleMobileSearch()"
-            [class.active]="mobileSearchExpanded">
-      <img src="assets/icons/search_icon.svg" alt="Search">
-    </button>
-
-    <!-- Filter Button -->
-    <button class="action-btn filter-mobile-btn">
-      <img src="assets/icons/filters_icon.svg" alt="Filter">
-    </button>
-
-    <!-- End Date Calendar -->
-    <button class="action-btn calendar-btn">
-      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
-    </button>
-
-    <!-- Start Date Calendar -->
-    <button class="action-btn calendar-btn">
-      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
-    </button>
-
-    <!-- Search Input (shown when search is active) -->
-    <div class="mobile-search-input" *ngIf="mobileSearchExpanded">
-      <div class="search-icon">
-        <img src="assets/icons/search_icon.svg" alt="search">
+    <!-- Expanded Search Input (shown when search is active) -->
+    <ng-container *ngIf="mobileSearchExpanded">
+      <div class="mobile-search-input expanded">
+        <div class="search-icon">
+          <img src="assets/icons/search_icon.svg" alt="search">
+        </div>
+        <input type="text" 
+               placeholder="البحث الحر عن الطلب" 
+               [(ngModel)]="searchValue"
+               (keyup.enter)="onSearch()"
+               #searchInput>
       </div>
-      <input type="text" 
-             placeholder="البحث الحر عن الطلب" 
-             [(ngModel)]="searchValue"
-             (keyup.enter)="onSearch()">
-    </div>
+  
+      <!-- Calendar Button (right side when search expanded) -->
+      <button class="action-btn calendar-btn" (click)="toggleCalendars()">
+        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+      </button>
+  
+      <!-- Filter Button (right side when search expanded) -->
+      <button class="action-btn filter-mobile-btn" (click)="toggleFilters()">
+        <img src="assets/icons/filters_icon.svg" alt="Filter">
+      </button>
+    </ng-container>
+  
+    <!-- Filters/Calendars Expanded State -->
+    <ng-container *ngIf="mobileFiltersExpanded">
+      <!-- Search Button -->
+      <button class="action-btn search-toggle-btn" 
+              (click)="toggleMobileSearch()">
+        <img src="assets/icons/search_icon.svg" alt="Search">
+      </button>
+  
+      <!-- Filter Button -->
+      <button class="action-btn filter-mobile-btn" 
+              [class.active]="mobileFiltersExpanded"
+              (click)="toggleFilters()">
+        <img src="assets/icons/filters_icon.svg" alt="Filter">
+      </button>
+  
+      <!-- End Date Calendar -->
+      <button class="action-btn calendar-btn" (click)="openEndDateCalendar()">
+        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+      </button>
+  
+      <!-- Start Date Calendar -->
+      <button class="action-btn calendar-btn" (click)="openStartDateCalendar()">
+        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+      </button>
+    </ng-container>
+  
+    <!-- Collapsed State (default buttons) -->
+    <ng-container *ngIf="!mobileSearchExpanded && !mobileFiltersExpanded">
+      <!-- Search Button -->
+      <button class="action-btn search-toggle-btn" 
+              (click)="toggleMobileSearch()">
+        <img src="assets/icons/search_icon.svg" alt="Search">
+      </button>
+  
+      <!-- Filter Button -->
+      <button class="action-btn filter-mobile-btn" (click)="toggleFilters()">
+        <img src="assets/icons/filters_icon.svg" alt="Filter">
+      </button>
+  
+      <!-- Single Calendar Button -->
+      <button class="action-btn calendar-btn" (click)="toggleCalendars()">
+        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+      </button>
+    </ng-container>
   </div>
+  
+  <!-- Hidden Calendar Inputs for Mobile -->
+  <div style="display: none;">
+    <p-calendar #startDateMobile
+      [(ngModel)]="startDate" 
+      placeholder="من التاريخ" 
+      dateFormat="dd/mm/yy" 
+      [showIcon]="false"
+      (onSelect)="onDateFilterChange()">
+    </p-calendar>
+    
+    <p-calendar #endDateMobile
+      [(ngModel)]="endDate" 
+      placeholder="حتى التاريخ" 
+      dateFormat="dd/mm/yy" 
+      [showIcon]="false"
+      (onSelect)="onDateFilterChange()">
+    </p-calendar>
+  </div>
+  
+  <!-- Mobile Add Button -->
+  <button class="mobile-add-btn" (click)="openAddOrderDialog()">
+    <img src="assets/icons/plus_sign_icon.svg" alt="+">
+  </button>
+  
+  <!-- Mobile Add Button -->
+  <button class="mobile-add-btn" (click)="openAddOrderDialog()">
+    <img src="assets/icons/plus_sign_icon.svg" alt="+">
+  </button>
 
   <!-- Mobile Add Button -->
   <button class="mobile-add-btn" (click)="openAddOrderDialog()">

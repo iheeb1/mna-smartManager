@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { CalendarModule } from 'primeng/calendar';
+import { Calendar, CalendarModule } from 'primeng/calendar';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../../shared/components/footer-nav/footer-nav.component';
@@ -47,7 +47,12 @@ export class OrdersComponent implements OnInit {
   grandTotalBeforeTax = 0;
   grandTotalTax = 0;
   grandTotalWithTax = 0;
-
+  mobileFiltersExpanded: boolean = false;
+  
+  @ViewChild('searchInput') searchInput!: ElementRef;
+  @ViewChild('startDateMobile') startDateMobile!: Calendar;
+  @ViewChild('endDateMobile') endDateMobile!: Calendar;
+  
   private customersCache: Map<number, any> = new Map();
   private carsCache: Map<number, any> = new Map();
 
@@ -384,9 +389,6 @@ export class OrdersComponent implements OnInit {
     window.print();
   }
 
-  toggleMobileSearch() {
-    this.mobileSearchExpanded = !this.mobileSearchExpanded;
-  }
 
   toggleMobileCard(order: Order) {
     this.expandedRows[order.id] = !this.expandedRows[order.id];
@@ -395,5 +397,38 @@ export class OrdersComponent implements OnInit {
   showOrderMenu(event: Event, order: Order) {
     event.stopPropagation();
     console.log('Show menu for order:', order.id);
+  }
+
+  toggleMobileSearch() {
+    this.mobileSearchExpanded = !this.mobileSearchExpanded;
+    this.mobileFiltersExpanded = false;
+    
+    if (this.mobileSearchExpanded) {
+      setTimeout(() => {
+        this.searchInput?.nativeElement.focus();
+      }, 300);
+    }
+  }
+
+  toggleFilters() {
+    this.mobileFiltersExpanded = !this.mobileFiltersExpanded;
+    this.mobileSearchExpanded = false;
+  }
+
+  toggleCalendars() {
+    this.mobileFiltersExpanded = true;
+    this.mobileSearchExpanded = false;
+  }
+
+  openStartDateCalendar() {
+    setTimeout(() => {
+      this.startDateMobile?.showOverlay();
+    }, 100);
+  }
+
+  openEndDateCalendar() {
+    setTimeout(() => {
+      this.endDateMobile?.showOverlay();
+    }, 100);
   }
 }
