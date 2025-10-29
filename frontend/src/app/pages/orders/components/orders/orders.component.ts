@@ -42,6 +42,7 @@ export class OrdersComponent implements OnInit {
   orders: Order[] = [];
   expandedRows: { [key: string]: boolean } = {};
   loading = false;
+  mobileSearchExpanded = false;
 
   grandTotalBeforeTax = 0;
   grandTotalTax = 0;
@@ -311,8 +312,8 @@ export class OrdersComponent implements OnInit {
     this.grandTotalWithTax = this.orders.reduce((sum, order) => sum + (order.totalWithTax || 0), 0);
   }
 
-  formatCurrency(value: number): string {
-    if (!value && value !== 0) return '0₪';
+  formatCurrency(value: number | undefined): string {
+    if (value === undefined || value === null) return '0₪';
     return `${value.toFixed(2)}₪`;
   }
 
@@ -381,5 +382,18 @@ export class OrdersComponent implements OnInit {
 
   printOrders() {
     window.print();
+  }
+
+  toggleMobileSearch() {
+    this.mobileSearchExpanded = !this.mobileSearchExpanded;
+  }
+
+  toggleMobileCard(order: Order) {
+    this.expandedRows[order.id] = !this.expandedRows[order.id];
+  }
+
+  showOrderMenu(event: Event, order: Order) {
+    event.stopPropagation();
+    console.log('Show menu for order:', order.id);
   }
 }

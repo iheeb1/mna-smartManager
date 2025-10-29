@@ -1,7 +1,55 @@
 <app-header></app-header>
 
+<!-- Mobile Hero Section -->
+<div class="mobile-hero-section">
+  <div class="mobile-hero-content">
+    <img src="assets/images/orders_mobile.png" alt="Orders" class="hero-image">
+    <h1 class="hero-title">الطلبات</h1>
+  </div>
+
+  <div class="mobile-action-bar">
+    <!-- Search Button -->
+    <button class="action-btn search-toggle-btn" 
+            (click)="toggleMobileSearch()"
+            [class.active]="mobileSearchExpanded">
+      <img src="assets/icons/search_icon.svg" alt="Search">
+    </button>
+
+    <!-- Filter Button -->
+    <button class="action-btn filter-mobile-btn">
+      <img src="assets/icons/filters_icon.svg" alt="Filter">
+    </button>
+
+    <!-- End Date Calendar -->
+    <button class="action-btn calendar-btn">
+      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+    </button>
+
+    <!-- Start Date Calendar -->
+    <button class="action-btn calendar-btn">
+      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+    </button>
+
+    <!-- Search Input (shown when search is active) -->
+    <div class="mobile-search-input" *ngIf="mobileSearchExpanded">
+      <div class="search-icon">
+        <img src="assets/icons/search_icon.svg" alt="search">
+      </div>
+      <input type="text" 
+             placeholder="البحث الحر عن الطلب" 
+             [(ngModel)]="searchValue"
+             (keyup.enter)="onSearch()">
+    </div>
+  </div>
+
+  <!-- Mobile Add Button -->
+  <button class="mobile-add-btn" (click)="openAddOrderDialog()">
+    <img src="assets/icons/plus_sign_icon.svg" alt="+">
+  </button>
+</div>
+
 <div class="orders-container">
-  <!-- Header -->
+  <!-- Desktop Header -->
   <div class="orders-header">
     <div class="header-actions">
       <button pButton class="export-btn">
@@ -19,7 +67,7 @@
 
   <!-- Content Card -->
   <div class="content-card">
-    <!-- Filters -->
+    <!-- Desktop Filters -->
     <div class="filters-section">
       <div class="date-filters">
         <p-calendar [(ngModel)]="startDate" placeholder="من التاريخ" dateFormat="dd/mm/yy" [showIcon]="true"
@@ -43,11 +91,10 @@
           <img src="assets/icons/filters_icon.svg" alt="filter">
         </button>
       </div>
-      
     </div>
 
-    <!-- Table -->
-    <div class="table-wrapper">
+    <!-- Desktop Table -->
+    <div class="table-wrapper desktop-table">
       <p-table [value]="orders" [expandedRowKeys]="expandedRows" dataKey="id" [responsive]="true"
         [loading]="loading" styleClass="orders-table" (onRowExpand)="onRowExpand($event)" 
         (onRowCollapse)="onRowCollapse($event)">
@@ -149,6 +196,84 @@
           <span>{{formatCurrency(grandTotalBeforeTax)}}</span>
         </div>
         <span class="summary-label">الإجمالي:</span>
+      </div>
+    </div>
+
+    <!-- Mobile Cards View -->
+    <div class="mobile-cards">
+      <div class="order-card" *ngFor="let order of orders" [class.expanded]="expandedRows[order.id]">
+        <div class="card-header">
+          <div class="card-header-content">
+            <div class="card-title">
+              <button class="menu-btn" (click)="showOrderMenu($event, order); $event.stopPropagation()">
+                <i class="pi pi-ellipsis-v"></i>
+              </button>
+              <span class="date-label">{{order.date}}</span>
+              <span class="customer-name">{{order.client}}</span>
+            </div>
+            
+            <div class="card-main-info">
+              <div class="info-group">
+                <div class="info-label">מייקו</div>
+                <div class="info-value">{{order.vehicle}}</div>
+              </div>
+              <div class="info-group">
+                <div class="info-label">מספר</div>
+                <div class="info-value">{{order.parking}}</div>
+              </div>
+              <div class="info-group">
+                <div class="info-label">תעודה</div>
+                <div class="info-value">{{order.phoneNumber}}</div>
+              </div>
+              <div class="info-group">
+                <div class="info-label">רכב</div>
+                <div class="info-value">{{order.fixedType}}</div>
+              </div>
+            </div>
+
+            <div class="card-address">
+              <div class="address-label">כתובת</div>
+              <div class="address-value">{{order.address}}</div>
+            </div>
+
+            <div class="card-totals">
+              <div class="total-item">
+                <div class="total-label">סה"כ:</div>
+                <div class="total-value">{{formatCurrency(order.totalWithTax)}}</div>
+              </div>
+              <div class="total-item">
+                <div class="total-label">מע"מ:</div>
+                <div class="total-value">{{formatCurrency(order.taxAmount)}}</div>
+              </div>
+              <div class="total-item">
+                <div class="total-label">לפני מע"מ:</div>
+                <div class="total-value">{{formatCurrency(order.totalBeforeTax)}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-details" *ngIf="expandedRows[order.id]">
+          <div class="items-list" *ngIf="order.items && order.items.length > 0">
+            <div class="item-row" *ngFor="let item of order.items">
+              <div class="item-header">
+                <div class="item-qty">מתוך {{item.duration}} :{{item.quantity}}</div>
+                <div class="item-price">{{formatCurrency(item.total)}}</div>
+                <div class="item-desc">{{item.description}}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="expanded-total">
+            <div class="expanded-total-label">:סה"כ</div>
+            <div class="expanded-total-value">{{formatCurrency(order.totalWithTax)}}</div>
+          </div>
+        </div>
+        
+        <div class="expand-icon" (click)="toggleMobileCard(order)">
+          <i class="pi" [class.pi-chevron-down]="!expandedRows[order.id]" 
+             [class.pi-chevron-up]="expandedRows[order.id]"></i>
+        </div>
       </div>
     </div>
   </div>
