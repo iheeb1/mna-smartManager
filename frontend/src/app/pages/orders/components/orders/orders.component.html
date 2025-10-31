@@ -33,49 +33,58 @@
     </ng-container>
   
     <!-- Filters/Calendars Expanded State -->
-    <ng-container *ngIf="mobileFiltersExpanded">
-      <!-- Search Button -->
-      <button class="action-btn search-toggle-btn" 
-              (click)="toggleMobileSearch()">
-        <img src="assets/icons/search_icon.svg" alt="Search">
-      </button>
-  
-      <!-- Filter Button -->
-      <button class="action-btn filter-mobile-btn" 
-              [class.active]="mobileFiltersExpanded"
-              (click)="toggleFilters()">
-        <img src="assets/icons/filters_icon.svg" alt="Filter">
-      </button>
-  
-      <!-- End Date Calendar -->
-      <button class="action-btn calendar-btn" (click)="openEndDateCalendar()">
-        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
-      </button>
-  
-      <!-- Start Date Calendar -->
-      <button class="action-btn calendar-btn" (click)="openStartDateCalendar()">
-        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
-      </button>
-    </ng-container>
+<ng-container *ngIf="mobileFiltersExpanded">
+  <!-- Search Button -->
+  <button class="action-btn search-toggle-btn" 
+          (click)="toggleMobileSearch()">
+    <img src="assets/icons/search_icon.svg" alt="Search">
+  </button>
+
+  <!-- Filter Button -->
+  <button class="action-btn filter-mobile-btn" 
+          [class.active]="mobileFiltersExpanded"
+          (click)="toggleFilters()">
+    <img src="assets/icons/filters_icon.svg" alt="Filter">
+  </button>
+
+  <!-- End Date Display -->
+  <div class="date-display" (click)="openEndDateCalendar()">
+    <img src="assets/icons/calendar_icon.svg" alt="Calendar" class="date-icon">
+    <span class="date-text">{{ endDate ? (endDate | date:'dd/MM/yy') : 'حتى التاريخ' }}</span>
+  </div>
+
+  <!-- Start Date Display -->
+  <div class="date-display" (click)="openStartDateCalendar()">
+    <img src="assets/icons/calendar_icon.svg" alt="Calendar" class="date-icon">
+    <span class="date-text">{{ startDate ? (startDate | date:'dd/MM/yy') : 'من التاريخ' }}</span>
+  </div>
+</ng-container>
   
     <!-- Collapsed State (default buttons) -->
-    <ng-container *ngIf="!mobileSearchExpanded && !mobileFiltersExpanded">
-      <!-- Search Button -->
-      <button class="action-btn search-toggle-btn" 
-              (click)="toggleMobileSearch()">
-        <img src="assets/icons/search_icon.svg" alt="Search">
-      </button>
-  
-      <!-- Filter Button -->
-      <button class="action-btn filter-mobile-btn" (click)="toggleFilters()">
-        <img src="assets/icons/filters_icon.svg" alt="Filter">
-      </button>
-  
-      <!-- Single Calendar Button -->
-      <button class="action-btn calendar-btn" (click)="toggleCalendars()">
-        <img src="assets/icons/calendar_icon.svg" alt="Calendar">
-      </button>
-    </ng-container>
+<ng-container *ngIf="!mobileSearchExpanded && !mobileFiltersExpanded">
+  <!-- Search Button -->
+  <button class="action-btn search-toggle-btn" 
+          (click)="toggleMobileSearch()">
+    <img src="assets/icons/search_icon.svg" alt="Search">
+  </button>
+
+  <!-- Filter Button -->
+  <button class="action-btn filter-mobile-btn" (click)="toggleFilters()">
+    <img src="assets/icons/filters_icon.svg" alt="Filter">
+  </button>
+
+  <!-- End Date Display -->
+  <div class="date-display" (click)="openEndDateCalendar()">
+    <img src="assets/icons/calendar_icon.svg" alt="Calendar" class="date-icon">
+    <span class="date-text">{{ endDate ? (endDate | date:'dd/MM/yy') : 'حتى التاريخ' }}</span>
+  </div>
+
+  <!-- Start Date Display -->
+  <div class="date-display" (click)="openStartDateCalendar()">
+    <img src="assets/icons/calendar_icon.svg" alt="Calendar" class="date-icon">
+    <span class="date-text">{{ startDate ? (startDate | date:'dd/MM/yy') : 'من التاريخ' }}</span>
+  </div>
+</ng-container>
   </div>
   
   <!-- Hidden Calendar Inputs for Mobile -->
@@ -238,8 +247,8 @@
                   </tbody>
                   <tfoot>
                     <tr class="totals-row">
+                      <td style="background: white;"></td>
                       <td class="totals-label">الإجمالي</td>
-                      <td></td>
                       <td>{{order.items?.length || 0}}</td>
                       <td>{{formatCurrency(order.totalBeforeTax)}}</td>
                       <td>{{formatCurrency(order.taxAmount)}}</td>
