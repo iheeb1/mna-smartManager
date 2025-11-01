@@ -8,6 +8,8 @@ import { Calendar, CalendarModule } from 'primeng/calendar';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../../shared/components/footer-nav/footer-nav.component';
+import { FilterOptions, FiltersDialogComponent } from '../../../../shared/components/filters-dialog/filters-dialog.component';
+import { DateRange, DateRangeDialogComponent } from '../../../../shared/components/date-range-dialog/date-range-dialog.component';
 import { AddOrderDialogComponent } from './add-order-dialog/add-order-dialog.component';
 import { Order, OrderItem } from '../../models/order.model';
 
@@ -27,6 +29,8 @@ import { Order, OrderItem } from '../../models/order.model';
     AddOrderDialogComponent,
     HeaderComponent,
     FooterNavComponent,
+    FiltersDialogComponent,
+    DateRangeDialogComponent
   ],
 })
 export class OrdersComponent implements OnInit {
@@ -43,6 +47,9 @@ export class OrdersComponent implements OnInit {
   grandTotalTax = 0;
   grandTotalWithTax = 0;
   mobileFiltersExpanded: boolean = false;
+
+  showFiltersDialog = false;
+  showDateRangeDialog = false;
   
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('startDateMobile') startDateMobile!: Calendar;
@@ -249,22 +256,33 @@ export class OrdersComponent implements OnInit {
   toggleFilters() {
     this.mobileFiltersExpanded = !this.mobileFiltersExpanded;
     this.mobileSearchExpanded = false;
+    this.showFiltersDialog = true;
+
   }
 
   toggleCalendars() {
     this.mobileFiltersExpanded = true;
     this.mobileSearchExpanded = false;
+    this.showDateRangeDialog = true;
   }
 
   openStartDateCalendar() {
-    setTimeout(() => {
-      this.startDateMobile?.showOverlay();
-    }, 100);
+    // Open the date range dialog instead of trying to show hidden calendars
+    this.showDateRangeDialog = true;
+  }
+  
+  openEndDateCalendar() {
+    // Open the date range dialog instead of trying to show hidden calendars
+    this.showDateRangeDialog = true;
   }
 
-  openEndDateCalendar() {
-    setTimeout(() => {
-      this.endDateMobile?.showOverlay();
-    }, 100);
+  onApplyFilters(filters: FilterOptions) {
+    console.log('Applied filters:', filters);
+  }
+
+  onApplyDateRange(dateRange: DateRange) {
+    this.startDate = dateRange.startDate;
+    this.endDate = dateRange.endDate;
+    this.loadOrders();
   }
 }

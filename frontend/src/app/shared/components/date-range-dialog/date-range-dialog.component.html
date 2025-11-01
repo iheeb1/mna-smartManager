@@ -1,0 +1,78 @@
+<div class="date-range-backdrop" *ngIf="visible" (click)="onBackdropClick()" [@fadeIn]>
+  <div class="date-range-panel" (click)="onPanelClick($event)" [@slideUp]>
+    <div class="panel-header">
+      <h2 class="panel-title">تصفية حسب التاريخ</h2>
+    </div>
+    
+    <div class="date-range-content">
+      <!-- Month and Year Selectors -->
+      <div class="date-selectors">
+        <p-dropdown 
+          [(ngModel)]="selectedYear"
+          [options]="years"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="onYearChange()">
+        </p-dropdown>
+        
+        <p-dropdown 
+          [(ngModel)]="selectedMonth"
+          [options]="months"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="onMonthChange()">
+        </p-dropdown>
+      </div>
+      
+      <!-- Custom Calendar for Start Date -->
+      <div class="custom-calendar">
+        <div class="calendar-month-title">{{ getMonthYearTitle(selectedMonth, selectedYear) }}</div>
+        
+        <div class="calendar-grid">
+          <!-- Week days header -->
+          <div class="calendar-header">
+            <div class="calendar-day-name" *ngFor="let day of arabicLocale.dayNamesShort">{{ day }}</div>
+          </div>
+          
+          <!-- Calendar days -->
+          <div class="calendar-body">
+            <div 
+              *ngFor="let day of getCalendarDays(selectedMonth, selectedYear)"
+              class="calendar-day"
+              [class.other-month]="!day.currentMonth"
+              [class.selected]="isSelected(day.date, startDate)"
+              [class.today]="isToday(day.date)"
+              (click)="selectStartDate(day)">
+              {{ day.day }}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Custom Calendar for End Date -->
+      <div class="custom-calendar">
+        <div class="calendar-month-title">{{ getMonthYearTitle(getNextMonth().month, getNextMonth().year) }}</div>
+        
+        <div class="calendar-grid">
+          <!-- Week days header -->
+          <div class="calendar-header">
+            <div class="calendar-day-name" *ngFor="let day of arabicLocale.dayNamesShort">{{ day }}</div>
+          </div>
+          
+          <!-- Calendar days -->
+          <div class="calendar-body">
+            <div 
+              *ngFor="let day of getCalendarDays(getNextMonth().month, getNextMonth().year)"
+              class="calendar-day"
+              [class.other-month]="!day.currentMonth"
+              [class.selected]="isSelected(day.date, endDate)"
+              [class.today]="isToday(day.date)"
+              (click)="selectEndDate(day)">
+              {{ day.day }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  

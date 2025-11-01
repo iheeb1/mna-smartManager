@@ -1,0 +1,109 @@
+<div class="filters-backdrop" *ngIf="visible" (click)="onBackdropClick()">
+  <div class="filters-panel" (click)="onPanelClick($event)">
+    <div class="panel-header">
+      <h2 class="panel-title">تصفية</h2>
+    </div>
+
+    <div class="filters-content">
+      <!-- Vehicle Type Section -->
+      <div class="filter-section">
+        <div class="section-header" (click)="toggleSection('vehicleType')">
+          <span class="section-title">نوع المركبة</span>
+          <i class="pi" [class.pi-chevron-down]="vehicleTypeExpanded" [class.pi-chevron-left]="!vehicleTypeExpanded"></i>
+        </div>
+        
+        <div class="section-content" *ngIf="vehicleTypeExpanded">
+          <div class="checkbox-group two-columns">
+            <div class="checkbox-item">
+              <label>كيك بيكونتو</label>
+              <p-checkbox [(ngModel)]="qiqPikonot" [binary]="true" (onChange)="applyFilters()"></p-checkbox>
+            </div>
+            <div class="checkbox-item">
+              <label>بورش 911</label>
+              <p-checkbox [(ngModel)]="poroshet911" [binary]="true" (onChange)="applyFilters()"></p-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mseret Section -->
+      <div class="filter-section">
+        <div class="section-header" (click)="toggleSection('mseret')">
+          <span class="section-title">مسرتيم</span>
+          <i class="pi" [class.pi-chevron-down]="mseretExpanded" [class.pi-chevron-left]="!mseretExpanded"></i>
+        </div>
+        
+        <div class="section-content" *ngIf="mseretExpanded">
+          <div class="slider-container">
+            <p-slider 
+              [(ngModel)]="mseretRange" 
+              [range]="true" 
+              [min]="0" 
+              [max]="100"
+              (onSlideEnd)="applyFilters()"
+              styleClass="custom-slider">
+            </p-slider>
+            <div class="slider-labels">
+              <span>{{mseretRange[0]}}</span>
+              <span>{{mseretRange[1]}}</span>
+              <span class="max-label">100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Qvayim Section -->
+      <div class="filter-section">
+        <div class="section-header" (click)="toggleSection('qvayim')">
+          <span class="section-title">قبييم</span>
+          <i class="pi" [class.pi-chevron-down]="qvayimExpanded" [class.pi-chevron-left]="!qvayimExpanded"></i>
+        </div>
+        
+        <div class="section-content" *ngIf="qvayimExpanded">
+          <div class="slider-container">
+            <p-slider 
+              [(ngModel)]="qvayimRange" 
+              [range]="true" 
+              [min]="0" 
+              [max]="100"
+              (onSlideEnd)="applyFilters()"
+              styleClass="custom-slider">
+            </p-slider>
+            <div class="slider-labels">
+              <span>{{qvayimRange[0]}}</span>
+              <span>{{qvayimRange[1]}}</span>
+              <span class="max-label">100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Section -->
+      <div class="filter-section">
+        <div class="section-header" (click)="toggleSection('price')">
+          <span class="section-title">المبلغ المطلوب</span>
+          <i class="pi" [class.pi-chevron-down]="priceExpanded" [class.pi-chevron-left]="!priceExpanded"></i>
+        </div>
+        
+        <div class="section-content" *ngIf="priceExpanded">
+          <div class="slider-container">
+            <p-slider 
+              [(ngModel)]="priceRange" 
+              [range]="true" 
+              [min]="0" 
+              [max]="2900"
+              [step]="10"
+              (onSlideEnd)="applyFilters()"
+              styleClass="custom-slider">
+            </p-slider>
+            <div class="slider-labels price-labels">
+              <span>{{formatPrice(priceRange[0])}}</span>
+              <span>{{formatPrice(priceRange[1])}}</span>
+              <span class="max-label">{{formatPrice(2900)}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

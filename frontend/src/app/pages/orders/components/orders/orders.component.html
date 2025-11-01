@@ -42,7 +42,7 @@
 
   <!-- Filter Button -->
   <button class="action-btn filter-mobile-btn" 
-          [class.active]="mobileFiltersExpanded"
+          [class.active]="!mobileFiltersExpanded"
           (click)="toggleFilters()">
     <img src="assets/icons/filters_icon.svg" alt="Filter">
   </button>
@@ -358,6 +358,15 @@
     (onHide)="onDialogHide()"
     (onOrderSaved)="onOrderSaved($event)">
   </app-add-order-dialog>
+  <app-filters-dialog 
+  [(visible)]="showFiltersDialog"
+  (onApplyFilters)="onApplyFilters($event)">
+</app-filters-dialog>
+
+<app-date-range-dialog 
+  [(visible)]="showDateRangeDialog"
+  (onApplyDateRange)="onApplyDateRange($event)">
+</app-date-range-dialog>
 </div>
 
 <app-footer-nav></app-footer-nav>
