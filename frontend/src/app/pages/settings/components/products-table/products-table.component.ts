@@ -8,6 +8,7 @@ export interface ProductTableColumn {
   header: string;
   type?: 'text' | 'number' | 'status' | 'toggle' | 'actions';
   flex?: string;
+  editable?: boolean;
 }
 
 export interface ProductTableRow {
@@ -41,23 +42,22 @@ export class ProductsTableComponent implements OnInit, OnChanges {
   @Output() edit = new EventEmitter<ProductTableRow>();
   @Output() delete = new EventEmitter<ProductTableRow>();
   @Output() add = new EventEmitter<void>();
+  @Output() save = new EventEmitter<ProductTableRow>();
   
   searchTerm: string = '';
   filteredRows: ProductTableRow[] = [];
-  isEditMode: boolean = false;
-  selectedRows: Set<number> = new Set();
-  selectAll: boolean = false;
+  editingRowIndex: number | null = null;
+  editingRowData: ProductTableRow | null = null;
 
   ngOnInit() {
     this.updateFilteredRows();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // When config changes (tab change), update the filtered rows
     if (changes['config'] && !changes['config'].firstChange) {
-      this.searchTerm = ''; // Reset search when changing tabs
+      this.searchTerm = '';
       this.updateFilteredRows();
-      this.resetSelections();
+      this.cancelEdit();
     }
   }
 
@@ -65,15 +65,9 @@ export class ProductsTableComponent implements OnInit, OnChanges {
     this.filteredRows = this.config?.data ? [...this.config.data] : [];
   }
 
-  private resetSelections() {
-    this.isEditMode = false;
-    this.selectedRows.clear();
-    this.selectAll = false;
-  }
-
   onTabChange(index: number) {
     this.activeTabIndex = index;
-    this.resetSelections();
+    this.cancelEdit();
     this.tabChange.emit(index);
   }
 
@@ -91,38 +85,28 @@ export class ProductsTableComponent implements OnInit, OnChanges {
     });
   }
 
-  toggleEditMode() {
-    this.isEditMode = !this.isEditMode;
-    if (!this.isEditMode) {
-      this.selectedRows.clear();
-      this.selectAll = false;
+  onEdit(row: ProductTableRow, index: number) {
+    this.editingRowIndex = index;
+    // Create a deep copy of the row for editing
+    this.editingRowData = JSON.parse(JSON.stringify(row));
+  }
+
+  onSave() {
+    if (this.editingRowData && this.editingRowIndex !== null) {
+      // Update the original data
+      this.filteredRows[this.editingRowIndex] = { ...this.editingRowData };
+      this.save.emit(this.editingRowData);
+      this.cancelEdit();
     }
   }
 
-  toggleSelectAll() {
-    this.selectAll = !this.selectAll;
-    if (this.selectAll) {
-      this.filteredRows.forEach((_, index) => this.selectedRows.add(index));
-    } else {
-      this.selectedRows.clear();
-    }
+  cancelEdit() {
+    this.editingRowIndex = null;
+    this.editingRowData = null;
   }
 
-  toggleRowSelection(index: number) {
-    if (this.selectedRows.has(index)) {
-      this.selectedRows.delete(index);
-    } else {
-      this.selectedRows.add(index);
-    }
-    this.selectAll = this.selectedRows.size === this.filteredRows.length;
-  }
-
-  isRowSelected(index: number): boolean {
-    return this.selectedRows.has(index);
-  }
-
-  onEdit(row: ProductTableRow) {
-    this.edit.emit(row);
+  isRowEditing(index: number): boolean {
+    return this.editingRowIndex === index;
   }
 
   onDelete(row: ProductTableRow) {
@@ -139,5 +123,15 @@ export class ProductsTableComponent implements OnInit, OnChanges {
 
   getCellValue(row: ProductTableRow, column: ProductTableColumn): any {
     return row[column.field];
+  }
+
+  getEditValue(column: ProductTableColumn): any {
+    return this.editingRowData?.[column.field];
+  }
+
+  setEditValue(column: ProductTableColumn, value: any) {
+    if (this.editingRowData) {
+      this.editingRowData[column.field] = value;
+    }
   }
 }

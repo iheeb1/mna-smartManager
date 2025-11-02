@@ -10,7 +10,7 @@ import { Menu } from 'primeng/menu';
 import { MenuItem, MessageService } from 'primeng/api';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component';
-import { ProductsTableComponent, ProductTableConfig } from './products-table/products-table/products-table.component';
+import { ProductsTableComponent, ProductTableConfig } from './products-table/products-table.component';
 
 @Component({
   selector: 'app-settings',
@@ -142,7 +142,6 @@ export class SettingsComponent implements OnInit {
     ],
     data: [
       { id: 1, name: 'مضخات مؤود', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 2, name: 'شركة كرمل بنك النار، مشروع', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'بناء يوتك المحدودة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'ن.ط مقاولو البناء', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 5, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
@@ -165,7 +164,6 @@ export class SettingsComponent implements OnInit {
       { id: 2, name: 'بنك هبوعليم', number: '12', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'بنك ديسكونت', number: '11', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'بنك القدس', number: '54', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 5, name: 'مزراحي طفحوت', number: '20', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
     ],
     searchPlaceholder: 'بحث حر عن بنك',
     addButtonText: 'إضافة بنك جديد'
@@ -185,7 +183,6 @@ export class SettingsComponent implements OnInit {
       { id: 2, name: 'مصروف', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'مرفوض', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'ملغى', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 5, name: 'ملغى', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
     ],
     searchPlaceholder: 'بحث حر عن حالة',
     addButtonText: 'إضافة حالة جديدة'
@@ -205,7 +202,6 @@ export class SettingsComponent implements OnInit {
       { id: 2, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'رعنانا', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'رعنانا', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 5, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
     ],
     searchPlaceholder: 'بحث حر عن عنوان',
     addButtonText: 'إضافة عنوان جديد'
@@ -225,7 +221,6 @@ export class SettingsComponent implements OnInit {
       { id: 2, name: 'مقاصة', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'شيك مرتجع', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'دين قديم', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 5, name: 'سكر', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
     ],
     searchPlaceholder: 'بحث حر عن نوع دفع',
     addButtonText: 'إضافة نوع دفع جديد'

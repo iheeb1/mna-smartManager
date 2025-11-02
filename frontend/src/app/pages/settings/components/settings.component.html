@@ -1,16 +1,18 @@
 <div class="settings-container">
-    <app-header></app-header>
-    
-    <p-toast position="top-center"></p-toast>
+  <app-header></app-header>
   
-    <div class="page-header">
-      <h1 class="page-title">الإعدادات</h1>
-    </div>
-  
-    <div class="main-layout">
-      <!-- Top Row - Products Table and Business Details -->
-      <div class="top-row">
-        <!-- Products Table Component -->
+  <p-toast position="top-center"></p-toast>
+
+  <div class="page-header">
+    <h1 class="page-title">الإعدادات</h1>
+  </div>
+
+  <div class="main-layout">
+    <!-- Top Row - Products Table and Business Details -->
+    <div class="top-row">
+      <!-- Products Section -->
+      <div class="section-wrapper">
+        <h3 class="section-title-main">المنتجات</h3>
         <app-products-table 
           [config]="currentConfig"
           [tabs]="tabs"
@@ -20,192 +22,201 @@
           (delete)="onProductDelete($event)"
           (add)="onProductAdd()">
         </app-products-table>
-  
-        <!-- Business Details Card -->
+      </div>
+
+      <!-- Business Details Section -->
+      <div class="section-wrapper" style="height: 94%;">
+        <h3 class="section-title-main">تفاصيل العمل</h3>
         <div class="card business-details-card">
-          <h3 class="card-title">تفاصيل العمل</h3>
-          
-          <div class="form-grid">
-            <div class="form-row">
-              <div class="form-group">
-                <label>اسم العمل</label>
-                <input type="text" value="مضخات ميوك">
-              </div>
-              <div class="form-group">
-                <label>رقم الشركة</label>
-                <input type="text" value="123456789">
-              </div>
+        
+        <div class="form-grid">
+          <div class="form-row">
+            <div class="form-group">
+              <label>اسم العمل</label>
+              <input type="text" value="مضخات ميوك">
             </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>العنوان</label>
-                <input type="text" value="كفر قاسم، المنطقة الصناعية">
-              </div>
-              <div class="form-group">
-                <label>قرية المنطقة الصناعية</label>
-                <input type="text" value="مضخات ميوك">
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>البلدة</label>
-                <input type="text" value="مضخات ميوك">
-              </div>
-              <div class="form-group">
-                <label>الرمز البريدي</label>
-                <input type="text" value="123456789">
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>فاكس</label>
-                <input type="text" value="0541234567">
-              </div>
-              <div class="form-group">
-                <label>جوال</label>
-                <input type="text" value="0541234567">
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label>هاتف</label>
-                <input type="text" value="0541234567">
-              </div>
-              <div class="form-group">
-                <label>البريد الإلكتروني</label>
-                <input type="email" value="example2000@gmail.com">
-              </div>
+            <div class="form-group">
+              <label>رقم الشركة</label>
+              <input type="text" value="123456789">
             </div>
           </div>
-  
-          <button class="save-button">حفظ</button>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>العنوان</label>
+              <input type="text" value="كفر قاسم، المنطقة الصناعية">
+            </div>
+            <div class="form-group">
+              <label>قرية المنطقة الصناعية</label>
+              <input type="text" value="مضخات ميوك">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>البلدة</label>
+              <input type="text" value="مضخات ميوك">
+            </div>
+            <div class="form-group">
+              <label>الرمز البريدي</label>
+              <input type="text" value="123456789">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>فاكس</label>
+              <input type="text" value="0541234567">
+            </div>
+            <div class="form-group">
+              <label>جوال</label>
+              <input type="text" value="0541234567">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>هاتف</label>
+              <input type="text" value="0541234567">
+            </div>
+            <div class="form-group">
+              <label>البريد الإلكتروني</label>
+              <input type="email" value="example2000@gmail.com">
+            </div>
+          </div>
         </div>
-      </div>
-  
-      <!-- Second Row - Settings Cards and Permissions -->
-      <div class="second-row">
 
-<!-- Permissions Card -->
-<div class="card permissions-card">
-  <h3 class="card-title">إدارة الصلاحيات</h3>
-  
-  <div class="permissions-layout">
-    <!-- Right Side - Role Tabs -->
-    <div class="role-tabs">
-      <div class="tabs-header">
-        <h4 class="tabs-title">الدور الوظيفي</h4>
+        <button class="save-button">حفظ</button>
       </div>
-      
-      <div class="role-list">
-        <div class="role-item" 
-             *ngFor="let role of roles; let i = index"
-             [class.active]="activeRoleIndex === i"
-             (click)="onRoleChange(i)">
-          <span>{{ role.name }}</span>
-        </div>
       </div>
-      <button class="add-role-btn" (click)="onAddRole()">
-        <i class="pi pi-plus"></i>
-        <span>إضافة تفكيد جديد</span>
-      </button>
     </div>
 
-    <!-- Left Side - Permissions Grid -->
-    <div class="permissions-grid">
-      <!-- Permission Group 1: إدارة المشاريع -->
-      <div class="perm-group">
-        <h4 class="group-title">إدارة المشاريع</h4>
-        <div class="perm-item">
-          <span>إنشاء وتحرير وإغلاق المشاريع</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.createEditProjects"></p-inputSwitch>
-        </div>
-        <div class="perm-item">
-          <span>متابعة أداء المشروع</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.monitorPerformance"></p-inputSwitch>
-        </div>
-      </div>
+    <!-- Second Row - Settings Cards and Permissions -->
+    <div class="second-row">
 
-      <!-- Permission Group 2: إدارة الميزانيات والموارد -->
-      <div class="perm-group">
-        <h4 class="group-title">إدارة الميزانيات والموارد</h4>
-        <div class="perm-item">
-          <span>الوصول لإدارة ميزانية المشروع</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.budgetAccess"></p-inputSwitch>
-        </div>
-        <div class="perm-item">
-          <span>إدارة وتخطيط الموارد</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.resourcePlanning"></p-inputSwitch>
-        </div>
-      </div>
+<!-- Permissions Section -->
+<div class="section-wrapper">
+<h3 class="section-title-main">إدارة الصلاحيات</h3>
+<div class="card permissions-card">
 
-      <!-- Permission Group 3: إدارة الموظفين -->
-      <div class="perm-group">
-        <h4 class="group-title">إدارة الموظفين</h4>
-        <div class="perm-item">
-          <span>تعيين الموظفين للمشاريع</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.assignEmployees"></p-inputSwitch>
-        </div>
-        <div class="perm-item">
-          <span>متابعة الأداء الشخصي للموظفين</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.trackEmployeePerformance"></p-inputSwitch>
-        </div>
+<div class="permissions-layout">
+  <!-- Right Side - Role Tabs -->
+  <div class="role-tabs">
+    <div class="tabs-header">
+      <h4 class="tabs-title">الدور الوظيفي</h4>
+    </div>
+    
+    <div class="role-list">
+      <div class="role-item" 
+           *ngFor="let role of roles; let i = index"
+           [class.active]="activeRoleIndex === i"
+           (click)="onRoleChange(i)">
+        <span>{{ role.name }}</span>
       </div>
+    </div>
+    <button class="add-role-btn" (click)="onAddRole()">
+      <i class="pi pi-plus"></i>
+      <span>إضافة تفكيد جديد</span>
+    </button>
+  </div>
 
-      <!-- Permission Group 4: التقارير والمتابعة -->
-      <div class="perm-group">
-        <h4 class="group-title">التقارير والمتابعة</h4>
-        <div class="perm-item">
-          <span>إنشاء وإصدار تقارير تقدم المشروع</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.generateReports"></p-inputSwitch>
-        </div>
-        <div class="perm-item">
-          <span>الوصول لتقارير الجودة</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.qualityReports"></p-inputSwitch>
-        </div>
-        <div class="perm-item">
-          <span>الوصول لتقارير الأمان</span>
-          <p-inputSwitch [(ngModel)]="currentRolePermissions.securityReports"></p-inputSwitch>
-        </div>
+  <!-- Left Side - Permissions Grid -->
+  <div class="permissions-grid">
+    <!-- Permission Group 1: إدارة المشاريع -->
+    <div class="perm-group">
+      <h4 class="group-title">إدارة المشاريع</h4>
+      <div class="perm-item">
+        <span>إنشاء وتحرير وإغلاق المشاريع</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.createEditProjects"></p-inputSwitch>
+      </div>
+      <div class="perm-item">
+        <span>متابعة أداء المشروع</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.monitorPerformance"></p-inputSwitch>
+      </div>
+    </div>
+
+    <!-- Permission Group 2: إدارة الميزانيات والموارد -->
+    <div class="perm-group">
+      <h4 class="group-title">إدارة الميزانيات والموارد</h4>
+      <div class="perm-item">
+        <span>الوصول لإدارة ميزانية المشروع</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.budgetAccess"></p-inputSwitch>
+      </div>
+      <div class="perm-item">
+        <span>إدارة وتخطيط الموارد</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.resourcePlanning"></p-inputSwitch>
+      </div>
+    </div>
+
+    <!-- Permission Group 3: إدارة الموظفين -->
+    <div class="perm-group">
+      <h4 class="group-title">إدارة الموظفين</h4>
+      <div class="perm-item">
+        <span>تعيين الموظفين للمشاريع</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.assignEmployees"></p-inputSwitch>
+      </div>
+      <div class="perm-item">
+        <span>متابعة الأداء الشخصي للموظفين</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.trackEmployeePerformance"></p-inputSwitch>
+      </div>
+    </div>
+
+    <!-- Permission Group 4: التقارير والمتابعة -->
+    <div class="perm-group">
+      <h4 class="group-title">التقارير والمتابعة</h4>
+      <div class="perm-item">
+        <span>إنشاء وإصدار تقارير تقدم المشروع</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.generateReports"></p-inputSwitch>
+      </div>
+      <div class="perm-item">
+        <span>الوصول لتقارير الجودة</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.qualityReports"></p-inputSwitch>
+      </div>
+      <div class="perm-item">
+        <span>الوصول لتقارير الأمان</span>
+        <p-inputSwitch [(ngModel)]="currentRolePermissions.securityReports"></p-inputSwitch>
       </div>
     </div>
   </div>
 </div>
-  
-        <!-- Settings Cards Column -->
-        <div class="settings-cards-row">
-          <!-- Print Settings Card -->
+</div>
+</div>
+
+      <!-- Settings Cards Column -->
+      <div class="settings-cards-row">
+        <!-- Print Settings Section -->
+        <div class="section-wrapper">
+          <h3 class="section-title-main">إعدادات الطباعة</h3>
           <div class="card print-settings-card">
-            <h3 class="card-title">إعدادات الطباعة</h3>
-            
-            <div class="setting-item">
-              <span class="setting-label">نوع القالب التصميمي</span>
-              <button class="dropdown-badge">
-                عناصر الشركة
-                <i class="pi pi-chevron-down"></i>
-              </button>
-            </div>
-            
-            <button class="save-button">حفظ</button>
+          
+          <div class="setting-item">
+            <span class="setting-label">نوع القالب التصميمي</span>
+            <button class="dropdown-badge">
+              عناصر الشركة
+              <i class="pi pi-chevron-down"></i>
+            </button>
           </div>
-  
-          <!-- Tax Settings Card -->
+          
+          <button class="save-button">حفظ</button>
+        </div>
+        </div>
+
+        <!-- Tax Settings Section -->
+        <div class="section-wrapper">
+          <h3 class="section-title-main">الإعدادات العامة</h3>
           <div class="card tax-settings-card">
-            <h3 class="card-title">الإعدادات العامة</h3>
-            
-            <div class="setting-item">
-              <span class="setting-label">نسبة ضريبة القيمة المضافة</span>
-              <div class="percent-badge">17%</div>
-            </div>
-            
-            <button class="save-button">حفظ</button>
+          
+          <div class="setting-item">
+            <span class="setting-label">نسبة ضريبة القيمة المضافة</span>
+            <div class="percent-badge">17%</div>
           </div>
+          
+          <button class="save-button">حفظ</button>
+        </div>
         </div>
       </div>
     </div>
-  
-    <app-footer-nav></app-footer-nav>
   </div>
+
+  <app-footer-nav></app-footer-nav>
+</div>

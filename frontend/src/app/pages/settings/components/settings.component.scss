@@ -17,7 +17,6 @@
     align-items: center;
     margin-bottom: 16px;
     direction: rtl;
-    margin-right: 10%;
     
     .section-title {
       font-size: 11px;
@@ -40,6 +39,16 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+  .section-wrapper {
+    .section-title-main {
+      font-size: 14px;
+      color: #2D3748;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      text-align: right;
+      direction: rtl;
+    }
   }
   
   /* Top Row - Products and Business Details */
@@ -66,13 +75,13 @@
     box-shadow: 0px 3px 20px rgba(45, 60, 229, 0.161);
     direction: rtl;
     
-    .card-title {
-      font-size: 14px;
-      color: #2D3748;
-      font-weight: 700;
-      margin: 0 0 12px 0;
-      text-align: right;
-    }
+        // .card-title {
+        //   font-size: 14px;
+        //   color: #2D3748;
+        //   font-weight: 700;
+        //   margin: 0 0 12px 0;
+        //   text-align: right;
+        // }
   }
   
   /* Products Card */
@@ -523,10 +532,9 @@
   /* Business Details Card */
   .business-details-card {
     height: 100%;
-    width: 70%;
     .form-grid {
       display: grid;
-      gap: 10px;
+      gap: 50px;
       
       .form-row {
         display: grid;
@@ -573,7 +581,7 @@
       padding: 8px;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 25px;
       transition: all 0.2s;
       
       &:hover {
@@ -584,7 +592,6 @@
   
   /* Settings Cards Row */
   .settings-cards-row {
-    width: 70%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;

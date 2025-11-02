@@ -1,0 +1,152 @@
+<div class="products-table-container">
+  <div class="card-header">
+    <!-- Tabs Row -->
+    <div class="tabs-row" *ngIf="tabs.length > 0">
+      <button 
+        *ngFor="let tab of tabs; let i = index" 
+        class="tab-item"
+        [class.active]="activeTabIndex === i"
+        (click)="onTabChange(i)">
+        {{ tab }}
+      </button>
+    </div>
+    
+    <!-- Search and Controls -->
+    <div class="search-controls">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [placeholder]="config.searchPlaceholder || 'بحث حر'" 
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange($event)">
+        <button class="search-btn">
+          <i class="pi pi-search"></i>
+        </button>
+      </div>
+      
+      <button class="control-icon">
+        <i class="pi pi-sliders-h"></i>
+      </button>
+      <span class="control-label">تصفية</span>
+      
+      <button class="control-icon">
+        <i class="pi pi-sort-alt"></i>
+      </button>
+      
+      <button class="add-btn" (click)="onAdd()">
+        {{ config.addButtonText || 'إضافة عنصر' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <!-- Table Header -->
+    <div class="table-header">
+      <div 
+        *ngFor="let column of config.columns" 
+        class="header-cell"
+        [style.flex]="getColumnFlex(column)">
+        {{ column.header }}
+      </div>
+    </div>
+
+    <!-- Table Body -->
+    <div class="table-body">
+      <div 
+        class="table-row" 
+        *ngFor="let row of filteredRows; let i = index"
+        [class.editing]="isRowEditing(i)">
+        
+        <!-- Regular columns -->
+        <div 
+          *ngFor="let column of config.columns" 
+          class="row-cell"
+          [class]="column.type"
+          [style.flex]="getColumnFlex(column)">
+          
+          <!-- Regular Text Field (not status or statusLabel) -->
+          <ng-container *ngIf="(column.type === 'text' || !column.type) && column.field !== 'status' && column.field !== 'statusLabel' && column.editable !== false">
+            <input 
+              *ngIf="isRowEditing(i)"
+              type="text"
+              class="edit-input"
+              [value]="getEditValue(column)"
+              (input)="setEditValue(column, $any($event.target).value)">
+            
+            <a *ngIf="!isRowEditing(i) && column.field === 'name'" href="#" class="product-link">
+              {{ getCellValue(row, column) }}
+            </a>
+            <span *ngIf="!isRowEditing(i) && column.field !== 'name'">
+              {{ getCellValue(row, column) }}
+            </span>
+          </ng-container>
+          
+          <!-- Number Cell -->
+          <ng-container *ngIf="column.type === 'number'">
+            <input 
+              *ngIf="isRowEditing(i)"
+              type="text"
+              class="edit-input"
+              [value]="getEditValue(column)"
+              (input)="setEditValue(column, $any($event.target).value)">
+            
+            <span *ngIf="!isRowEditing(i)">
+              {{ getCellValue(row, column) }}
+            </span>
+          </ng-container>
+          
+          <!-- Status Fields (status and statusLabel) - Show as switches in edit mode -->
+          <ng-container *ngIf="column.type === 'status' || column.field === 'status' || column.field === 'statusLabel'">
+            <div class="switch-wrapper" *ngIf="isRowEditing(i)">
+              <p-inputSwitch 
+                [ngModel]="getEditValue(column) === 'نشط' || getEditValue(column) === true"
+                (ngModelChange)="setEditValue(column, $event ? 'نشط' : 'غير نشط')">
+              </p-inputSwitch>
+            </div>
+            
+            <span *ngIf="!isRowEditing(i)" class="status-badge">
+              {{ getCellValue(row, column) }}
+            </span>
+          </ng-container>
+          
+          <!-- Toggle Cell -->
+          <ng-container *ngIf="column.type === 'toggle'">
+            <div class="switch-wrapper" *ngIf="isRowEditing(i)">
+              <p-inputSwitch 
+                [ngModel]="getEditValue(column) === 'نشط' || getEditValue(column) === true"
+                (ngModelChange)="setEditValue(column, $event ? 'نشط' : 'غير نشط')">
+              </p-inputSwitch>
+            </div>
+            
+            <span *ngIf="!isRowEditing(i)" class="status-badge">
+              {{ getCellValue(row, column) }}
+            </span>
+          </ng-container>
+          
+          <!-- Actions Cell -->
+          <div *ngIf="column.type === 'actions'" class="actions-wrapper">
+            <!-- Edit Mode Actions -->
+            <ng-container *ngIf="isRowEditing(i)">
+              <button class="action-icon save" (click)="onSave()">
+                <i class="pi pi-check"></i>
+              </button>
+              <button class="action-icon cancel" (click)="cancelEdit()">
+                <i class="pi pi-times"></i>
+              </button>
+            </ng-container>
+            
+            <!-- Normal Mode Actions -->
+            <ng-container *ngIf="!isRowEditing(i)">
+              <button class="action-icon edit" (click)="onEdit(row, i)">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button class="action-icon delete" (click)="onDelete(row)">
+                <i class="pi pi-trash"></i>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
