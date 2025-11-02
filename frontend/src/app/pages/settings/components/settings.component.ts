@@ -34,6 +34,9 @@ import { ProductsTableComponent, ProductTableConfig } from './products-table/pro
 export class SettingsComponent implements OnInit {
   @ViewChild('rowMenu') rowMenu!: Menu;
 
+  permissionTabs = ['الهرشاوت', 'تفقيد', 'ניהול כביר', 'ניהול צוות', 'מנהל', 'עובדים בשטח', 'חלוקת כספים'];
+  activePermissionTab = 0;
+
   // Products Tab Configuration
   productsConfig: ProductTableConfig = {
     columns: [
@@ -50,10 +53,6 @@ export class SettingsComponent implements OnInit {
       { id: 3, name: 'بناء يوتك المحدودة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'ن.ط مقاولو البناء', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 5, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 6, name: 'بناء يوتك المحدودة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 7, name: 'ن.ط مقاولو البناء', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 8, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 9, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
     ],
     searchPlaceholder: 'بحث حر عن منتج',
     addButtonText: 'إضافة منتج'
@@ -73,8 +72,7 @@ export class SettingsComponent implements OnInit {
       { id: 2, name: 'بنك هبوعليم', number: '12', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'بنك ديسكونت', number: '11', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'بنك القدس', number: '54', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 5, name: 'مزراحي طفحوت', number: '20', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 6, name: 'مركنتيل', number: '17', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+      { id: 5, name: 'مزراحي طفحوت', number: '20', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
     ],
     searchPlaceholder: 'بحث حر عن بنك',
     addButtonText: 'إضافة بنك جديد'
@@ -93,7 +91,8 @@ export class SettingsComponent implements OnInit {
       { id: 1, name: 'لم يصرف بعد', number: '001', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 2, name: 'مصروف', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'مرفوض', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 4, name: 'ملغى', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+      { id: 4, name: 'ملغى', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 5, name: 'ملغى', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
     ],
     searchPlaceholder: 'بحث حر عن حالة',
     addButtonText: 'إضافة حالة جديدة'
@@ -113,9 +112,7 @@ export class SettingsComponent implements OnInit {
       { id: 2, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 3, name: 'رعنانا', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'رعنانا', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 5, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 6, name: 'رعنانا', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 7, name: 'رعنانا', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+      { id: 5, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
     ],
     searchPlaceholder: 'بحث حر عن عنوان',
     addButtonText: 'إضافة عنوان جديد'
@@ -136,10 +133,6 @@ export class SettingsComponent implements OnInit {
       { id: 3, name: 'شيك مرتجع', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 4, name: 'دين قديم', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
       { id: 5, name: 'سكر', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 6, name: 'عربون 15%', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 7, name: 'نبات راد', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 8, name: 'رواتب في كلاليت', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
-      { id: 9, name: 'راح الجار', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
     ],
     searchPlaceholder: 'بحث حر عن نوع دفع',
     addButtonText: 'إضافة نوع دفع جديد'
@@ -179,7 +172,8 @@ export class SettingsComponent implements OnInit {
   budgetSettings = {
     editFrequencyDates: false,
     allowQualityActivity: false,
-    allowBudgetActivity: false
+    allowBudgetActivity: false,
+    planResources: false 
   };
 
   employeeSettings = {
@@ -236,5 +230,11 @@ export class SettingsComponent implements OnInit {
 
   updateProfile() {
     console.log('Update profile:', this.userProfile);
+  }
+
+  onPermissionTabChange(index: number) {
+    this.activePermissionTab = index;
+    // You can load different permissions based on the selected tab here
+    console.log('Permission tab changed to:', this.permissionTabs[index]);
   }
 }

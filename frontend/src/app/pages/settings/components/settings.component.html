@@ -5,7 +5,6 @@
   
     <div class="page-header">
       <h1 class="page-title">الإعدادات</h1>
-      <h2 class="section-title">تفاصيل العمل</h2>
     </div>
   
     <div class="main-layout">
@@ -89,104 +88,64 @@
   
       <!-- Second Row - Settings Cards and Permissions -->
       <div class="second-row">
-        <!-- Permissions Panel -->
-        <div class="card permissions-card">
-          <h3 class="card-title">إدارة الصلاحيات</h3>
-          
-          <div class="permissions-columns">
-            <div class="perm-column">
-              <div class="perm-group">
-                <h4 class="group-heading">إدارة الميزانيات والموارد</h4>
-                <div class="perm-item">
-                  <span class="perm-text">الوصول إلى تحليل ميزانيات المشروع</span>
-                  <p-inputSwitch [(ngModel)]="projectSettings.editProjectValues"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">إدارة وتخطيط الموارد</span>
-                  <p-inputSwitch [(ngModel)]="projectSettings.sortProjectsByDate"></p-inputSwitch>
-                </div>
-              </div>
-  
-              <div class="perm-group">
-                <h4 class="group-heading">إدارة الموظفين</h4>
-                <div class="perm-item">
-                  <span class="perm-text">تخصيص الموظفين للمشاريع</span>
-                  <p-inputSwitch [(ngModel)]="budgetSettings.editFrequencyDates"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">إدارة جداول أوقات الموظفين</span>
-                  <p-inputSwitch [(ngModel)]="budgetSettings.allowQualityActivity"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">الوصول إلى تقارير السلامة</span>
-                  <p-inputSwitch [(ngModel)]="budgetSettings.allowBudgetActivity"></p-inputSwitch>
-                </div>
-              </div>
-  
-              <div class="perm-group">
-                <h4 class="group-heading">التقارير والمتابعة</h4>
-                <div class="perm-item">
-                  <span class="perm-text">إنشاء وإصدار تقارير تقدم المشروع</span>
-                  <p-inputSwitch [(ngModel)]="employeeSettings.allowTimesheetEdit"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">إدارة تقارير الموظفين</span>
-                  <p-inputSwitch [(ngModel)]="employeeSettings.sortEmployeesByDate"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">متابعة الأداء الشخصي للموظفين</span>
-                  <p-inputSwitch [(ngModel)]="employeeSettings.allowBasicSalaryActivity"></p-inputSwitch>
-                </div>
-              </div>
-            </div>
-  
-            <div class="perm-column">
-              <div class="perm-group">
-                <h4 class="group-heading">إدارة الميزانيات والموارد</h4>
-                <div class="perm-item">
-                  <span class="perm-text">الوصول إلى تحليل ميزانيات المشروع</span>
-                  <p-inputSwitch [(ngModel)]="projectSettings.editProjectValues"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">إدارة وتخطيط الموارد</span>
-                  <p-inputSwitch [(ngModel)]="projectSettings.sortProjectsByDate"></p-inputSwitch>
-                </div>
-              </div>
-  
-              <div class="perm-group">
-                <h4 class="group-heading">إدارة الموظفين</h4>
-                <div class="perm-item">
-                  <span class="perm-text">تخصيص الموظفين للمشاريع</span>
-                  <p-inputSwitch [(ngModel)]="budgetSettings.editFrequencyDates"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">إدارة جداول أوقات الموظفين</span>
-                  <p-inputSwitch [(ngModel)]="budgetSettings.allowQualityActivity"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">الوصول إلى تقارير السلامة</span>
-                  <p-inputSwitch [(ngModel)]="budgetSettings.allowBudgetActivity"></p-inputSwitch>
-                </div>
-              </div>
-  
-              <div class="perm-group">
-                <h4 class="group-heading">التقارير والمتابعة</h4>
-                <div class="perm-item">
-                  <span class="perm-text">إنشاء وإصدار تقارير تقدم المشروع</span>
-                  <p-inputSwitch [(ngModel)]="employeeSettings.allowTimesheetEdit"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">إدارة تقارير الموظفين</span>
-                  <p-inputSwitch [(ngModel)]="employeeSettings.sortEmployeesByDate"></p-inputSwitch>
-                </div>
-                <div class="perm-item">
-                  <span class="perm-text">متابعة الأداء الشخصي للموظفين</span>
-                  <p-inputSwitch [(ngModel)]="employeeSettings.allowBasicSalaryActivity"></p-inputSwitch>
-                </div>
-              </div>
-            </div>
+
+<!-- Permissions Card -->
+<div class="card permissions-card">
+    <h3 class="card-title">إدارة الصلاحيات</h3>
+    
+    <div class="permissions-columns">
+      <!-- Role Column (Right side in RTL) -->
+      <div class="role-column">
+        <h4 class="column-title">الدور الوظيفي</h4>
+        <div class="role-list">
+          <div class="role-item active">
+            <span>مدير المشاريع</span>
+          </div>
+          <div class="role-item">
+            <span>مدير تنفيذي</span>
+          </div>
+          <div class="role-item">
+            <span>مدير فريق</span>
+          </div>
+          <div class="role-item">
+            <span>مهندس</span>
+          </div>
+          <div class="role-item">
+            <span>عمال الميدان</span>
+          </div>
+          <div class="role-item">
+            <span>قسم المالية</span>
           </div>
         </div>
+      </div>
+  
+      <!-- Permission Column 1: إدارة المشاريع -->
+      <div class="perm-column">
+        <h4 class="column-title">إدارة المشاريع</h4>
+        <div class="perm-item">
+          <span>إنشاء وتحرير وإغلاق المشاريع</span>
+          <p-inputSwitch [(ngModel)]="projectSettings.editProjectValues"></p-inputSwitch>
+        </div>
+        <div class="perm-item">
+          <span>متابعة أداء المشروع</span>
+          <p-inputSwitch [(ngModel)]="projectSettings.sortProjectsByDate"></p-inputSwitch>
+        </div>
+      </div>
+  
+      <!-- Permission Column 2: إدارة الميزانيات والموارد -->
+      <div class="perm-column">
+        <h4 class="column-title">إدارة الميزانيات والموارد</h4>
+        <div class="perm-item">
+          <span>الوصول لإدارة ميزانية المشروع</span>
+          <p-inputSwitch [(ngModel)]="budgetSettings.allowBudgetActivity"></p-inputSwitch>
+        </div>
+        <div class="perm-item">
+          <span>إدارة وتخطيط الموارد</span>
+          <p-inputSwitch [(ngModel)]="budgetSettings.planResources"></p-inputSwitch>
+        </div>
+      </div>
+    </div>
+  </div>
   
         <!-- Settings Cards Column -->
         <div class="settings-cards-row">

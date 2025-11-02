@@ -1,5 +1,7 @@
 :host {
     display: block;
+    width: 80%;
+    margin-left: auto;
   }
   
   .products-table-container {
@@ -139,7 +141,7 @@
       
       .add-btn {
         background: white;
-        border: none;
+        border-color: #574DFF;
         color: #5A5780;
         font-weight: 700;
         font-size: 15px;
@@ -147,8 +149,7 @@
         border-radius: 50px;
         cursor: pointer;
         transition: all 0.2s;
-        box-shadow: 0px 3px 20px rgba(45, 60, 229, 0.161);
-        
+        margin-right: 9%;
         &:hover {
           background: #f8f8ff;
         }
