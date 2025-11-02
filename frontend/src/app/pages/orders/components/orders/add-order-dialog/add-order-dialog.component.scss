@@ -1,3 +1,7 @@
+// ============================================
+// DESKTOP STYLES - UNCHANGED
+// ============================================
+
 ::ng-deep .add-order-dialog {
   .p-dialog {
     border-radius: 24px;
@@ -216,7 +220,6 @@
   }
 }
 
-// Item row container - NO background, NO border
 .item-row-container {
   background: transparent;
   border: none;
@@ -230,26 +233,6 @@
   
   .input-row {
     margin-bottom: 0;
-  }
-  
-  // Container for the 6 fields in one row
-  .fields-row {
-    display: flex;
-    gap: 0.875rem;
-    direction: rtl;
-    margin-bottom: 0.5rem;
-  }
-  
-  // Container for totals under last 3 fields
-  .totals-under-row {
-    display: flex;
-    gap: 0.875rem;
-    direction: rtl;
-    margin-right: 0; // Will align with the last 3 fields
-    
-    .input-col {
-      flex: 1;
-    }
   }
 }
 
@@ -281,13 +264,6 @@
       text-align: center;
     }
   }
-}
-
-.table-wrapper {
-  margin-top: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
 .add-line-btn-wrapper {
@@ -397,7 +373,6 @@
 // PRIMENG OVERRIDES
 ::ng-deep .add-order-dialog {
   
-  // Dropdown
   .p-dropdown {
     width: 60%;
     height: 38px;
@@ -442,7 +417,6 @@
     }
   }
   
-  // Calendar - Updated to match input style
   .p-calendar {
     width: 87%;
     
@@ -481,13 +455,11 @@
       }
     }
     
-    // Hide the calendar icon button
     .p-datepicker-trigger {
       display: none !important;
     }
   }
   
-  // Checkbox
   .p-checkbox {
     .p-checkbox-box {
       width: 20px !important;
@@ -513,14 +485,12 @@
     }
   }
   
-  // Button
   .p-button {
     &:focus {
       box-shadow: none !important;
     }
   }
   
-  // Input Text
   .p-inputtext {
     &:enabled:focus {
       box-shadow: none !important;
@@ -528,7 +498,6 @@
   }
 }
 
-// Dropdown Panel
 ::ng-deep .p-dropdown-panel {
   border: 1px solid #e2e8f0 !important;
   border-radius: 12px !important;
@@ -557,7 +526,6 @@
   }
 }
 
-// Calendar Panel
 ::ng-deep .p-datepicker {
   border: 1px solid #e2e8f0 !important;
   border-radius: 12px !important;
@@ -586,7 +554,6 @@
   }
 }
 
-// Scrollbar for dropdown/calendar panels
 ::ng-deep {
   .p-dropdown-items-wrapper,
   .p-datepicker-calendar-container {
@@ -610,85 +577,599 @@
   }
 }
 
-// MOBILE RESPONSIVE LAYOUT
-@media (max-width: 768px) {
-  .dialog-wrapper {
+// ============================================
+// MOBILE STYLES - NEW FULLSCREEN LAYOUT
+// ============================================
+
+::ng-deep .mobile-add-order-dialog {
+  &.p-dialog-bottom {
+    .p-dialog {
+      margin: 0 !important;
+    }
+  }
+
+  .p-dialog {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .p-dialog-header {
+    display: none !important;
+  }
+
+  .p-dialog-content {
+    padding: 0 !important;
+    background: white !important;
+    border-radius: 0 !important;
+    overflow-y: auto !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  .p-dialog-mask {
+    align-items: stretch !important;
+    padding: 0 !important;
+  }
+
+  .p-component-overlay {
+    padding: 0 !important;
+  }
+}
+
+.mobile-form-container {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+
+  .mobile-form-image {
+    position: relative;
+    width: 100%;
+    height: 18%;
+    background: linear-gradient(135deg, #9A8CF0 0%, #B5AEF1 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .mobile-back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: white;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      width: auto;
+      height: auto;
+
+      &::before {
+        content: '<';
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      i {
+        display: none;
+      }
+
+      &:active {
+        opacity: 0.7;
+      }
+    }
+
+    h2 {
+      position: relative;
+      z-index: 1;
+      color: white;
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      margin: 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      direction: rtl;
+    }
+  }
+
+  .mobile-form-content {
+    padding: 32px 24px 24px;
+    border-radius: 24px 24px 0 0;
+    margin-top: -24px;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
     flex-direction: column;
-    height: 100vh;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .form-side {
-    width: 100%;
-    border-radius: 0;
-    padding: 1.5rem 1rem;
-    height: auto;
+    gap: 12px;
+    background: white;
     overflow-y: auto;
-    order: 2;
+
+    .mobile-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      text-align: right;
+      direction: rtl;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .mobile-section-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: #64748b;
+      text-align: right;
+      direction: rtl;
+      margin-bottom: 12px;
+      margin-top: 8px;
+    }
+
+    .mobile-divider {
+      height: 1px;
+      background: #B8B3FD;
+      margin: 20px 0;
+    }
+
+    .mobile-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 12px;
+
+      label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+        text-align: right;
+        direction: rtl;
+        margin-bottom: 0;
+      }
+
+      .mobile-field-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+        text-align: right;
+        direction: rtl;
+        margin-bottom: 0;
+      }
+
+      input {
+        width: 100%;
+        height: 48px;
+        padding: 0 18px;
+        border: 1px solid #E0DEFA;
+        border-radius: 22px;
+        font-size: 15px;
+        background: #E8E6F9;
+        direction: rtl;
+        color: #1e293b;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        text-align: right;
+        font-family: inherit;
+
+        &:hover {
+          background: #E0DEFA;
+          border-color: #D0CFF4;
+        }
+
+        &:focus {
+          outline: none;
+          background: white;
+          border-color: #B5AEF1;
+          box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2);
+        }
+
+        &::placeholder {
+          color: #D0CFF4;
+          text-align: right;
+        }
+      }
+
+      ::ng-deep .p-dropdown {
+        width: 100% !important;
+        height: 48px !important;
+        border: 1px solid #E0DEFA !important;
+        border-radius: 22px !important;
+        background: #E8E6F9 !important;
+        transition: all 0.2s ease !important;
+
+        &:hover {
+          border-color: #D0CFF4 !important;
+          background: #E0DEFA !important;
+        }
+
+        &.p-focus {
+          border-color: #B5AEF1 !important;
+          background: white !important;
+          box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2) !important;
+        }
+
+        .p-dropdown-label {
+          font-size: 15px !important;
+          padding: 0 18px !important;
+          text-align: right !important;
+          color: #1e293b !important;
+          font-weight: 400 !important;
+
+          &.p-placeholder {
+            color: #D0CFF4 !important;
+          }
+        }
+
+        .p-dropdown-trigger {
+          width: 2.5rem !important;
+          color: #D0CFF4 !important;
+
+          .p-dropdown-trigger-icon {
+            font-size: 0.875rem !important;
+          }
+        }
+
+        .p-dropdown-clear-icon {
+          right: 2.75rem !important;
+          color: #D0CFF4 !important;
+        }
+      }
+
+      ::ng-deep .p-calendar {
+        width: 100%;
+
+        .p-inputtext {
+          width: 100% !important;
+          height: 48px !important;
+          border: 1px solid #E0DEFA !important;
+          border-radius: 22px !important;
+          background: #E8E6F9 !important;
+          padding: 0 18px !important;
+          font-size: 15px !important;
+          text-align: right !important;
+          direction: rtl !important;
+          color: #1e293b !important;
+          font-weight: 400 !important;
+          transition: all 0.2s ease !important;
+          font-family: inherit !important;
+          box-shadow: none !important;
+
+          &:hover {
+            background: #E0DEFA !important;
+            border-color: #D0CFF4 !important;
+          }
+
+          &:focus {
+            outline: none !important;
+            border-color: #B5AEF1 !important;
+            background: white !important;
+            box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2) !important;
+          }
+
+          &::placeholder {
+            color: #D0CFF4 !important;
+            text-align: right !important;
+          }
+        }
+
+        .p-datepicker-trigger {
+          display: none !important;
+        }
+      }
+    }
+
+    .mobile-toggle-group {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      direction: rtl;
+      margin-bottom: 12px;
+
+      label {
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 500;
+        order: 1;
+      }
+
+      ::ng-deep .p-checkbox {
+        order: 2;
+
+        .p-checkbox-box {
+          width: 18px !important;
+          height: 18px !important;
+          border: 2px solid #E0DEFA !important;
+          border-radius: 4px !important;
+          background: white !important;
+          transition: all 0.15s ease !important;
+
+          &.p-highlight {
+            background: #B5AEF1 !important;
+            border-color: #B5AEF1 !important;
+          }
+
+          &:hover {
+            border-color: #D0CFF4 !important;
+          }
+
+          .p-checkbox-icon {
+            font-size: 0.625rem !important;
+            color: white !important;
+          }
+        }
+      }
+    }
+
+    .mobile-item-block {
+      margin-bottom: 16px;
+    }
+
+    .mobile-two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+
+      .mobile-field-group {
+        margin-bottom: 0;
+      }
+    }
+
+    .mobile-three-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+      margin-bottom: 8px;
+
+      .mobile-col-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 10px 8px;
+        background: #F8F7FE;
+        border-radius: 12px;
+
+        .mobile-col-label {
+          font-size: 11px;
+          color: #64748b;
+          font-weight: 500;
+          text-align: center;
+          order: 1;
+        }
+
+        .mobile-col-value {
+          font-size: 14px;
+          color: #1e293b;
+          font-weight: 600;
+          text-align: center;
+          order: 2;
+        }
+      }
+    }
+
+    .mobile-delete-btn {
+      width: 100%;
+      padding: 10px !important;
+      background: transparent !important;
+      border: 1px solid #fca5a5 !important;
+      border-radius: 12px !important;
+      color: #ef4444 !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      margin-top: 8px;
+
+      &:hover {
+        background: #fee2e2 !important;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+
+    .mobile-add-line-btn {
+      width: 100%;
+      padding: 14px !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 12px !important;
+      color: #7c6fff !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      transition: all 0.2s ease !important;
+      text-align: center;
+      margin: 8px 0;
+
+      &:hover {
+        background: #F8F7FE !important;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+
+    .mobile-grand-totals {
+      background: white;
+      border-radius: 20px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      gap: 16px;
+      margin: 16px 0;
+
+      .mobile-grand-total-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+
+        .mobile-grand-label {
+          font-size: 11px;
+          color: #64748b;
+          font-weight: 500;
+          text-align: center;
+          white-space: nowrap;
+        }
+
+        .mobile-grand-value {
+          font-size: 14px;
+          font-weight: 700;
+          color: #1e293b;
+          text-align: center;
+          white-space: nowrap;
+        }
+      }
+    }
   }
 
-  .illustration-side {
-    width: 100%;
-    height: 200px;
-    order: 1;
-    border-radius: 0;
+  .mobile-form-actions {
+    padding: 16px 24px 32px;
+    background: white;
+    flex-shrink: 0;
+
+    .mobile-save-button {
+      width: 100%;
+      padding: 16px;
+      font-size: 17px;
+      font-weight: 700;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%);
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35);
+
+      &:active {
+        transform: scale(0.98);
+        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Mobile-specific calendar popup styling
+::ng-deep .mobile-add-order-dialog {
+  .p-datepicker {
+    transform: scale(0.85);
+    transform-origin: top center;
     
-    .image-overlay {
-      img {
-        height: 100%;
-        object-fit: cover;
+    .p-datepicker-header {
+      padding: 0.5rem !important;
+      
+      .p-datepicker-title {
+        button {
+          font-size: 0.875rem !important;
+        }
       }
       
-      h2 {
-        top: 15%;
-        font-size: 1.5rem;
+      .p-datepicker-prev,
+      .p-datepicker-next {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+      }
+    }
+    
+    .p-datepicker-calendar-container {
+      padding: 0.25rem !important;
+      
+      table {
+        font-size: 0.75rem !important;
+        
+        th {
+          padding: 0.25rem !important;
+          
+          > span {
+            width: 1.75rem !important;
+            height: 1.75rem !important;
+          }
+        }
+        
+        td {
+          padding: 0.125rem !important;
+          
+          > span {
+            width: 1.75rem !important;
+            height: 1.75rem !important;
+            font-size: 0.75rem !important;
+          }
+        }
       }
     }
   }
+}
 
-  .section-title {
-    font-size: 0.8125rem;
-  }
+@media (max-width: 768px) {
+  ::ng-deep .mobile-add-order-dialog {
+    &.p-dialog {
+      max-height: 100% !important;
+    }
+    &.p-dialog-bottom {
+      .p-dialog {
+        margin: 0 !important;
+      }
+    }
+    
 
-  .input-row {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .input-col {
-    width: 100%;
-  }
-
-  .totals-row {
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
-
-  .add-line-btn-wrapper {
-    justify-content: center;
-  }
-
-  .final-save-btn {
-    width: 90%;
-    margin: 1rem auto;
-    height: 44px;
-    font-size: 0.9375rem;
-  }
-
-  ::ng-deep .add-order-dialog {
     .p-dialog {
-      width: 100% !important;
-      height: 100vh !important;
+      max-height: 100%;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
       margin: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
+    }
+    
+    .p-dialog-mask {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  }
+
+  ::ng-deep {
+    .p-dialog-mask.mobile-add-order-dialog {
+      padding: 0 !important;
+      
+      .p-dialog {
+        margin: 0 !important;
+      }
     }
 
-    .p-dialog-content {
-      padding: 0;
-      border-radius: 0;
+    .p-dialog-bottom .p-dialog.mobile-add-order-dialog,
+    .mobile-add-order-dialog.p-dialog-bottom .p-dialog {
+      margin: 0 !important;
     }
   }
 }

@@ -107,19 +107,9 @@
   </div>
   
   <!-- Mobile Add Button -->
-  <button class="mobile-add-btn" (click)="openAddOrderDialog()">
-    <img src="assets/icons/plus_sign_icon.svg" alt="+">
-  </button>
-  
-  <!-- Mobile Add Button -->
-  <button class="mobile-add-btn" (click)="openAddOrderDialog()">
-    <img src="assets/icons/plus_sign_icon.svg" alt="+">
-  </button>
-
-  <!-- Mobile Add Button -->
-  <button class="mobile-add-btn" (click)="openAddOrderDialog()">
-    <img src="assets/icons/plus_sign_icon.svg" alt="+">
-  </button>
+<button class="mobile-add-btn" (click)="showAddOptions()">
+  <img src="assets/icons/plus_sign_icon.svg" alt="+">
+</button>
 </div>
 
 <div class="orders-container">
@@ -367,6 +357,22 @@
   [(visible)]="showDateRangeDialog"
   (onApplyDateRange)="onApplyDateRange($event)">
 </app-date-range-dialog>
+<div class="mobile-add-menu" *ngIf="showAddMenu" (click)="closeAddMenu()">
+  <div class="add-menu-content" (click)="$event.stopPropagation()">
+
+    <button class="add-option-btn immediate" (click)="addImmediateOrder()">
+      <span>إضافة طلب فوري</span>
+    </button>
+
+    <span style="display:block; width:100%; border-bottom:2px solid #B8B3FD; margin:8px 0;"></span>
+
+    <button class="add-option-btn regular" (click)="addRegularOrder()">
+      <span>إضافة طلب عادي</span>
+    </button>
+
+  </div>
+</div>
+
 </div>
 
 <app-footer-nav></app-footer-nav>

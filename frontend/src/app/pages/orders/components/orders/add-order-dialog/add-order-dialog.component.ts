@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
@@ -30,11 +30,13 @@ import { ProductsService } from '../../../services/products.service';
     ButtonModule,
   ],
 })
-export class AddOrderDialogComponent implements OnInit {
+export class AddOrderDialogComponent implements OnInit, OnDestroy {
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() onHide = new EventEmitter<void>();
   @Output() onOrderSaved = new EventEmitter<any>();
+
+  isMobile: boolean = false;
 
   orderData = {
     customerId: null as number | null,
@@ -75,8 +77,17 @@ export class AddOrderDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loadInitialData();
-    // Initialize with one empty row
     this.addRow();
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.checkScreenSize.bind(this));
+  }
+
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   loadInitialData() {

@@ -7,10 +7,12 @@
   [dismissableMask]="true"
   (onHide)="onDialogHide()"
   [baseZIndex]="10"
-  styleClass="add-order-dialog"
-  [style]="{width: '85vw', height: '90vh'}">
+  [styleClass]="isMobile ? 'mobile-add-order-dialog' : 'add-order-dialog'"
+  [position]="isMobile ? 'bottom' : 'center'"
+  [style]="{width: isMobile ? '100%' : '85vw', height: isMobile ? '100vh' : '90vh'}">
   
-  <div class="dialog-wrapper">
+  <!-- DESKTOP VIEW - EXACTLY AS BEFORE -->
+  <div class="dialog-wrapper" *ngIf="!isMobile">
     <!-- Left Side - Form -->
     <div class="form-side">
       
@@ -55,7 +57,6 @@
           <h3 class="section-title">تفاصيل الطلب</h3>
         </div>
 
-        <!-- First Row: Address + Date -->
         <div class="input-row">
           <div class="input-col">
             <span class="input-label">العنوان</span>
@@ -80,7 +81,6 @@
           </div>
         </div>
 
-        <!-- Second Row: VAT Checkbox + Contract Number -->
         <div class="input-row">
           <div class="input-col">
             <div class="checkbox-wrapper-inline">
@@ -161,7 +161,6 @@
             </div>
           </div>
 
-          <!-- Second Row: Total + Tax + Total with Tax -->
           <div class="input-row">
             <div class="input-col">
               <span class="input-label">الإجمالي</span>
@@ -195,7 +194,6 @@
           </div>
         </div>
 
-        <!-- Totals Row -->
         <div class="totals-row">
           <div class="total-item">
             <span>الإجمالي:</span>
@@ -211,7 +209,6 @@
           </div>
         </div>
 
-        <!-- Add Line Button -->
         <div class="add-line-btn-wrapper">
           <button 
             pButton 
@@ -243,7 +240,6 @@
         </div>
       </div>
 
-      <!-- Save Button -->
       <button 
         pButton 
         label="حفظ" 
@@ -257,8 +253,208 @@
     <div class="illustration-side">
       <div class="image-overlay">
         <img src="assets/images/add_orders.png" alt="Add Order Illustration" />
-        <h2>הוספת הזמנה חדשה</h2>
+        <h2>إضافة طلب جديد</h2>
       </div>
+    </div>
+  </div>
+
+  <!-- MOBILE VIEW - ARABIC TRANSLATION -->
+  <div class="mobile-form-container" *ngIf="isMobile">
+    <!-- Mobile Header with Image -->
+    <div class="mobile-form-image">
+      <img src="assets/images/add_orders.png" alt="إضافة طلب">
+      <button class="mobile-back-btn" (click)="closeDialog()">
+        <i class="pi pi-arrow-right"></i>
+      </button>
+      <h2>إضافة طلب جديد</h2>
+    </div>
+
+    <!-- Mobile Form Content -->
+    <div class="mobile-form-content">
+      <!-- Customer Details -->
+      <div class="mobile-section-title">تفاصيل العميل</div>
+      
+      <div class="mobile-field-group">
+        <label>اسم العميل/المستفيد</label>
+        <p-dropdown 
+          [(ngModel)]="orderData.customerId"
+          [options]="customerOptions" 
+          placeholder="اختر عميل"
+          [showClear]="true"
+          [filter]="true"
+          (onChange)="onCustomerChange($event)">
+        </p-dropdown>
+      </div>
+
+      <div class="mobile-field-group">
+        <label>رقم المركبة</label>
+        <p-dropdown 
+          [(ngModel)]="orderData.carId"
+          [options]="vehicleOptions" 
+          placeholder="اختر رقم"
+          [showClear]="true"
+          [filter]="true"
+          [disabled]="!orderData.customerId">
+        </p-dropdown>
+      </div>
+
+      <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 6px 0; width: 100%;"></div>
+      <!-- Order Details -->
+      <div class="mobile-section-title">تفاصيل الطلب</div>
+
+      <div class="mobile-field-group">
+        <label>تاريخ الطلب</label>
+        <p-calendar 
+          [(ngModel)]="orderData.orderDate" 
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          placeholder="—/—/—">
+        </p-calendar>
+      </div>
+
+      <div class="mobile-field-group">
+        <label>العنوان</label>
+        <p-dropdown 
+          [(ngModel)]="orderData.addressLine1"
+          [options]="addressOptions" 
+          placeholder="اختر عنوان"
+          [showClear]="true"
+          [filter]="true"
+          [disabled]="!orderData.customerId">
+        </p-dropdown>
+      </div>
+
+      <div class="mobile-field-group">
+        <label>ما هو رقم العقد؟</label>
+        <input 
+          pInputText 
+          type="text" 
+          [(ngModel)]="orderData.contractNumber"
+          placeholder="أدخل رقم العقد" />
+      </div>
+
+      <div class="mobile-toggle-group">
+        <p-checkbox 
+          [(ngModel)]="orderData.includeVAT" 
+          [binary]="true"
+          (onChange)="onVATChange()">
+        </p-checkbox>
+        <label>يشمل الضريبة</label>
+      </div>
+      <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 6px 0; width: 100%;"></div>
+      <!-- Product Items -->
+      <div class="mobile-section-title">تفاصيل المنتجات</div>
+
+      <div *ngFor="let row of orderItemRows; let i = index" class="mobile-item-block">
+        <div class="mobile-field-group">
+          <label>المنتج/كود المنتج</label>
+          <p-dropdown 
+            [(ngModel)]="row.productId"
+            [options]="productOptions" 
+            placeholder="اختر منتج"
+            [showClear]="true"
+            [filter]="true"
+            (onChange)="onProductChange(i, $event)">
+          </p-dropdown>
+        </div>
+
+        <div class="mobile-two-cols">
+          <div class="mobile-field-group">
+            <label>الكمية</label>
+            <input 
+              pInputText 
+              type="number" 
+              [(ngModel)]="row.quantity"
+              (ngModelChange)="onQuantityChange(i)"
+              placeholder="0" 
+              min="0" />
+          </div>
+
+          <div class="mobile-field-group">
+            <label>السعر</label>
+            <input 
+              pInputText 
+              type="number" 
+              [(ngModel)]="row.price"
+              (ngModelChange)="onPriceChange(i)"
+              placeholder="0.00" 
+              min="0" 
+              step="0.01" />
+          </div>
+        </div>
+
+        <div class="mobile-three-cols">
+          <div class="mobile-col-item">
+            <span class="mobile-col-label">الإجمالي</span>
+            <span class="mobile-col-value">{{formatCurrency(row.totalBeforeTax)}}</span>
+          </div>
+          <div class="mobile-col-item">
+            <span class="mobile-col-label">الضريبة</span>
+            <span class="mobile-col-value">{{formatCurrency(row.taxAmount)}}</span>
+          </div>
+          <div class="mobile-col-item">
+            <span class="mobile-col-label">الإجمالي مع الضريبة</span>
+            <span class="mobile-col-value">{{formatCurrency(row.totalWithTax)}}</span>
+          </div>
+        </div>
+
+        <button 
+          *ngIf="orderItemRows.length > 1"
+          pButton 
+          type="button" 
+          label="حذف"
+          class="mobile-delete-btn"
+          (click)="removeRow(i)">
+        </button>
+      </div>
+
+      <button 
+        pButton 
+        type="button" 
+        label="+ إضافة سطر" 
+        class="mobile-add-line-btn" 
+        (click)="addRow()">
+      </button>
+
+
+<div class="mobile-grand-totals">
+  <div class="mobile-grand-total-col">
+    <span class="mobile-grand-label">الإجمالي</span>
+    <span class="mobile-grand-value">{{formatCurrency(getTotalBeforeTax())}}</span>
+  </div>
+  <div class="mobile-grand-total-col">
+    <span class="mobile-grand-label">الضريبة</span>
+    <span class="mobile-grand-value">{{formatCurrency(getTotalTax())}}</span>
+  </div>
+  <div class="mobile-grand-total-col">
+    <span class="mobile-grand-label">الإجمالي مع الضريبة</span>
+    <span class="mobile-grand-value">{{formatCurrency(getTotalWithTax())}}</span>
+  </div>
+</div>
+
+<div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 6px 0; width: 100%;"></div>
+      <!-- Notes -->
+      <div class="mobile-section-title">ملاحظات وملخص</div>
+
+      <div class="mobile-field-group">
+        <label>ملاحظات</label>
+        <input 
+          pInputText 
+          type="text" 
+          [(ngModel)]="orderData.notes"
+          placeholder="أدخل ملاحظات" />
+      </div>
+    </div>
+
+    <!-- Mobile Save Button -->
+    <div class="mobile-form-actions">
+      <button 
+        pButton 
+        label="حفظ" 
+        class="mobile-save-button" 
+        (click)="onSave()"
+        [disabled]="loading">
+      </button>
     </div>
   </div>
 </p-dialog>

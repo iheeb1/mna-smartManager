@@ -50,10 +50,12 @@ export class OrdersComponent implements OnInit {
 
   showFiltersDialog = false;
   showDateRangeDialog = false;
+  showAddMenu = false;
   
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('startDateMobile') startDateMobile!: Calendar;
   @ViewChild('endDateMobile') endDateMobile!: Calendar;
+  
 
   constructor() {}
 
@@ -284,5 +286,25 @@ export class OrdersComponent implements OnInit {
     this.startDate = dateRange.startDate;
     this.endDate = dateRange.endDate;
     this.loadOrders();
+  }
+
+  showAddOptions() {
+    this.showAddMenu = true;
+  }
+
+  closeAddMenu() {
+    this.showAddMenu = false;
+  }
+
+  addImmediateOrder() {
+    this.showAddMenu = false;
+    this.openAddOrderDialog();
+    // You can pass a parameter here to indicate it's an immediate order
+  }
+
+  addRegularOrder() {
+    this.showAddMenu = false;
+    this.openAddOrderDialog();
+    // You can pass a parameter here to indicate it's a regular order
   }
 }
