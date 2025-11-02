@@ -803,17 +803,17 @@
         position: relative;
         overflow: visible;
         transition: all 0.3s ease;
-
+    
         &.expanded {
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
+    
           .expand-icon {
             bottom: 16px;
             background: #F3F4F6;
             color: #574DFF;
           }
         }
-
+    
         .card-header {
           padding: 16px;
           padding-bottom: 20px;
@@ -823,18 +823,18 @@
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           position: relative;
           direction: rtl;
-
+    
           .card-header-content {
             display: flex;
             flex-direction: column;
             gap: 12px;
-
+    
             .card-title {
               display: flex;
               align-items: center;
               gap: 8px;
               justify-content: space-between;
-
+    
               .menu-btn {
                 background: none;
                 border: none;
@@ -842,18 +842,18 @@
                 cursor: pointer;
                 padding: 4px;
                 order: 1;
-
+    
                 &:hover {
                   color: #574DFF;
                 }
               }
-
+    
               .date-label {
                 color: #6B7280;
                 font-size: 13px;
                 order: 2;
               }
-
+    
               .customer-name {
                 color: #574DFF;
                 font-size: 14px;
@@ -863,26 +863,26 @@
                 order: 3;
               }
             }
-
+    
             .card-main-info {
-              display: flex;
-              justify-content: space-between;
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
               gap: 8px;
               padding: 12px 0;
-
+              border-top: 1px solid #F3F4F6;
+    
               .info-group {
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
                 text-align: center;
-                flex: 1;
-
+    
                 .info-label {
                   font-size: 11px;
                   color: #6B7280;
                   font-weight: 500;
                 }
-
+    
                 .info-value {
                   font-size: 13px;
                   color: #000000;
@@ -890,46 +890,48 @@
                 }
               }
             }
-
+    
             .card-address {
-              background: #FAFBFF;
               padding: 8px 12px;
               border-radius: 8px;
               text-align: right;
-
+              border-top: 1px solid #F3F4F6;
+    
               .address-label {
                 font-size: 11px;
                 color: #6B7280;
                 font-weight: 500;
                 margin-bottom: 4px;
               }
-
+    
               .address-value {
                 font-size: 13px;
                 color: #2d3748;
                 font-weight: 500;
               }
             }
-
+    
             .card-totals {
               display: flex;
               justify-content: space-between;
               gap: 12px;
               padding: 8px 0;
-
+              padding-top: 12px;
+              border-top: 1px solid #F3F4F6;
+    
               .total-item {
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
                 text-align: center;
                 flex: 1;
-
+    
                 .total-label {
                   font-size: 11px;
                   color: #6B7280;
                   font-weight: 500;
                 }
-
+    
                 .total-value {
                   font-size: 13px;
                   color: #000000;
@@ -939,7 +941,7 @@
             }
           }
         }
-
+    
         .expand-icon {
           position: absolute;
           bottom: -16px;
@@ -956,55 +958,64 @@
           box-shadow: 0 2px 8px rgba(87, 77, 255, 0.3);
           z-index: 10;
           transition: all 0.3s ease;
-
+    
           i {
             font-size: 14px;
           }
         }
-
+    
         .card-details {
           padding: 16px;
           padding-top: 24px;
           padding-bottom: 60px;
           border-top: 1px solid #F3F4F6;
           direction: rtl;
-
+    
           .items-list {
             .item-row {
-              background: #FAFBFF;
-              padding: 12px;
+              padding: 12px 16px;
               border-radius: 8px;
-              margin-bottom: 8px;
-
+              margin-bottom: 12px;
+              border-bottom: 1px solid #E5E7EB;
+    
               .item-header {
                 display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 8px;
-
+                flex-direction: column;
+                gap: 12px;
+    
+                > div {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  gap: 16px;
+                }
+    
                 .item-desc {
-                  flex: 1;
-                  font-size: 13px;
+                  font-size: 14px;
                   color: #2d3748;
                   font-weight: 600;
                   text-align: right;
+                  flex: 1;
                 }
-
+    
                 .item-price {
-                  font-size: 13px;
+                  font-size: 14px;
                   color: #000000;
                   font-weight: 700;
+                  text-align: left;
+                  white-space: nowrap;
                 }
-
+    
                 .item-qty {
-                  font-size: 12px;
+                  font-size: 13px;
                   color: #6B7280;
+                  text-align: left;
                   white-space: nowrap;
                 }
               }
             }
           }
-
+    
           .expanded-total {
             background: #D9D6FF;
             padding: 10px 16px;
@@ -1013,14 +1024,15 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 16px;
-            direction: ltr;
+            max-width: 70%;
+            margin-right: 15%;
 
             .expanded-total-label {
               font-size: 15px;
               font-weight: 700;
               color: #15123C;
             }
-
+    
             .expanded-total-value {
               font-size: 15px;
               font-weight: 700;
