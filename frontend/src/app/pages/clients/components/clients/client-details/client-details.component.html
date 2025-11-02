@@ -1,0 +1,175 @@
+<app-header></app-header>
+
+<div class="container">
+  <!-- Breadcrumb & Title -->
+  <div class="breadcrumb">
+    <span class="back-link" (click)="goBack()">חזור לרשימת הלקוחות ></span>
+  </div>
+
+  <div class="page-header">
+    <h1 class="page-title">משאבות</h1>
+    <p class="page-subtitle">מסרט לקוח</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <!-- Left Section: Invoice Table -->
+    <div class="left-section">
+      <!-- Action Buttons & Title -->
+      <div class="table-header-section">
+        <div class="header-actions">
+          <button pButton class="export-btn" (click)="exportData()">
+            <img src="assets/icons/export_icon.svg" alt="export">
+            <span>ייצוא</span>
+          </button>
+          <button pButton class="p-button-text print-btn" (click)="printPage()">
+            <img src="assets/icons/print_icon.svg" alt="print">
+          </button>
+          <button pButton label="הזמנה חדשה" class="p-button-primary add-btn"></button>
+          <button pButton label="תשלום חדש" class="p-button-primary add-btn" (click)="openPaymentModal()"></button>
+        </div>
+        <h2 class="table-title">מצב החשבון</h2>
+      </div>
+
+      <!-- Table with Border -->
+      <div class="table-wrapper">
+        <div class="invoice-table">
+          <!-- Table Headers -->
+          <div class="table-header">
+            <div class="header-cell actions-col"></div>
+            <div class="header-cell">יתרה</div>
+            <div class="header-cell">כללי מע"מ</div>
+            <div class="header-cell">סכום</div>
+            <div class="header-cell">הנחה</div>
+            <div class="header-cell">רכב</div>
+            <div class="header-cell">כתובת</div>
+            <div class="header-cell">סוג</div>
+            <div class="header-cell">תיאור</div>
+          </div>
+
+          <!-- Table Body -->
+          <div class="table-body">
+            <div class="table-row" *ngFor="let invoice of invoices">
+              <div class="row-cell actions-col">
+                <button class="icon-btn delete-btn" (click)="deleteInvoice(invoice)">
+                  <i class="pi pi-trash"></i>
+                </button>
+                <button class="icon-btn edit-btn" (click)="editInvoice(invoice)">
+                  <i class="pi pi-pencil"></i>
+                </button>
+              </div>
+              <div class="row-cell">{{ invoice.balance }}</div>
+              <div class="row-cell">{{ invoice.totalVat }}</div>
+              <div class="row-cell">{{ invoice.amount }}</div>
+              <div class="row-cell">{{ invoice.discount }}</div>
+              <div class="row-cell">{{ invoice.vehicle }}</div>
+              <div class="row-cell">{{ invoice.address }}</div>
+              <div class="row-cell">{{ invoice.type }}</div>
+              <div class="row-cell description-cell">
+                <div class="description-text">{{ invoice.description }}</div>
+                <div class="date-text">{{ invoice.date }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table Footer -->
+          <div class="table-footer">
+            <div class="footer-content">
+              <div class="footer-totals">
+                <div class="footer-value">{{ totalStats.total1 }}</div>
+                <div class="footer-value">{{ totalStats.total2 }}</div>
+                <div class="footer-value">{{ totalStats.total3 }}</div>
+              </div>
+              <div class="footer-label">:סה״כ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Stats & Details -->
+    <div class="right-section">
+      <!-- Statistics Card -->
+      <div class="stats-card">
+        <div class="stats-content">
+          <div class="stat-item revenue-stat">
+            <div class="stat-label">סה״כ הכנסות</div>
+            <div class="stat-value">{{ totalRevenue }}</div>
+          </div>
+          
+          <div class="stat-item payments-stat">
+            <div class="stat-label">סה״כ תשלומים</div>
+            <div class="stat-value">{{ totalPayments }}</div>
+          </div>
+          
+          <div class="stat-item balance-stat">
+            <div class="stat-label">סה״כ יתרת חשבון</div>
+            <div class="stat-value">{{ remainingBalance }}</div>
+          </div>
+        </div>
+        
+        <h3 class="card-title">סיכום החשבון</h3>
+      </div>
+
+      <!-- Contact Details Card -->
+      <div class="contact-card" dir="rtl">
+        <div class="contact-header">
+          <button class="edit-icon-btn">
+            <i class="pi pi-pencil"></i>
+          </button>
+          <h3 class="card-title">פרטים כלליים</h3>
+        </div>
+        
+        <div class="contact-section">
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-label">שם לקוח</div>
+              <div class="contact-label">כתובת</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-value strong">{{ contactDetails.clientName }}</div>
+              <div class="contact-value strong">{{ contactDetails.address }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-header">
+          <button class="edit-icon-btn">
+            <i class="pi pi-pencil"></i>
+          </button>
+          <h3 class="card-title">פרטי תקשורת</h3>
+        </div>
+
+        <div class="contact-section">
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-label">טלפון</div>
+              <div class="contact-label">פקס</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-value strong">{{ contactDetails.phone }}</div>
+              <div class="contact-value strong">{{ contactDetails.fax }}</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-label">נייד</div>
+              <div class="contact-label">אימייל</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-value strong">{{ contactDetails.mobile }}</div>
+              <div class="contact-value strong">{{ contactDetails.email }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Modal Component -->
+<app-payment-modal
+  [(visible)]="showPaymentModal"
+  (onSave)="handlePaymentSave($event)"
+  (onCancel)="handlePaymentCancel()">
+</app-payment-modal>
+
+<app-footer-nav></app-footer-nav>

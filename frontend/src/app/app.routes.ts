@@ -31,6 +31,16 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/cars/cars.routes').then(m => m.CARS_ROUTES),
         canActivate: [authGuard]
     },
+    { 
+        path: 'settings',
+        loadChildren: () => import('./pages/settings/settings.routes').then(m => m.SETTINGS_ROUTES),
+        canActivate: [authGuard]
+    },
+    { 
+        path: 'customers',
+        loadChildren: () => import('./pages/clients/clients.routes').then(m => m.CLIENTS_ROUTES),
+        canActivate: [authGuard]
+    },
     {
         path: '**',
         redirectTo: '/login'

@@ -1,0 +1,283 @@
+<div class="settings-container">
+    <app-header></app-header>
+    
+    <p-toast position="top-center"></p-toast>
+  
+    <div class="page-header">
+      <h1 class="page-title">הגדרות</h1>
+      <h2 class="section-title">פרטי עסק</h2>
+    </div>
+  
+    <div class="main-layout">
+      <!-- Top Row - Products Table and Business Details -->
+      <div class="top-row">
+        <!-- Products Table Card -->
+        <div class="card products-card">
+          <div class="card-header">
+            <div class="tabs-row">
+              <button class="tab-item">מוצרים</button>
+              <button class="tab-item">בנקים</button>
+              <button class="tab-item">סטטוס צ'ק</button>
+              <button class="tab-item">ניהול כתובות</button>
+              <button class="tab-item active">מוצרים</button>
+            </div>
+            
+            <div class="search-controls">
+              <div class="search-box">
+                <input type="text" placeholder="חיפוש חופשי של מוצר" 
+                       [(ngModel)]="searchTerm"
+                       (ngModelChange)="onSearchChange($event)">
+                <button class="search-btn">
+                  <i class="pi pi-search"></i>
+                </button>
+              </div>
+              
+              <button class="control-icon">
+                <i class="pi pi-sliders-h"></i>
+              </button>
+              <span class="control-label">סינון</span>
+              
+              <button class="control-icon">
+                <i class="pi pi-sort-alt"></i>
+              </button>
+              
+              <button class="add-btn">הוספת מוצר</button>
+            </div>
+          </div>
+  
+          <div class="table-wrapper">
+            <div class="table-header">
+              <div class="header-cell name">שם מוצר</div>
+              <div class="header-cell code">קוד פריט</div>
+              <div class="header-cell price">מחיר</div>
+              <div class="header-cell status">סטטוס</div>
+              <div class="header-cell action">פעולות</div>
+            </div>
+  
+            <div class="table-body">
+              <div class="table-row" *ngFor="let row of filteredRows">
+                <div class="row-cell product-name">
+                  <a href="#" class="product-link">{{ row.name }}</a>
+                </div>
+                <div class="row-cell code">{{ row.number }}</div>
+                <div class="row-cell price">{{ row.amount }}</div>
+                <div class="row-cell status">
+                  <span class="status-active">{{ row.status }}</span>
+                </div>
+                <div class="row-cell action">
+                  <button class="action-icon edit">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button class="action-icon delete">
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Business Details Card -->
+        <div class="card business-details-card">
+          <h3 class="card-title">פרטי עסק</h3>
+          
+          <div class="form-grid">
+            <div class="form-row">
+              <div class="form-group">
+                <label>שם עסק</label>
+                <input type="text" value="משאבות מיוק">
+              </div>
+              <div class="form-group">
+                <label>מספּר ע.מ.ח.פ</label>
+                <input type="text" value="123456789">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>כתובת</label>
+                <input type="text" value="כפר קאסם, איזור התעשייה">
+              </div>
+              <div class="form-group">
+                <label>כפר איזור התעשייה</label>
+                <input type="text" value="משאבוֹת מיוק">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>ישוב</label>
+                <input type="text" value="משאבוֹת מיוק">
+              </div>
+              <div class="form-group">
+                <label>מיקוד</label>
+                <input type="text" value="123456789">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>פקס</label>
+                <input type="text" value="0541234567">
+              </div>
+              <div class="form-group">
+                <label>נייד</label>
+                <input type="text" value="0541234567">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>טלפון</label>
+                <input type="text" value="0541234567">
+              </div>
+              <div class="form-group">
+                <label>אימייל</label>
+                <input type="email" value="example2000@gmail.com">
+              </div>
+            </div>
+          </div>
+  
+          <button class="save-button">שמירה</button>
+        </div>
+      </div>
+  
+      <!-- Second Row - Settings Cards and Permissions -->
+      <div class="second-row">
+
+        <!-- Permissions Panel -->
+        <div class="card permissions-card">
+            <h3 class="card-title">ניהול הרשאות</h3>
+            
+            <div class="permissions-columns">
+              <div class="perm-column">
+                <div class="perm-group">
+                  <h4 class="group-heading">ניהול תקציבים ומשאבים</h4>
+                  <div class="perm-item">
+                    <span class="perm-text">גישה לניתוב תקציבי הפרויקט</span>
+                    <p-inputSwitch [(ngModel)]="projectSettings.editProjectValues"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">ניהול ותכנון משאבים</span>
+                    <p-inputSwitch [(ngModel)]="projectSettings.sortProjectsByDate"></p-inputSwitch>
+                  </div>
+                </div>
+    
+                <div class="perm-group">
+                  <h4 class="group-heading">ניהול עובדים</h4>
+                  <div class="perm-item">
+                    <span class="perm-text">הקצאת עובדים לפרויקטים</span>
+                    <p-inputSwitch [(ngModel)]="budgetSettings.editFrequencyDates"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">ניהול לוחות זמנים של תועלות</span>
+                    <p-inputSwitch [(ngModel)]="budgetSettings.allowQualityActivity"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">גישה לדיווחי בטיחות</span>
+                    <p-inputSwitch [(ngModel)]="budgetSettings.allowBudgetActivity"></p-inputSwitch>
+                  </div>
+                </div>
+    
+                <div class="perm-group">
+                  <h4 class="group-heading">דיווחות ומעקב</h4>
+                  <div class="perm-item">
+                    <span class="perm-text">יצירה והפקת דיווחי התקדמות של הפרויקט</span>
+                    <p-inputSwitch [(ngModel)]="employeeSettings.allowTimesheetEdit"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">ניהול דיווחים של העובדים</span>
+                    <p-inputSwitch [(ngModel)]="employeeSettings.sortEmployeesByDate"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">מעקב אחר ביצועים אישיים של העובדים</span>
+                    <p-inputSwitch [(ngModel)]="employeeSettings.allowBasicSalaryActivity"></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="perm-column">
+                <div class="perm-group">
+                  <h4 class="group-heading">ניהול תקציבים ומשאבים</h4>
+                  <div class="perm-item">
+                    <span class="perm-text">גישה לניתוב תקציבי הפרויקט</span>
+                    <p-inputSwitch [(ngModel)]="projectSettings.editProjectValues"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">ניהול ותכנון משאבים</span>
+                    <p-inputSwitch [(ngModel)]="projectSettings.sortProjectsByDate"></p-inputSwitch>
+                  </div>
+                </div>
+    
+                <div class="perm-group">
+                  <h4 class="group-heading">ניהול עובדים</h4>
+                  <div class="perm-item">
+                    <span class="perm-text">הקצאת עובדים לפרויקטים</span>
+                    <p-inputSwitch [(ngModel)]="budgetSettings.editFrequencyDates"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">ניהול לוחות זמנים של תועלות</span>
+                    <p-inputSwitch [(ngModel)]="budgetSettings.allowQualityActivity"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">גישה לדיווחי בטיחות</span>
+                    <p-inputSwitch [(ngModel)]="budgetSettings.allowBudgetActivity"></p-inputSwitch>
+                  </div>
+                </div>
+    
+                <div class="perm-group">
+                  <h4 class="group-heading">דיווחות ומעקב</h4>
+                  <div class="perm-item">
+                    <span class="perm-text">יצירה והפקת דיווחי התקדמות של הפרויקט</span>
+                    <p-inputSwitch [(ngModel)]="employeeSettings.allowTimesheetEdit"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">ניהול דיווחים של העובדים</span>
+                    <p-inputSwitch [(ngModel)]="employeeSettings.sortEmployeesByDate"></p-inputSwitch>
+                  </div>
+                  <div class="perm-item">
+                    <span class="perm-text">מעקב אחר ביצועים אישיים של העובדים</span>
+                    <p-inputSwitch [(ngModel)]="employeeSettings.allowBasicSalaryActivity"></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- Settings Cards Column -->
+        <div class="settings-cards-row">
+          <!-- Print Settings Card -->
+          <div class="card print-settings-card">
+            <h3 class="card-title">הגדרות הדפסה</h3>
+            
+            <div class="setting-item">
+              <span class="setting-label">סוג תבנית עיצובית</span>
+              <button class="dropdown-badge">
+                פריטי חברה
+                <i class="pi pi-chevron-down"></i>
+              </button>
+            </div>
+            
+            <button class="save-button">שמירה</button>
+          </div>
+  
+          <!-- Tax Settings Card -->
+          <div class="card tax-settings-card">
+            <h3 class="card-title">הגדרות כלליות</h3>
+            
+            <div class="setting-item">
+              <span class="setting-label">אחוז המע"ם</span>
+              <div class="percent-badge">17%</div>
+            </div>
+            
+            <button class="save-button">שמירה</button>
+          </div>
+        </div>
+  
+        
+      </div>
+    </div>
+  
+    <p-menu #rowMenu [model]="rowMenuItems" [popup]="true" appendTo="body"></p-menu>
+  
+    <app-footer-nav></app-footer-nav>
+  </div>
