@@ -372,64 +372,148 @@
   }
   
   /* Permissions Card */
-  .permissions-card {
+.permissions-card {
     width: 80%;
     margin-left: auto;
-    height: 250px;
-    overflow-y: auto;
-    .permissions-columns {
+    
+    .permissions-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: auto 1fr;
+      gap: 32px;
+      direction: rtl;
       
-      .perm-column {
-        .perm-group {
-          margin-bottom: 16px;
-          
-          &:last-child {
-            margin-bottom: 0;
+      .role-tabs {
+        border-left: 1px solid #E5E5E5;
+        padding-left: 20px;
+        min-width: 200px;
+        direction: rtl;
+        .add-role-btn {
+            width: 100%;
+            background: white;
+            border: none;
+            color: #574DFF;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            direction: rtl;
+            
+            i {
+              font-size: 12px;
+            }
+            
+            &:hover {
+              background: #F5F5FF;
+            }
           }
+        .tabs-header {
+          margin-bottom: 16px;
+          direction: rtl;
           
-          .group-heading {
+          .tabs-title {
             font-size: 12px;
             color: #2D3748;
             font-weight: 600;
-            margin: 0 0 10px 0;
+            margin: 0 0 12px 0;
             text-align: right;
+            direction: rtl;
+          }
+        }
+        
+        .role-list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          direction: rtl;
+          
+          .role-item {
+            padding: 0px 16px;
+            width: fit-content;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            direction: rtl;
+            
+            span {
+              font-size: 11px;
+              color: #5A5780;
+              font-weight: 500;
+              text-align: right;
+              display: block;
+              direction: rtl;
+            }
+            
+            &:hover {
+              background: #F5F5FF;
+            }
+            
+            &.active {
+              background: #B8B3FD;
+              border-radius: 8px;
+              
+              span {
+                color: white;
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
+      
+      .permissions-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px 32px;
+        direction: rtl;
+        
+        .perm-group {
+          .group-title {
+            font-size: 12px;
+            color: #2D3748;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            text-align: right;
+            direction: rtl;
           }
           
           .perm-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             gap: 12px;
+            direction: rtl;
             
             &:last-child {
               margin-bottom: 0;
             }
             
-            .perm-text {
+            span {
               font-size: 10px;
               color: #5A5780;
               text-align: right;
               flex: 1;
               line-height: 1.4;
+              direction: rtl;
             }
             
             ::ng-deep .p-inputswitch {
-              width: 36px;
-              height: 20px;
-              flex-shrink: 0;
-              
-              &.p-inputswitch-checked .p-inputswitch-slider {
-                background: #574DFF;
-              }
-              
-              .p-inputswitch-slider {
-                background: #E2E8F0;
-              }
-            }
+                .p-inputswitch-slider {
+                  background: #c5c5d8 !important;
+                }
+          
+                &.p-inputswitch-checked .p-inputswitch-slider {
+                  background: #6c63ff !important;
+                }
+              } 
           }
         }
       }

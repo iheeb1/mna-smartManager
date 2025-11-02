@@ -34,8 +34,101 @@ import { ProductsTableComponent, ProductTableConfig } from './products-table/pro
 export class SettingsComponent implements OnInit {
   @ViewChild('rowMenu') rowMenu!: Menu;
 
-  permissionTabs = ['الهرشاوت', 'تفقيد', 'ניהול כביר', 'ניהול צוות', 'מנהל', 'עובדים בשטח', 'חלוקת כספים'];
-  activePermissionTab = 0;
+  roles = [
+    { 
+      id: 1, 
+      name: 'مدير المشاريع',
+      permissions: {
+        createEditProjects: true,
+        monitorPerformance: true,
+        budgetAccess: true,
+        resourcePlanning: true,
+        assignEmployees: true,
+        trackEmployeePerformance: true,
+        generateReports: true,
+        qualityReports: true,
+        securityReports: true
+      }
+    },
+    { 
+      id: 2, 
+      name: 'مدير تنفيذي',
+      permissions: {
+        createEditProjects: true,
+        monitorPerformance: true,
+        budgetAccess: false,
+        resourcePlanning: true,
+        assignEmployees: false,
+        trackEmployeePerformance: true,
+        generateReports: true,
+        qualityReports: false,
+        securityReports: false
+      }
+    },
+    { 
+      id: 3, 
+      name: 'مدير فريق',
+      permissions: {
+        createEditProjects: false,
+        monitorPerformance: true,
+        budgetAccess: false,
+        resourcePlanning: false,
+        assignEmployees: true,
+        trackEmployeePerformance: true,
+        generateReports: false,
+        qualityReports: false,
+        securityReports: false
+      }
+    },
+    { 
+      id: 4, 
+      name: 'مهندس',
+      permissions: {
+        createEditProjects: false,
+        monitorPerformance: false,
+        budgetAccess: false,
+        resourcePlanning: false,
+        assignEmployees: false,
+        trackEmployeePerformance: false,
+        generateReports: false,
+        qualityReports: true,
+        securityReports: true
+      }
+    },
+    { 
+      id: 5, 
+      name: 'عمال الميدان',
+      permissions: {
+        createEditProjects: false,
+        monitorPerformance: false,
+        budgetAccess: false,
+        resourcePlanning: false,
+        assignEmployees: false,
+        trackEmployeePerformance: false,
+        generateReports: false,
+        qualityReports: false,
+        securityReports: false
+      }
+    },
+    { 
+      id: 6, 
+      name: 'قسم المالية',
+      permissions: {
+        createEditProjects: false,
+        monitorPerformance: false,
+        budgetAccess: true,
+        resourcePlanning: false,
+        assignEmployees: false,
+        trackEmployeePerformance: false,
+        generateReports: true,
+        qualityReports: false,
+        securityReports: false
+      }
+    }
+  ];
+  
+  activeRoleIndex = 0;
+  currentRolePermissions = { ...this.roles[0].permissions };
 
   // Products Tab Configuration
   productsConfig: ProductTableConfig = {
@@ -232,9 +325,13 @@ export class SettingsComponent implements OnInit {
     console.log('Update profile:', this.userProfile);
   }
 
-  onPermissionTabChange(index: number) {
-    this.activePermissionTab = index;
-    // You can load different permissions based on the selected tab here
-    console.log('Permission tab changed to:', this.permissionTabs[index]);
+  onRoleChange(index: number) {
+    this.activeRoleIndex = index;
+    this.currentRolePermissions = { ...this.roles[index].permissions };
+    console.log('Role changed to:', this.roles[index].name);
+  }
+
+  onAddRole() {
+    console.log('إضافة دور وظيفي جديد');
   }
 }
