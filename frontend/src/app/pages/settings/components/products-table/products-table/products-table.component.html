@@ -1,0 +1,121 @@
+<div class="products-table-container">
+    <div class="card-header">
+      <!-- Tabs Row -->
+      <div class="tabs-row" *ngIf="tabs.length > 0">
+        <button 
+          *ngFor="let tab of tabs; let i = index" 
+          class="tab-item"
+          [class.active]="activeTabIndex === i"
+          (click)="onTabChange(i)">
+          {{ tab }}
+        </button>
+      </div>
+      
+      <!-- Search and Controls -->
+      <div class="search-controls">
+        <div class="search-box">
+          <input 
+            type="text" 
+            [placeholder]="config.searchPlaceholder || 'بحث حر'" 
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange($event)">
+          <button class="search-btn">
+            <i class="pi pi-search"></i>
+          </button>
+        </div>
+        
+        <button class="control-icon">
+          <i class="pi pi-sliders-h"></i>
+        </button>
+        <span class="control-label">تصفية</span>
+        
+        <button class="control-icon">
+          <i class="pi pi-sort-alt"></i>
+        </button>
+        
+        <button class="add-btn" (click)="onAdd()">
+          {{ config.addButtonText || 'إضافة عنصر' }}
+        </button>
+      </div>
+    </div>
+  
+    <div class="table-wrapper">
+      <!-- Table Header -->
+      <div class="table-header">
+        <!-- Checkbox column in edit mode -->
+        <div class="header-cell checkbox-col" *ngIf="isEditMode">
+          <button class="checkbox-btn" (click)="toggleSelectAll()">
+            <i class="pi" [ngClass]="selectAll ? 'pi-check-circle' : 'pi-circle'"></i>
+          </button>
+        </div>
+        
+        <!-- Regular columns -->
+        <div 
+          *ngFor="let column of config.columns" 
+          class="header-cell"
+          [style.flex]="getColumnFlex(column)">
+          {{ column.header }}
+        </div>
+      </div>
+  
+      <!-- Table Body -->
+      <div class="table-body">
+        <div 
+          class="table-row" 
+          *ngFor="let row of filteredRows; let i = index"
+          [class.selected]="isRowSelected(i)">
+          
+          <!-- Checkbox column in edit mode -->
+          <div class="row-cell checkbox-col" *ngIf="isEditMode">
+            <button class="checkbox-btn" (click)="toggleRowSelection(i)">
+              <i class="pi" [ngClass]="isRowSelected(i) ? 'pi-check-circle' : 'pi-circle'"></i>
+            </button>
+          </div>
+          
+          <!-- Regular columns -->
+          <div 
+            *ngFor="let column of config.columns" 
+            class="row-cell"
+            [class]="column.type"
+            [style.flex]="getColumnFlex(column)">
+            
+            <!-- Text/Link Cell -->
+            <ng-container *ngIf="column.type === 'text' || !column.type">
+              <a *ngIf="column.field === 'name'" href="#" class="product-link">
+                {{ getCellValue(row, column) }}
+              </a>
+              <span *ngIf="column.field !== 'name'">
+                {{ getCellValue(row, column) }}
+              </span>
+            </ng-container>
+            
+            <!-- Number Cell -->
+            <span *ngIf="column.type === 'number'">
+              {{ getCellValue(row, column) }}
+            </span>
+            
+            <!-- Status Cell -->
+            <span *ngIf="column.type === 'status'" class="status-badge">
+              {{ getCellValue(row, column) }}
+            </span>
+            
+            <!-- Toggle Cell -->
+            <p-inputSwitch 
+              *ngIf="column.type === 'toggle'"
+              [(ngModel)]="row[column.field]">
+            </p-inputSwitch>
+            
+            <!-- Actions Cell -->
+            <div *ngIf="column.type === 'actions'" class="actions-wrapper">
+              <button class="action-icon edit" (click)="onEdit(row)">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button class="action-icon delete" (click)="onDelete(row)">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

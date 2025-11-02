@@ -10,16 +10,7 @@ import { Menu } from 'primeng/menu';
 import { MenuItem, MessageService } from 'primeng/api';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component';
-
-interface SettingRow {
-  id: number;
-  name: string;
-  number: string;
-  amount: string;
-  status: string;
-  statusLabel: string;
-  isActive: boolean;
-}
+import { ProductsTableComponent, ProductTableConfig } from './products-table/products-table/products-table.component';
 
 @Component({
   selector: 'app-settings',
@@ -33,7 +24,8 @@ interface SettingRow {
     ToastModule,
     MenuModule,
     FooterNavComponent,
-    HeaderComponent
+    HeaderComponent,
+    ProductsTableComponent
   ],
   providers: [MessageService],
   templateUrl: './settings.component.html',
@@ -42,32 +34,131 @@ interface SettingRow {
 export class SettingsComponent implements OnInit {
   @ViewChild('rowMenu') rowMenu!: Menu;
 
-  searchTerm = '';
-  selectedRowForMenu: SettingRow | null = null;
-  rowMenuItems: MenuItem[] = [];
+  // Products Tab Configuration
+  productsConfig: ProductTableConfig = {
+    columns: [
+      { field: 'name', header: 'اسم المنتج', type: 'text', flex: '2' },
+      { field: 'number', header: 'رمز العنصر', type: 'text', flex: '1' },
+      { field: 'amount', header: 'السعر', type: 'text', flex: '1' },
+      { field: 'status', header: 'الحالة', type: 'text', flex: '0 0 120px' },
+      { field: 'statusLabel', header: 'رقم العنوان الافتراضي', type: 'text', flex: '0 0 180px' },
+      { field: 'actions', header: '', type: 'actions', flex: '0 0 100px' }
+    ],
+    data: [
+      { id: 1, name: 'مضخات مؤود', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 2, name: 'شركة كرمل بنك النار، مشروع', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 3, name: 'بناء يوتك المحدودة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 4, name: 'ن.ط مقاولو البناء', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 5, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 6, name: 'بناء يوتك المحدودة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 7, name: 'ن.ط مقاولو البناء', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 8, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 9, name: 'استثمارات عقارات بارزة', number: '0123456789', amount: '50,000₪', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+    ],
+    searchPlaceholder: 'بحث حر عن منتج',
+    addButtonText: 'إضافة منتج'
+  };
+
+  // Banks Tab Configuration
+  banksConfig: ProductTableConfig = {
+    columns: [
+      { field: 'name', header: 'اسم البنك', type: 'text', flex: '2' },
+      { field: 'number', header: 'رمز العنصر', type: 'text', flex: '1' },
+      { field: 'status', header: 'الحالة', type: 'text', flex: '0 0 120px' },
+      { field: 'statusLabel', header: 'رقم العنوان الافتراضي', type: 'status', flex: '0 0 180px' },
+      { field: 'actions', header: '', type: 'actions', flex: '0 0 100px' }
+    ],
+    data: [
+      { id: 1, name: 'بنك لئومي', number: '10', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 2, name: 'بنك هبوعليم', number: '12', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 3, name: 'بنك ديسكونت', number: '11', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 4, name: 'بنك القدس', number: '54', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 5, name: 'مزراحي طفحوت', number: '20', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 6, name: 'مركنتيل', number: '17', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+    ],
+    searchPlaceholder: 'بحث حر عن بنك',
+    addButtonText: 'إضافة بنك جديد'
+  };
+
+  // Check Status Tab Configuration
+  checkStatusConfig: ProductTableConfig = {
+    columns: [
+      { field: 'name', header: 'اسم الحالة', type: 'text', flex: '3' },
+      { field: 'number', header: 'رمز العنصر', type: 'text', flex: '1' },
+      { field: 'status', header: 'الحالة', type: 'status', flex: '0 0 120px' },
+      { field: 'statusLabel', header: 'رقم العنوان الافتراضي', type: 'status', flex: '0 0 180px' },
+      { field: 'actions', header: '', type: 'actions', flex: '0 0 100px' }
+    ],
+    data: [
+      { id: 1, name: 'لم يصرف بعد', number: '001', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 2, name: 'مصروف', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 3, name: 'مرفوض', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 4, name: 'ملغى', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+    ],
+    searchPlaceholder: 'بحث حر عن حالة',
+    addButtonText: 'إضافة حالة جديدة'
+  };
+
+  // Address Management Tab Configuration
+  addressConfig: ProductTableConfig = {
+    columns: [
+      { field: 'name', header: 'اسم العنوان', type: 'text', flex: '3' },
+      { field: 'number', header: 'رمز العنصر', type: 'text', flex: '1' },
+      { field: 'status', header: 'الحالة', type: 'status', flex: '0 0 120px' },
+      { field: 'statusLabel', header: 'رقم العنوان الافتراضي', type: 'status', flex: '0 0 180px' },
+      { field: 'actions', header: '', type: 'actions', flex: '0 0 100px' }
+    ],
+    data: [
+      { id: 1, name: 'رعنانا', number: '001', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 2, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 3, name: 'رعنانا', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 4, name: 'رعنانا', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 5, name: 'رعنانا', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 6, name: 'رعنانا', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 7, name: 'رعنانا', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+    ],
+    searchPlaceholder: 'بحث حر عن عنوان',
+    addButtonText: 'إضافة عنوان جديد'
+  };
+
+  // Payment Types Tab Configuration (default active tab)
+  paymentTypesConfig: ProductTableConfig = {
+    columns: [
+      { field: 'name', header: 'اسم نوع الدفع', type: 'text', flex: '3' },
+      { field: 'number', header: 'رمز العنصر', type: 'text', flex: '1' },
+      { field: 'status', header: 'الحالة', type: 'status', flex: '0 0 120px' },
+      { field: 'statusLabel', header: 'رقم العنوان الافتراضي', type: 'status', flex: '0 0 180px' },
+      { field: 'actions', header: '', type: 'actions', flex: '0 0 100px' }
+    ],
+    data: [
+      { id: 1, name: 'نقدي', number: '001', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 2, name: 'مقاصة', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 3, name: 'شيك مرتجع', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 4, name: 'دين قديم', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 5, name: 'سكر', number: '002', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 6, name: 'عربون 15%', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 7, name: 'نبات راد', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 8, name: 'رواتب في كلاليت', number: '003', status: 'نشط', statusLabel: 'غير نشط', isActive: false },
+      { id: 9, name: 'راح الجار', number: '004', status: 'نشط', statusLabel: 'غير نشط', isActive: false }
+    ],
+    searchPlaceholder: 'بحث حر عن نوع دفع',
+    addButtonText: 'إضافة نوع دفع جديد'
+  };
+
+  tabs = ['المنتجات', 'البنوك', 'حالة الشيك', 'إدارة العناوين', 'أنواع الدفع'];
+  activeTabIndex = 0; // Default to first tab (المنتجات)
+
+  currentConfig: ProductTableConfig = this.productsConfig;
 
   // User profile data
   userProfile = {
     firstName: 'يعقوب',
-    lastName: 'שגב',
+    lastName: 'شجب',
     idNumber: '123456789',
-    address: 'كفار قاسم، איחוד הארצישראלי',
+    address: 'كفر قاسم، الاتحاد الإسرائيلي',
     phone: '0541234567',
     email: 'example2000@gmail.com'
   };
-
-  // Static table data
-  settingsRows: SettingRow[] = [
-    { id: 1, name: 'משאבת מאוד', number: '0123456789', amount: '50,000₪', status: 'فעال', statusLabel: 'لا فعال', isActive: false },
-    { id: 2, name: 'חברת כרמל בנק אש، פרויקט', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 3, name: 'בניית יותק בע"מ', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 4, name: 'נ.ט קבלני בניין', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 5, name: 'השקעות נכסים בולט', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 6, name: 'בניית יותק בע"מ', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 7, name: 'נ.ט קבלני בניין', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 8, name: 'השקעות נכסים בולט', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false },
-    { id: 9, name: 'השקעות נכסים בולט', number: '0123456789', amount: '50,000₪', status: 'فعال', statusLabel: 'لا فعال', isActive: false }
-  ];
 
   // Settings toggles
   generalSettings = {
@@ -99,66 +190,51 @@ export class SettingsComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.initializeMenuItems();
+    this.updateConfig();
   }
 
-  private initializeMenuItems() {
-    this.rowMenuItems = [
-      {
-        label: 'تعديل',
-        icon: 'pi pi-pencil',
-        command: () => {
-          if (this.selectedRowForMenu) {
-            this.editRow(this.selectedRowForMenu);
-          }
-        }
-      },
-      {
-        label: 'حذف',
-        icon: 'pi pi-trash',
-        styleClass: 'delete-item',
-        command: () => {
-          if (this.selectedRowForMenu) {
-            this.deleteRow(this.selectedRowForMenu);
-          }
-        }
-      }
-    ];
-  }
-
-  showRowMenu(event: Event, row: SettingRow) {
-    this.selectedRowForMenu = row;
-    if (this.rowMenu) {
-      this.rowMenu.toggle(event);
+  updateConfig() {
+    switch(this.activeTabIndex) {
+      case 0:
+        this.currentConfig = this.productsConfig;
+        break;
+      case 1:
+        this.currentConfig = this.banksConfig;
+        break;
+      case 2:
+        this.currentConfig = this.checkStatusConfig;
+        break;
+      case 3:
+        this.currentConfig = this.addressConfig;
+        break;
+      case 4:
+        this.currentConfig = this.paymentTypesConfig;
+        break;
     }
   }
 
-  editRow(row: SettingRow) {
+  // Table event handlers
+  onTabChange(index: number) {
+    this.activeTabIndex = index;
+    this.updateConfig();
+  }
+
+  onProductEdit(row: any) {
     console.log('Edit row:', row);
+    // Implement edit logic
   }
 
-  deleteRow(row: SettingRow) {
+  onProductDelete(row: any) {
     console.log('Delete row:', row);
+    // Implement delete logic
   }
 
-  toggleRowStatus(row: SettingRow) {
-    console.log('Toggle status:', row);
-  }
-
-  onSearchChange(value: string) {
-    console.log('Search:', value);
+  onProductAdd() {
+    console.log('Add new item for tab:', this.activeTabIndex);
+    // Implement add logic based on active tab
   }
 
   updateProfile() {
     console.log('Update profile:', this.userProfile);
-  }
-
-  get filteredRows() {
-    if (!this.searchTerm) return this.settingsRows;
-    
-    return this.settingsRows.filter(row => 
-      row.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      row.number.includes(this.searchTerm)
-    );
   }
 }
