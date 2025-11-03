@@ -1,5 +1,45 @@
+<app-header></app-header>
+
+<!-- Mobile Hero Section -->
+<div class="mobile-hero-section">
+  <div class="mobile-hero-content">
+    <img src="assets/images/settings_mobile.png" alt="Settings" class="gear-image">
+    <h1 class="header-title">الإعدادات</h1>
+  </div>
+</div>
+
+<!-- Mobile Horizontal Tabs -->
+<div class="mobile-tabs-wrapper">
+  <div class="mobile-tabs">
+    <button class="tab-item" 
+            [class.active]="activeMobileTab === 'products'"
+            (click)="setActiveMobileTab('products')">
+      المنتجات
+    </button>
+    <button class="tab-item" 
+            [class.active]="activeMobileTab === 'business'"
+            (click)="setActiveMobileTab('business')">
+      تفاصيل العمل
+    </button>
+    <button class="tab-item" 
+            [class.active]="activeMobileTab === 'permissions'"
+            (click)="setActiveMobileTab('permissions')">
+      إدارة الصلاحيات
+    </button>
+    <button class="tab-item" 
+            [class.active]="activeMobileTab === 'print'"
+            (click)="setActiveMobileTab('print')">
+      إعدادات الطباعة
+    </button>
+    <button class="tab-item" 
+            [class.active]="activeMobileTab === 'general'"
+            (click)="setActiveMobileTab('general')">
+      الإعدادات العامة
+    </button>
+  </div>
+</div>
+
 <div class="settings-container">
-  <app-header></app-header>
   
   <p-toast position="top-center"></p-toast>
 
@@ -11,7 +51,8 @@
     <!-- Top Row - Products Table and Business Details -->
     <div class="top-row">
       <!-- Products Section -->
-      <div class="section-wrapper">
+      <div class="section-wrapper" 
+           [class.active]="activeMobileTab === 'products' || !isMobile">
         <h3 class="section-title-main">المنتجات</h3>
         <app-products-table 
           [config]="currentConfig"
@@ -25,7 +66,9 @@
       </div>
 
       <!-- Business Details Section -->
-      <div class="section-wrapper" style="height: 94%;">
+        <div class="section-wrapper" 
+            [class.active]="activeMobileTab === 'business' || !isMobile"
+            style="height: 94%;">
         <h3 class="section-title-main">تفاصيل العمل</h3>
         <div class="card business-details-card">
         
@@ -94,98 +137,113 @@
     <!-- Second Row - Settings Cards and Permissions -->
     <div class="second-row">
 
-<!-- Permissions Section -->
-<div class="section-wrapper">
-<h3 class="section-title-main">إدارة الصلاحيات</h3>
-<div class="card permissions-card">
+      <!-- Permissions Section -->
+      <div class="section-wrapper"
+           [class.active]="activeMobileTab === 'permissions' || !isMobile">
+        <h3 class="section-title-main">إدارة الصلاحيات</h3>
+        
+        <!-- Mobile Role Tabs (Outside Card) -->
+        <div class="mobile-role-tabs-wrapper">
+          <div class="mobile-role-tabs">
+            <div class="role-item" 
+                 *ngFor="let role of roles; let i = index"
+                 [class.active]="activeRoleIndex === i"
+                 (click)="onRoleChange(i)">
+              <span>{{ role.name }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card permissions-card">
 
-<div class="permissions-layout">
-  <!-- Right Side - Role Tabs -->
-  <div class="role-tabs">
-    <div class="tabs-header">
-      <h4 class="tabs-title">الدور الوظيفي</h4>
-    </div>
-    
-    <div class="role-list">
-      <div class="role-item" 
-           *ngFor="let role of roles; let i = index"
-           [class.active]="activeRoleIndex === i"
-           (click)="onRoleChange(i)">
-        <span>{{ role.name }}</span>
-      </div>
-    </div>
-    <button class="add-role-btn" (click)="onAddRole()">
-      <i class="pi pi-plus"></i>
-      <span>إضافة تفكيد جديد</span>
-    </button>
-  </div>
+        <div class="permissions-layout">
+          <!-- Desktop Role Tabs -->
+          <div class="role-tabs">
+            <div class="tabs-header">
+              <h4 class="tabs-title">الدور الوظيفي</h4>
+            </div>
+            
+            <div class="role-list">
+              <div class="role-item" 
+                   *ngFor="let role of roles; let i = index"
+                   [class.active]="activeRoleIndex === i"
+                   (click)="onRoleChange(i)">
+                <span>{{ role.name }}</span>
+              </div>
+            </div>
+            <button class="add-role-btn" (click)="onAddRole()">
+              <i class="pi pi-plus"></i>
+              <span>إضافة تفكيد جديد</span>
+            </button>
+          </div>
 
-  <!-- Left Side - Permissions Grid -->
-  <div class="permissions-grid">
-    <!-- Permission Group 1: إدارة المشاريع -->
-    <div class="perm-group">
-      <h4 class="group-title">إدارة المشاريع</h4>
-      <div class="perm-item">
-        <span>إنشاء وتحرير وإغلاق المشاريع</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.createEditProjects"></p-inputSwitch>
-      </div>
-      <div class="perm-item">
-        <span>متابعة أداء المشروع</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.monitorPerformance"></p-inputSwitch>
-      </div>
-    </div>
+          <!-- Left Side - Permissions Grid -->
+          <div class="permissions-grid">
+            <!-- Permission Group 1: إدارة المشاريع -->
+            <div class="perm-group">
+              <h4 class="group-title">إدارة المشاريع</h4>
+              <div class="perm-item">
+                <span>إنشاء وتحرير وإغلاق المشاريع</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.createEditProjects"></p-inputSwitch>
+              </div>
+              <div class="perm-item">
+                <span>متابعة أداء المشروع</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.monitorPerformance"></p-inputSwitch>
+              </div>
+            </div>
 
-    <!-- Permission Group 2: إدارة الميزانيات والموارد -->
-    <div class="perm-group">
-      <h4 class="group-title">إدارة الميزانيات والموارد</h4>
-      <div class="perm-item">
-        <span>الوصول لإدارة ميزانية المشروع</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.budgetAccess"></p-inputSwitch>
-      </div>
-      <div class="perm-item">
-        <span>إدارة وتخطيط الموارد</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.resourcePlanning"></p-inputSwitch>
-      </div>
-    </div>
+            <!-- Permission Group 2: إدارة الميزانيات والموارد -->
+            <div class="perm-group">
+              <h4 class="group-title">إدارة الميزانيات والموارد</h4>
+              <div class="perm-item">
+                <span>الوصول لإدارة ميزانية المشروع</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.budgetAccess"></p-inputSwitch>
+              </div>
+              <div class="perm-item">
+                <span>إدارة وتخطيط الموارد</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.resourcePlanning"></p-inputSwitch>
+              </div>
+            </div>
 
-    <!-- Permission Group 3: إدارة الموظفين -->
-    <div class="perm-group">
-      <h4 class="group-title">إدارة الموظفين</h4>
-      <div class="perm-item">
-        <span>تعيين الموظفين للمشاريع</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.assignEmployees"></p-inputSwitch>
-      </div>
-      <div class="perm-item">
-        <span>متابعة الأداء الشخصي للموظفين</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.trackEmployeePerformance"></p-inputSwitch>
-      </div>
-    </div>
+            <!-- Permission Group 3: إدارة الموظفين -->
+            <div class="perm-group">
+              <h4 class="group-title">إدارة الموظفين</h4>
+              <div class="perm-item">
+                <span>تعيين الموظفين للمشاريع</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.assignEmployees"></p-inputSwitch>
+              </div>
+              <div class="perm-item">
+                <span>متابعة الأداء الشخصي للموظفين</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.trackEmployeePerformance"></p-inputSwitch>
+              </div>
+            </div>
 
-    <!-- Permission Group 4: التقارير والمتابعة -->
-    <div class="perm-group">
-      <h4 class="group-title">التقارير والمتابعة</h4>
-      <div class="perm-item">
-        <span>إنشاء وإصدار تقارير تقدم المشروع</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.generateReports"></p-inputSwitch>
+            <!-- Permission Group 4: التقارير والمتابعة -->
+            <div class="perm-group">
+              <h4 class="group-title">التقارير والمتابعة</h4>
+              <div class="perm-item">
+                <span>إنشاء وإصدار تقارير تقدم المشروع</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.generateReports"></p-inputSwitch>
+              </div>
+              <div class="perm-item">
+                <span>الوصول لتقارير الجودة</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.qualityReports"></p-inputSwitch>
+              </div>
+              <div class="perm-item">
+                <span>الوصول لتقارير الأمان</span>
+                <p-inputSwitch [(ngModel)]="currentRolePermissions.securityReports"></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
-      <div class="perm-item">
-        <span>الوصول لتقارير الجودة</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.qualityReports"></p-inputSwitch>
-      </div>
-      <div class="perm-item">
-        <span>الوصول لتقارير الأمان</span>
-        <p-inputSwitch [(ngModel)]="currentRolePermissions.securityReports"></p-inputSwitch>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-</div>
 
       <!-- Settings Cards Column -->
       <div class="settings-cards-row">
         <!-- Print Settings Section -->
-        <div class="section-wrapper">
+        <div class="section-wrapper"
+             [class.active]="activeMobileTab === 'print' || !isMobile">
           <h3 class="section-title-main">إعدادات الطباعة</h3>
           <div class="card print-settings-card">
           
@@ -202,7 +260,8 @@
         </div>
 
         <!-- Tax Settings Section -->
-        <div class="section-wrapper">
+        <div class="section-wrapper"
+             [class.active]="activeMobileTab === 'general' || !isMobile">
           <h3 class="section-title-main">الإعدادات العامة</h3>
           <div class="card tax-settings-card">
           
@@ -218,5 +277,5 @@
     </div>
   </div>
 
-  <app-footer-nav></app-footer-nav>
 </div>
+<app-footer-nav></app-footer-nav>

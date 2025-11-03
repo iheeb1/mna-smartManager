@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -33,6 +33,10 @@ import { ProductsTableComponent, ProductTableConfig } from './products-table/pro
 })
 export class SettingsComponent implements OnInit {
   @ViewChild('rowMenu') rowMenu!: Menu;
+
+  // Mobile tab state
+  activeMobileTab: string = 'products'; // Changed default to 'products'
+  isMobile: boolean = false;
 
   roles = [
     { 
@@ -227,7 +231,7 @@ export class SettingsComponent implements OnInit {
   };
 
   tabs = ['المنتجات', 'البنوك', 'حالة الشيك', 'إدارة العناوين', 'أنواع الدفع'];
-  activeTabIndex = 0; // Default to first tab (المنتجات)
+  activeTabIndex = 0; 
 
   currentConfig: ProductTableConfig = this.productsConfig;
 
@@ -236,7 +240,7 @@ export class SettingsComponent implements OnInit {
     firstName: 'يعقوب',
     lastName: 'شجب',
     idNumber: '123456789',
-    address: 'كفر قاسم، الاتحاد الإسرائيلي',
+    address: 'كفر قاسم، الاتحاد ',
     phone: '0541234567',
     email: 'example2000@gmail.com'
   };
@@ -271,8 +275,31 @@ export class SettingsComponent implements OnInit {
     allowBusinessEventActivity: true
   };
 
+  constructor() {
+    this.checkScreenSize();
+  }
+
   ngOnInit() {
     this.updateConfig();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  setActiveMobileTab(tab: string) {
+    this.activeMobileTab = tab;
+    if (this.isMobile) {
+      // Scroll to top with a slight delay to ensure DOM updates
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
+    }
   }
 
   updateConfig() {
@@ -324,6 +351,8 @@ export class SettingsComponent implements OnInit {
     this.activeRoleIndex = index;
     this.currentRolePermissions = { ...this.roles[index].permissions };
     console.log('Role changed to:', this.roles[index].name);
+    
+    // Don't scroll when changing roles - let user stay in place to see the changes
   }
 
   onAddRole() {
