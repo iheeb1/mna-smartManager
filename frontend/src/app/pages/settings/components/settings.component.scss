@@ -1,12 +1,12 @@
 :host {
     background: #FAFBFF;
     display: block;
-    margin-top: -30px;
+    margin-top: -37px;
   }
   
   .settings-container {
-    padding: 16px;
-    max-width: 1600px;
+    padding: 12px; 
+    max-width: 1400px; 
     margin: 0 auto;
     background: #FAFBFF;
     overflow-x: hidden;
@@ -17,7 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     direction: rtl;
     
     .section-title {
@@ -29,7 +29,7 @@
     }
     
     .page-title {
-      font-size: 22px;
+      font-size: 20px;
       color: #2D3748;
       font-weight: 700;
       text-align: right;
@@ -134,15 +134,15 @@
   .main-layout {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
   
   .section-wrapper {
     .section-title-main {
-      font-size: 14px;
+      font-size: 13px;
       color: #2D3748;
       font-weight: 700;
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
       text-align: right;
       direction: rtl;
     }
@@ -168,7 +168,8 @@
   .card {
     background: white;
     border-radius: 12px;
-    padding: 16px;
+    padding: 12px;
+    padding-bottom: 4px;
     box-shadow: 0px 3px 20px rgba(45, 60, 229, 0.161);
     direction: rtl;
   }
@@ -296,8 +297,8 @@
     }
     
     .table-wrapper {
-      height: 250px;
-      max-height: 250px;
+      height: 180px;
+      max-height: 180px;
       overflow-y: auto;
       overflow-x: hidden;
       
@@ -412,13 +413,13 @@
     .permissions-layout {
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: 32px;
+      gap: 24px;
       direction: rtl;
       
       .role-tabs {
         border-left: 1px solid #E5E5E5;
-        padding-left: 20px;
-        min-width: 200px;
+        padding-left: 16px;
+        min-width: 180px;
         direction: rtl;
         
         .add-role-btn {
@@ -496,7 +497,7 @@
       .permissions-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 24px 32px;
+        gap: 16px 32px;
         direction: rtl;
         
         .perm-group {
@@ -504,7 +505,7 @@
             font-size: 12px;
             color: #2D3748;
             font-weight: 600;
-            margin: 0 0 12px 0;
+            margin: 0 0 8px 0;
             text-align: right;
           }
           
@@ -512,7 +513,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             gap: 12px;
             
             span {
@@ -544,7 +545,7 @@
     
     .form-grid {
       display: grid;
-      gap: 50px;
+      gap: 40px;
       
       .form-row {
         display: grid;
