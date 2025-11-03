@@ -1,5 +1,41 @@
 <app-header></app-header>
+<!-- Mobile Hero Section -->
+<div class="mobile-hero-section">
+  <div class="mobile-hero-content">
+    <img src="assets/images/client_details_mobile.png" alt="تفاصيل العميل" class="hero-image">
+    <h1 class="hero-title">تفاصيل العميل</h1>
+  </div>
 
+  <div class="mobile-action-bar">
+    <button class="action-btn" (click)="goBack()">
+      <img src="assets/icons/back_icon.svg" alt="رجوع">
+    </button>
+    <button class="action-btn" (click)="exportData()">
+      <img src="assets/icons/export_icon.svg" alt="تصدير">
+    </button>
+    <button class="action-btn" (click)="printPage()">
+      <img src="assets/icons/print_icon.svg" alt="طباعة">
+    </button>
+  </div>
+
+  <!-- Mobile Add Button -->
+  <button class="mobile-add-btn" (click)="showAddOptions()">
+    <img src="assets/icons/plus_sign_icon.svg" alt="+">
+  </button>
+</div>
+
+<!-- Mobile Add Menu Overlay -->
+<div class="mobile-add-menu" *ngIf="showAddMenu" (click)="closeAddMenu()">
+  <div class="add-menu-content" (click)="$event.stopPropagation()">
+    <button class="add-option-btn" (click)="addNewOrder()">
+      طلب جديد
+    </button>
+
+    <button class="add-option-btn" (click)="openPaymentModal()">
+      دفعة جديدة
+    </button>
+  </div>
+</div>  
 <div class="container">
   <!-- Breadcrumb & Title -->
   <div class="breadcrumb">
