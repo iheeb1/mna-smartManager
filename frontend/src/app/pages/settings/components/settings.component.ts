@@ -352,7 +352,6 @@ export class SettingsComponent implements OnInit {
     this.currentRolePermissions = { ...this.roles[index].permissions };
     console.log('Role changed to:', this.roles[index].name);
     
-    // Don't scroll when changing roles - let user stay in place to see the changes
   }
 
   onAddRole() {

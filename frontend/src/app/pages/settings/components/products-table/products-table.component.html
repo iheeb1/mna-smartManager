@@ -30,11 +30,11 @@
       
       <span class="control-label">تصفية</span>
       
-      <button class="add-icon-mobile" (click)="onAdd()">
+      <button class="add-icon-mobile" (click)="showAddModal()">
         <i class="pi pi-plus"></i>
       </button>
       
-      <button class="add-btn" (click)="onAdd()">
+      <button class="add-btn" (click)="showAddModal()">
         {{ config.addButtonText || 'إضافة عنصر' }}
       </button>
     </div>
@@ -139,7 +139,7 @@
             
             <!-- Normal Mode Actions -->
             <ng-container *ngIf="!isRowEditing(i)">
-              <button class="action-icon edit" (click)="onEdit(row, i)">
+              <button class="action-icon edit" (click)="editInModal(row)">
                 <i class="pi pi-pencil"></i>
               </button>
               <button class="action-icon delete" (click)="onDelete(row)">
@@ -153,64 +153,131 @@
   </div>
 
   <!-- Mobile Cards View -->
-  <!-- Mobile Cards View -->
-<div class="mobile-cards-view">
-  <div class="product-card" *ngFor="let row of filteredRows; let i = index">
-    <div class="card-content">
-      <!-- Card title with menu -->
-      <div class="card-title-row">
-        <button class="menu-btn">
-          <i class="pi pi-ellipsis-v"></i>
-        </button>
-        <div class="card-title">{{ getCellValue(row, config.columns[0]) }}</div>
-      </div>
-      
-      <!-- Info grid - 2x2 for products, 1x3 for others -->
-      <div class="card-info-grid" [class.three-columns]="activeTabIndex !== 0">
-        <!-- Products Tab: 2x2 Grid -->
-        <ng-container *ngIf="activeTabIndex === 0">
-          <!-- Right Column -->
-          <div class="info-column right-column">
+  <div class="mobile-cards-view">
+    <div class="product-card" *ngFor="let row of filteredRows; let i = index">
+      <div class="card-content">
+        <!-- Card title with menu -->
+        <div class="card-title-row">
+          <button class="menu-btn" (click)="showMobileMenu($event, row)">
+            <i class="pi pi-ellipsis-v"></i>
+          </button>
+          <div class="card-title">{{ getCellValue(row, config.columns[0]) }}</div>
+        </div>
+        
+        <!-- Info grid - 2x2 for products, 1x3 for others -->
+        <div class="card-info-grid" [class.three-columns]="activeTabIndex !== 0">
+          <!-- Products Tab: 2x2 Grid -->
+          <ng-container *ngIf="activeTabIndex === 0">
+            <!-- Right Column -->
+            <div class="info-column right-column">
+              <div class="info-row" *ngIf="config.columns.length > 1">
+                <div class="info-label">{{ config.columns[1].header }}</div>
+                <div class="info-value">{{ getCellValue(row, config.columns[1]) }}</div>
+              </div>
+              <div class="info-row" *ngIf="config.columns.length > 3">
+                <div class="info-label">{{ config.columns[3].header }}</div>
+                <div class="info-value">{{ getCellValue(row, config.columns[3]) }}</div>
+              </div>
+            </div>
+            
+            <!-- Left Column -->
+            <div class="info-column left-column">
+              <div class="info-row" *ngIf="config.columns.length > 2">
+                <div class="info-label">{{ config.columns[2].header }}</div>
+                <div class="info-value">{{ getCellValue(row, config.columns[2]) }}</div>
+              </div>
+              <div class="info-row" *ngIf="config.columns.length > 4">
+                <div class="info-label">{{ config.columns[4].header }}</div>
+                <div class="info-value">{{ getCellValue(row, config.columns[4]) }}</div>
+              </div>
+            </div>
+          </ng-container>
+          
+          <!-- Other Tabs: 1x3 Grid -->
+          <ng-container *ngIf="activeTabIndex !== 0">
             <div class="info-row" *ngIf="config.columns.length > 1">
               <div class="info-label">{{ config.columns[1].header }}</div>
               <div class="info-value">{{ getCellValue(row, config.columns[1]) }}</div>
+            </div>
+            <div class="info-row" *ngIf="config.columns.length > 2">
+              <div class="info-label">{{ config.columns[2].header }}</div>
+              <div class="info-value">{{ getCellValue(row, config.columns[2]) }}</div>
             </div>
             <div class="info-row" *ngIf="config.columns.length > 3">
               <div class="info-label">{{ config.columns[3].header }}</div>
               <div class="info-value">{{ getCellValue(row, config.columns[3]) }}</div>
             </div>
-          </div>
-          
-          <!-- Left Column -->
-          <div class="info-column left-column">
-            <div class="info-row" *ngIf="config.columns.length > 2">
-              <div class="info-label">{{ config.columns[2].header }}</div>
-              <div class="info-value">{{ getCellValue(row, config.columns[2]) }}</div>
-            </div>
-            <div class="info-row" *ngIf="config.columns.length > 4">
-              <div class="info-label">{{ config.columns[4].header }}</div>
-              <div class="info-value">{{ getCellValue(row, config.columns[4]) }}</div>
-            </div>
-          </div>
-        </ng-container>
-        
-        <!-- Other Tabs: 1x3 Grid -->
-        <ng-container *ngIf="activeTabIndex !== 0">
-          <div class="info-row" *ngIf="config.columns.length > 1">
-            <div class="info-label">{{ config.columns[1].header }}</div>
-            <div class="info-value">{{ getCellValue(row, config.columns[1]) }}</div>
-          </div>
-          <div class="info-row" *ngIf="config.columns.length > 2">
-            <div class="info-label">{{ config.columns[2].header }}</div>
-            <div class="info-value">{{ getCellValue(row, config.columns[2]) }}</div>
-          </div>
-          <div class="info-row" *ngIf="config.columns.length > 3">
-            <div class="info-label">{{ config.columns[3].header }}</div>
-            <div class="info-value">{{ getCellValue(row, config.columns[3]) }}</div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Slide-up Menu -->
+<div class="slide-menu-overlay" *ngIf="showSlideMenu" (click)="closeSlideMenu()">
+  <div class="slide-menu" [class.show]="showSlideMenu" (click)="$event.stopPropagation()">
+    <div class="slide-menu-content">
+      <button class="slide-menu-option" (click)="onSlideMenuOptionClick('edit')">
+        <span class="option-text">تعديل المنتج</span>
+        <div class="option-divider"></div>
+      </button>
+      <button class="slide-menu-option" (click)="onSlideMenuOptionClick('delete')">
+        <span class="option-text">حذف المنتج</span>
+        <div class="option-divider"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'تعديل المنتج' : getModalTitle() }}</h2>
+    </div>
+    
+    <div class="modal-body">
+      <!-- Regular fields -->
+      <ng-container *ngFor="let column of getEditableColumns()">
+        <div class="form-group" *ngIf="column.field !== 'status' && column.field !== 'statusLabel' && column.field !== 'isDefault'">
+          <label>{{ column.header }}</label>
+          <input 
+            type="text"
+            class="form-input"
+            [(ngModel)]="modalData[column.field]"
+            [placeholder]="column.header">
+        </div>
+      </ng-container>
+      
+      <!-- Switches Row (will be side by side on mobile) -->
+      <div class="switches-container">
+        <ng-container *ngFor="let column of getEditableColumns()">
+          <div class="form-group" *ngIf="column.field === 'status' || column.field === 'statusLabel' || column.field === 'isDefault'">
+            <label>{{ column.header }}</label>
+            <div class="switch-row">
+              <span class="switch-label inactive">
+                {{ column.field === 'isDefault' ? 'لا فعال' : 'غير نشط' }}
+              </span>
+              <p-inputSwitch 
+                [ngModel]="modalData[column.field] === 'نشط' || modalData[column.field] === true"
+                (ngModelChange)="modalData[column.field] = $event ? 'نشط' : 'غير نشط'">
+              </p-inputSwitch>
+              <span class="switch-label active">
+                {{ column.field === 'isDefault' ? 'فعال' : 'نشط' }}
+              </span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="modal-btn cancel-btn" (click)="closeModal()">إلغاء</button>
+      <button class="modal-btn save-btn" (click)="saveModal()">{{ isEditMode ? 'حفظ' : 'حفظ' }}</button>
+    </div>
+  </div>
 </div>  
+
+<!-- Mobile Menu -->
+<p-menu #mobileMenu [model]="mobileMenuItems" [popup]="true" appendTo="body" styleClass="mobile-product-menu"></p-menu>
