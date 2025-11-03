@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="mobile-hero-section">
   <div class="mobile-hero-content">
-    <img src="assets/images/clients_bg.png" alt="العملاء" class="hero-image">
+    <img src="assets/images/clients_mobile.png" alt="العملاء" class="hero-image">
     <h1 class="hero-title">العملاء</h1>
   </div>
 
@@ -16,7 +16,7 @@
       <div class="search-icon">
         <img src="assets/icons/search_icon.svg" alt="بحث">
       </div>
-      <input type="text" placeholder="بحث حر عن عميل" [(ngModel)]="searchTerm"
+      <input type="text" placeholder="بحث حر عن عمיל" [(ngModel)]="searchTerm"
         (ngModelChange)="onSearchChange($event)">
     </div>
   </div>
@@ -31,6 +31,49 @@
       </button>
     </div>
   </div>
+
+  <!-- Contact Menu Overlay -->
+<div class="mobile-fab-overlay" *ngIf="showContactMenu" (click)="closeContactMenu()">
+  <div class="mobile-fab-menu" (click)="$event.stopPropagation()" @slideUp>
+
+    <!-- PHONE MENU -->
+    <!-- PHONE MENU -->
+<ng-container *ngIf="contactMenuType === 'phone'">
+  <p style="text-align:center; font-size:18px; margin-bottom:10px; color:#5A5780;">
+    {{ selectedContactValue }}
+  </p>
+
+  <button class="fab-menu-item" (click)="callPhone(selectedContactValue!)">
+    اتصل
+  </button>
+
+  <button class="fab-menu-item" (click)="sendSms(selectedContactValue!)">
+    أرسل رسالة قصيرة
+  </button>
+
+  <button class="fab-menu-item" (click)="copyToClipboard(selectedContactValue!)">
+    نسخ الرقم
+  </button>
+</ng-container>
+
+<!-- EMAIL MENU -->
+<ng-container *ngIf="contactMenuType === 'email'">
+  <p style="text-align:center; font-size:18px; margin-bottom:10px; color:#5A5780;">
+    {{ selectedContactValue }}
+  </p>
+
+  <button class="fab-menu-item" (click)="sendEmail(selectedContactValue!)">
+    إرسال بريد إلكتروني
+  </button>
+
+  <button class="fab-menu-item" (click)="copyToClipboard(selectedContactValue!)">
+    نسخ البريد الإلكتروني
+  </button>
+</ng-container>
+
+  </div>
+</div>
+
 </div>
 
 <p-toast position="top-center"></p-toast>
@@ -45,7 +88,7 @@
       <button pButton class="p-button-text print-btn">
         <img src="assets/icons/print_icon.svg" alt="طباعة">
       </button>
-      <button pButton label="إضافة عميل جديد" (click)="addNewClient()" class="p-button-primary add-btn"></button>
+      <button pButton label="إضافة عمיל جديد" (click)="addNewClient()" class="p-button-primary add-btn"></button>
     </div>
     <h1>العملاء</h1>
   </div>
@@ -76,7 +119,6 @@
           <div class="search-icon">
             <img src="assets/icons/search_icon.svg" alt="بحث">
           </div>
-          <!-- Removed pInputText directive since you're using custom styling -->
           <input type="text" placeholder="بحث حر عن عميل" [(ngModel)]="searchTerm"
             (ngModelChange)="onSearchChange($event)">
         </span>
@@ -102,21 +144,64 @@
               {{ client.discount }}
             </span>
           </div>
-          <div class="row-cell credit-given">{{ client.creditGiven }}</div>
+          <div class="row-cell credit-given">{{ client.creditGiven.toLocaleString() }}₪</div>
           <div class="row-cell balance">{{ client.balance }}</div>
+          
+          <!-- MOBILE CONTACT WRAPPER (ROW 4) -->
+          <div class="row-cell contact-wrapper">
+            <div class="contact-item email-item" (click)="openEmailMenu(client.email)">
+              <span class="contact-value">{{ client.email }}</span>
+              <span class="icon-wrapper">
+                <img class="icon" src="assets/icons/contact_icon.svg" alt="mail">
+              </span>
+            </div>
+            
+            <div class="contact-item phone-item" (click)="openPhoneMenu(client.phone)">
+              <span class="contact-value">{{ client.phone }}</span>
+              <span class="icon-wrapper">
+                <img class="icon" src="assets/icons/phone_icon.svg" alt="phone">
+              </span>
+            </div>
+            
+          </div>
+          
+          <!-- DESKTOP HIDDEN CELLS -->
           <div class="row-cell email">{{ client.email }}</div>
           <div class="row-cell phone">{{ client.phone }}</div>
+          
           <div class="row-cell address">{{ client.address }}</div>
-          <div class="row-cell name">{{ client.name }}</div>
+          
+          <!-- MOBILE NAME & ACTION MENU (ROW 1) -->
+          <div class="row-cell name" (click)="showActionMenu(client)">
+            <span>{{ client.name }}</span>
+
+            <!-- Action Menu Structure for Mobile -->
+            <div class="client-actions-menu" [class.visible]="client.showMenu">
+              <button class="menu-action edit" (click)="$event.stopPropagation(); editClient(client)">
+                <i class="pi pi-pencil"></i>
+                <span>תדויק</span> <!-- Edit -->
+              </button>
+              <button class="menu-action delete" (click)="$event.stopPropagation(); deleteClient(client)">
+                <i class="pi pi-trash"></i>
+                <span>מחק</span> <!-- Delete -->
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Pagination info -->
       <div class="pagination-info" *ngIf="totalClients > 0">
-        <p>عرض {{ clients.length }} من أصل {{ totalClients }} عملاء</p>
+        <p>عرض {{ clients.length }} מתוך {{ totalClients }} לקוחות</p>
       </div>
     </div>
   </div>
+  <app-client-form 
+  [(visible)]="showDialog" 
+  [clientToEdit]="selectedClient" 
+  (onSave)="onClientSaved($event)"
+  (onClose)="onDialogClose()">
+</app-client-form>
 </div>
 
 <app-footer-nav></app-footer-nav>

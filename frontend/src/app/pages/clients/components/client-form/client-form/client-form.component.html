@@ -1,0 +1,182 @@
+<!-- Desktop Form -->
+<p-dialog 
+  *ngIf="!isMobile"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true"
+  [draggable]="false"
+  [dismissableMask]="true"
+  [style]="{width: '900px', maxWidth: '90vw'}"
+  [styleClass]="'client-dialog'"
+  [position]="'center'"
+  (onHide)="closeDialog()">
+  
+  <div class="form-container">
+    <div class="form-image">
+      <img src="assets/images/clients_bg.png" alt="לקוחות">
+      <h2>{{ clientToEdit ? 'עריכת לקוח' : 'לקוח חדש' }}</h2>
+    </div>
+
+    <div class="form-content">
+      <div class="form-fields">
+        <div class="field-group">
+          <label>שם לקוח</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.customerName" 
+            placeholder="שם לקוח" 
+            class="form-input">
+        </div>
+
+        <div class="field-group">
+          <label>בחר לקוח</label>
+          <p-dropdown 
+            [(ngModel)]="formData.selectedCustomer" 
+            [options]="clientOptions" 
+            placeholder="בחר לקוח"
+            [style]="{'width': '100%'}">
+          </p-dropdown>
+        </div>
+
+        <div class="field-group">
+          <label>כתובת</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.address" 
+            placeholder="כתובת" 
+            class="form-input">
+        </div>
+
+        <div class="field-group">
+          <label>מספר טלפון</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.phone" 
+            placeholder="מספר טלפון" 
+            class="form-input">
+        </div>
+
+        <div class="field-group add-phone-toggle" *ngIf="!showAdditionalPhone">
+          <button type="button" class="add-phone-btn" (click)="toggleAdditionalPhone()">
+            + הוספת מספר נוסף
+          </button>
+        </div>
+
+        <div class="field-group" *ngIf="showAdditionalPhone">
+          <label>מספר טלפון נוסף</label>
+          <input 
+            type="text" 
+            pInputText 
+            [(ngModel)]="formData.additionalPhone" 
+            placeholder="מספר טלפון" 
+            class="form-input">
+        </div>
+
+        <div class="field-group">
+          <label>כתובת מייל</label>
+          <input 
+            type="email" 
+            pInputText 
+            [(ngModel)]="formData.email" 
+            placeholder="הכניסו כתובת מייל" 
+            class="form-input">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          pButton 
+          label="שמירה" 
+          (click)="onSubmit()" 
+          class="save-button">
+        </button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Mobile Form - FULLSCREEN NO DIALOG -->
+<div class="mobile-form-container" *ngIf="isMobile && visible">
+  <div class="mobile-form-image">
+    <img src="assets/images/clients_mobile.png" alt="לקוחות">
+    <button class="mobile-back-btn" (click)="closeDialog()">
+      <span class="back-arrow">&lt;</span>
+    </button>
+    <h2>{{ clientToEdit ? 'עריכת לקוח' : 'לקוח חדש' }}</h2>
+  </div>
+
+  <div class="mobile-form-content">
+    <div class="mobile-field-group">
+      <label>שם לקוח</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="formData.customerName" 
+        placeholder="שם לקוח">
+    </div>
+
+    <div class="mobile-field-group">
+      <label>בחר לקוח</label>
+      <p-dropdown 
+        [(ngModel)]="formData.selectedCustomer" 
+        [options]="clientOptions" 
+        placeholder="בחר לקוח"
+        [style]="{'width': '100%'}">
+      </p-dropdown>
+    </div>
+
+    <div class="mobile-field-group">
+      <label>כתובת</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="formData.address" 
+        placeholder="כתובת">
+    </div>
+
+    <div class="mobile-field-group">
+      <label>מספר טלפון</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="formData.phone" 
+        placeholder="מספר טלפון">
+    </div>
+
+    <div class="mobile-field-group add-phone-toggle" *ngIf="!showAdditionalPhone">
+      <button type="button" class="mobile-add-phone-btn" (click)="toggleAdditionalPhone()">
+        + הוספת מספר נוסף
+      </button>
+    </div>
+
+    <div class="mobile-field-group" *ngIf="showAdditionalPhone">
+      <label>מספר טלפון נוסף</label>
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="formData.additionalPhone" 
+        placeholder="מספר טלפון">
+    </div>
+
+    <div class="mobile-field-group">
+      <label>כתובת מייל</label>
+      <input 
+        type="email" 
+        pInputText 
+        [(ngModel)]="formData.email" 
+        placeholder="הכניסו כתובת מייל">
+    </div>
+  </div>
+
+  <div class="mobile-form-actions">
+    <button 
+      pButton 
+      label="שמירה" 
+      (click)="onSubmit()" 
+      class="mobile-save-button">
+    </button>
+  </div>
+</div>

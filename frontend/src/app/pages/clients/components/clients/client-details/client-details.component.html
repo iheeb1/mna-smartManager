@@ -75,12 +75,12 @@
           <!-- Table Footer -->
           <div class="table-footer">
             <div class="footer-content">
-              <div class="footer-totals">
+              <div class="footer-wrapper">
                 <div class="footer-value">{{ totalStats.total1 }}</div>
                 <div class="footer-value">{{ totalStats.total2 }}</div>
                 <div class="footer-value">{{ totalStats.total3 }}</div>
+                <div class="footer-label">:الإجمالي</div>
               </div>
-              <div class="footer-label">:الإجمالي</div>
             </div>
           </div>
         </div>
@@ -96,18 +96,18 @@
             <div class="stat-label">إجمالي الإيرادات</div>
             <div class="stat-value">{{ totalRevenue }}</div>
           </div>
-          
+
           <div class="stat-item payments-stat">
             <div class="stat-label">إجمالي الدفعات</div>
             <div class="stat-value">{{ totalPayments }}</div>
           </div>
-          
+
           <div class="stat-item balance-stat">
             <div class="stat-label">إجمالي رصيد الحساب</div>
             <div class="stat-value">{{ remainingBalance }}</div>
           </div>
         </div>
-        
+
         <h3 class="card-title">ملخص الحساب</h3>
       </div>
 
@@ -119,7 +119,7 @@
           </button>
           <h3 class="card-title">التفاصيل العامة</h3>
         </div>
-        
+
         <div class="contact-section">
           <div class="contact-grid">
             <div class="contact-item">
@@ -166,9 +166,7 @@
 </div>
 
 <!-- Payment Modal Component -->
-<app-payment-modal
-  [(visible)]="showPaymentModal"
-  (onSave)="handlePaymentSave($event)"
+<app-payment-modal [(visible)]="showPaymentModal" (onSave)="handlePaymentSave($event)"
   (onCancel)="handlePaymentCancel()">
 </app-payment-modal>
 

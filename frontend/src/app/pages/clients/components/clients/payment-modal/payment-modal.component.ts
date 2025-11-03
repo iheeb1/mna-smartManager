@@ -3,10 +3,36 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DialogModule } from 'primeng/dialog';
-import { Car } from '../../../../cars/models/car.models';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { TooltipModule } from 'primeng/tooltip';
 
+interface PaymentData {
+  paymentDate: Date | null;
+  paymentMethod: string;
+  bank: string;
+  accountNumber: string;
+  asmachta: string;
+  amount: number | null;
+  notes: string;
+}
+
+interface Transfer {
+  bank: string;
+  accountNumber: string;
+  asmachta: string;
+  amount: number;
+}
+
+interface Check {
+  bank: string;
+  checkNumber: string;
+  accountNumber: string;
+  date: string;
+  amount: number;
+}
 
 @Component({
   selector: 'app-payment-modal',
@@ -16,21 +42,60 @@ import { Car } from '../../../../cars/models/car.models';
     FormsModule,
     ButtonModule,
     InputTextModule,
-    InputSwitchModule,
-    DialogModule
+    InputTextareaModule,
+    DialogModule,
+    DropdownModule,
+    CalendarModule,
+    TooltipModule
   ],
   templateUrl: './payment-modal.component.html',
   styleUrl: './payment-modal.component.scss'
 })
-export class PaymentModalComponent implements OnChanges, OnInit, OnDestroy {
+export class PaymentModalComponent implements OnInit, OnDestroy {
   @Input() visible: boolean = false;
-  @Input() carToEdit: Car | null = null;
   @Output() visibleChange = new EventEmitter<boolean>();
-  @Output() onSave = new EventEmitter<Car>();
+  @Output() onSave = new EventEmitter<PaymentData>();
   @Output() onClose = new EventEmitter<void>();
+  @Output() onHide = new EventEmitter<void>();
+  @Output() onCancel = new EventEmitter<void>();
 
-  formData: Car = this.getEmptyForm();
+  formData: PaymentData = this.getEmptyForm();
   isMobile: boolean = false;
+
+  // Dropdown options
+  paymentMethodOptions = [
+    { label: 'تحويل بنكي', value: 'bank_transfer' },
+    { label: 'شيك', value: 'check' },
+    { label: 'نقدي', value: 'cash' },
+    { label: 'بطاقة ائتمان', value: 'credit_card' }
+  ];
+
+  bankOptions = [
+    { label: 'بنك هبوعليم', value: 'hapoalim' },
+    { label: 'بنك لئومي', value: 'leumi' },
+    { label: 'بنك ديسكونت', value: 'discount' },
+    { label: 'בנק מזרחי', value: 'mizrahi' }
+  ];
+
+  // Sample data for transfers and checks
+  transfers: Transfer[] = [
+    {
+      bank: 'بنك',
+      accountNumber: 'مسيفر حسفون',
+      asmachta: 'اسماحتا',
+      amount: 1500
+    }
+  ];
+
+  checks: Check[] = [
+    {
+      bank: 'بنك بنك',
+      checkNumber: 'مسيفر شيق 123456789',
+      accountNumber: 'مسيفر حسفون',
+      date: '11/09/2024',
+      amount: 1500
+    }
+  ];
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -45,30 +110,15 @@ export class PaymentModalComponent implements OnChanges, OnInit, OnDestroy {
     this.isMobile = window.innerWidth <= 768;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['carToEdit'] && changes['carToEdit'].currentValue) {
-      // Editing existing car
-      this.formData = { ...changes['carToEdit'].currentValue };
-    } else if (changes['visible'] && changes['visible'].currentValue && !this.carToEdit) {
-      // Adding new car
-      this.resetForm();
-    }
-  }
-
-  private getEmptyForm(): Car {
+  private getEmptyForm(): PaymentData {
     return {
-      id: undefined,
-      carId: undefined,
-      plateNumber: '',
-      carNumber: '',
-      model: '',
-      carNotes: '',
-      isActive: true,
-      carStatusId: 1,
-      location: '',
-      objectId: 0,
-      createdBy: 1,
-      modifiedBy: 1
+      paymentDate: null,
+      paymentMethod: '',
+      bank: '',
+      accountNumber: '',
+      asmachta: '',
+      amount: null,
+      notes: ''
     };
   }
 
@@ -76,36 +126,57 @@ export class PaymentModalComponent implements OnChanges, OnInit, OnDestroy {
     this.formData = this.getEmptyForm();
   }
 
+  addPaymentMethod(): void {
+    console.log('Add payment method');
+    // Implement add payment method logic
+  }
+
+  deleteTransfer(index: number): void {
+    this.transfers.splice(index, 1);
+  }
+
+  editTransfer(index: number): void {
+    console.log('Edit transfer:', this.transfers[index]);
+    // Implement edit transfer logic
+  }
+
+  deleteCheck(index: number): void {
+    this.checks.splice(index, 1);
+  }
+
+  editCheck(index: number): void {
+    console.log('Edit check:', this.checks[index]);
+    // Implement edit check logic
+  }
+
   onSubmit(): void {
     // Validate form data
-    if (!this.formData.plateNumber?.trim()) {
-      alert('נא להזין מספר רכב');
+    if (!this.formData.paymentDate) {
+      alert('يرجى اختيار تاريخ الدفع');
       return;
     }
 
-    if (!this.formData.model?.trim()) {
-      alert('נא להזין סוג רכב');
+    if (!this.formData.amount || this.formData.amount <= 0) {
+      alert('يرجى إدخال مبلغ صحيح');
       return;
     }
 
-    // Prepare data for backend
-    const carData: Car = {
-      ...this.formData,
-      carNumber: this.formData.plateNumber,
-      carNotes: this.formData.model,
-      carStatusId: this.formData.isActive ? 1 : 0
-    };
-
-    // Emit the saved car data
-    this.onSave.emit(carData);
+    // Emit the saved payment data
+    this.onSave.emit(this.formData);
     
-    // Dialog will be closed by parent component after successful save
+    // Reset form after save
+    this.resetForm();
+  }
+
+  onDialogHide(): void {
+    this.visible = false;
+    this.visibleChange.emit(false);
+    this.onHide.emit();
   }
 
   closeDialog(): void {
     this.visible = false;
     this.visibleChange.emit(false);
-    this.onClose.emit();
-    this.resetForm();
+    this.onCancel.emit();
   }
 }

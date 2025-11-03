@@ -10,6 +10,7 @@ import { FooterNavComponent } from '../../../shared/components/footer-nav/footer
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
+import { ClientFormComponent } from './client-form/client-form/client-form.component';
 
 interface Client {
   id: string;
@@ -20,7 +21,9 @@ interface Client {
   discount: string;
   creditGiven: string;
   balance: string;
+  showMenu?: boolean;
 }
+
 
 @Component({
   selector: 'app-clients',
@@ -33,7 +36,8 @@ interface Client {
     HeaderComponent,
     FooterNavComponent,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ClientFormComponent
   ],
   providers: [MessageService], // MessageService is provided here
   templateUrl: './clients.component.html',
@@ -51,6 +55,13 @@ interface Client {
   ]
 })
 export class ClientsComponent implements OnInit {
+
+  showContactMenu: boolean = false;
+contactMenuType: 'phone' | 'email' | null = null;
+selectedContactValue: string | null = null;
+showDialog: boolean = false;
+selectedClient: any = null;
+
   clients: Client[] = [
     {
       id: '1',
@@ -139,8 +150,6 @@ export class ClientsComponent implements OnInit {
   loading: boolean = false;
   isEmpty: boolean = false;
   totalClients: number = 0;
-  showDialog: boolean = false;
-  selectedClient: Client | null = null;
   showMobileFabMenu: boolean = false;
 
   // Use constructor injection (correct approach)
@@ -178,16 +187,6 @@ export class ClientsComponent implements OnInit {
     this.isEmpty = this.filteredClients.length === 0 && term.length > 0;
   }
 
-  addNewClient(): void {
-    this.selectedClient = null;
-    this.showDialog = true;
-    console.log('Add new client');
-  }
-
-  addNewClientFromMobile(): void {
-    this.closeMobileFabMenu();
-    this.addNewClient();
-  }
 
   getDiscountClass(discount: string): string {
     if (discount.startsWith('-')) {
@@ -206,5 +205,95 @@ export class ClientsComponent implements OnInit {
 
   viewClientDetails(client: Client): void {
     this.router.navigate(['/customers', client.id]);
+  }
+
+  showActionMenu(client: Client): void {
+    // Ferme tous les autres menus
+    this.filteredClients.forEach(c => (c as any).showMenu = false);
+  
+    // Ouvre le menu du client cliqué
+    (client as any).showMenu = true;
+  }
+
+  deleteClient(client: Client): void {
+    this.clients = this.clients.filter(c => c.id !== client.id);
+    this.filteredClients = this.filteredClients.filter(c => c.id !== client.id);
+  
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Supprimé',
+      detail: 'Client supprimé avec succès'
+    });
+  }
+  openPhoneMenu(phone: string): void {
+    this.contactMenuType = 'phone';
+    this.selectedContactValue = phone;
+    this.showContactMenu = true;
+  }
+  
+  openEmailMenu(email: string): void {
+    this.contactMenuType = 'email';
+    this.selectedContactValue = email;
+    this.showContactMenu = true;
+  }
+  
+  closeContactMenu(): void {
+    this.showContactMenu = false;
+  }
+
+  callPhone(phone: string): void {
+    window.open(`tel:${phone}`, '_self');
+  }
+  
+  sendSms(phone: string): void {
+    window.open(`sms:${phone}`, '_self');
+  }
+  
+  sendEmail(email: string): void {
+    window.open(`mailto:${email}`, '_self');
+  }
+  
+  copyToClipboard(text: string): void {
+    navigator.clipboard.writeText(text).then(() => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'تم النسخ',
+        detail: 'تم نسخ النص إلى الحافظة'
+      });
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'خطأ',
+        detail: 'فشل في النسخ إلى الحافظة'
+      });
+    });
+  }
+  
+  addNewClient() {
+    this.selectedClient = null;
+    this.showDialog = true;
+  }
+  
+  addNewClientFromMobile() {
+    this.selectedClient = null;
+    this.showDialog = true;
+    this.closeMobileFabMenu();
+  }
+  
+  editClient(client: any) {
+    this.selectedClient = client;
+    this.showDialog = true;
+  }
+  
+  onClientSaved(clientData: any) {
+    // Handle save logic here
+    console.log('Client saved:', clientData);
+    this.loadClients(); // Refresh the list
+  }
+  
+  onDialogClose() {
+    this.showDialog = false;
+    this.selectedClient = null;
   }
 }

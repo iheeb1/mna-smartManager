@@ -1,0 +1,449 @@
+// Desktop Dialog Overrides
+:host ::ng-deep .client-dialog {
+    border-radius: 24px !important;
+    overflow: hidden !important;
+  
+    .p-dialog {
+      border-radius: 24px !important;
+      overflow: hidden !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    }
+  
+    .p-dialog-header {
+      display: none !important;
+    }
+  
+    .p-dialog-content {
+      padding: 0 !important;
+      background: transparent !important;
+      border-radius: 24px !important;
+      overflow: hidden !important;
+    }
+  
+    .form-container {
+      display: flex;
+      flex-direction: row-reverse;
+      height: 600px;
+      background: #FAFBFF;
+      overflow: hidden;
+      border-radius: 24px;
+  
+      .form-image {
+        width: 42%;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 24px 24px 0;
+  
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 0;
+        }
+  
+        h2 {
+          position: absolute;
+          top: 80%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 38px;
+          font-weight: 800;
+          text-align: center;
+          line-height: 1.2;
+          margin: 0;
+          z-index: 1;
+          padding: 0 20px;
+          max-width: 100%;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+      }
+  
+      .form-content {
+        flex: 1;
+        padding: 60px 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #FAFBFF;
+        direction: rtl;
+        border-radius: 24px 0 0 24px;
+        overflow-y: auto;
+  
+        .form-fields {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+          column-gap: 32px;
+  
+          .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+  
+            label {
+              font-size: 15px;
+              color: #6b6b8f;
+              font-weight: 600;
+              text-align: right;
+            }
+  
+            &.add-phone-toggle {
+              align-items: flex-start;
+              justify-content: center;
+  
+              .add-phone-btn {
+                background: transparent;
+                border: none;
+                color: #6c63ff;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                padding: 0;
+                text-align: right;
+                direction: rtl;
+                transition: opacity 0.2s ease;
+  
+                &:hover {
+                  opacity: 0.8;
+                }
+              }
+            }
+  
+            input {
+              padding: 16px 20px;
+              border: none;
+              border-radius: 14px;
+              font-size: 16px;
+              background: #e8e8f3;
+              direction: rtl;
+              color: #4a4a6a;
+              font-weight: 500;
+              transition: all 0.2s ease;
+              text-align: right;
+  
+              &:focus {
+                outline: none;
+                background: #dcdce8;
+                box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+              }
+  
+              &::placeholder {
+                color: #a8a8c0;
+              }
+            }
+  
+            ::ng-deep .p-dropdown {
+              border: none;
+              border-radius: 14px;
+              background: #e8e8f3;
+              direction: rtl;
+  
+              .p-dropdown-label {
+                padding: 16px 20px;
+                color: #4a4a6a;
+                font-weight: 500;
+                text-align: right;
+  
+                &.p-placeholder {
+                  color: #a8a8c0;
+                }
+              }
+  
+              .p-dropdown-trigger {
+                color: #6b6b8f;
+              }
+  
+              &:not(.p-disabled):hover {
+                background: #dcdce8;
+              }
+  
+              &.p-focus {
+                outline: none;
+                background: #dcdce8;
+                box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+                border-color: transparent;
+              }
+            }
+          }
+        }
+  
+        .form-actions {
+          display: flex;
+          justify-content: center;
+          margin-top: 40px;
+  
+          .save-button {
+            width: 100%;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35);
+            letter-spacing: 0.3px;
+  
+            &:hover {
+              background: linear-gradient(135deg, #6c63ff 0%, #5b52e8 100%);
+              transform: translateY(-2px);
+              box-shadow: 0 12px 32px rgba(108, 99, 255, 0.45);
+            }
+  
+            &:active {
+              transform: translateY(0);
+              box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Mobile Form - FULLSCREEN OVERLAY (NO DIALOG)
+  .mobile-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  
+    .mobile-form-image {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      min-height: 200px;
+      max-height: 200px;
+      background: linear-gradient(135deg, #6B73FF 0%, #5A67D8 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+  
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+  
+      .mobile-back-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px 12px;
+        color: white;
+        font-size: 32px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        width: auto;
+        height: auto;
+        font-weight: 300;
+  
+        .back-arrow {
+          display: block;
+          font-style: normal;
+        }
+  
+        i {
+          display: none;
+        }
+  
+        &:active {
+          opacity: 0.7;
+        }
+      }
+  
+      h2 {
+        position: relative;
+        z-index: 1;
+        color: white;
+        font-size: 32px;
+        font-weight: 700;
+        text-align: center;
+        margin: 0;
+        line-height: 1.3;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        direction: rtl;
+      }
+    }
+  
+    .mobile-form-content {
+      padding: 32px 24px;
+      border-radius: 24px 24px 0 0;
+      margin-top: -24px;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: white;
+      overflow-y: auto;
+      overflow-x: hidden;
+  
+      .mobile-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+  
+        label {
+          font-size: 13px;
+          color: #5A5780;
+          font-weight: 500;
+          text-align: right;
+          direction: rtl;
+        }
+  
+        &.add-phone-toggle {
+          align-items: flex-start;
+  
+          .mobile-add-phone-btn {
+            background: transparent;
+            border: none;
+            color: #6c63ff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            text-align: right;
+            direction: rtl;
+  
+            &:active {
+              opacity: 0.7;
+            }
+          }
+        }
+  
+        input {
+          padding: 16px 20px;
+          border: none;
+          border-radius: 16px;
+          font-size: 16px;
+          background: #E8E8F3;
+          direction: rtl;
+          color: #4a4a6a;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          text-align: right;
+          width: 100%;
+  
+          &:focus {
+            outline: none;
+            background: #dcdce8;
+          }
+  
+          &::placeholder {
+            color: #9E9CBE;
+            text-align: right;
+          }
+        }
+  
+        ::ng-deep .p-dropdown {
+          border: none;
+          border-radius: 16px;
+          background: #E8E8F3;
+          direction: rtl;
+          width: 100%;
+  
+          .p-dropdown-label {
+            padding: 16px 20px;
+            color: #4a4a6a;
+            font-weight: 500;
+            text-align: right;
+  
+            &.p-placeholder {
+              color: #9E9CBE;
+            }
+          }
+  
+          .p-dropdown-trigger {
+            color: #5A5780;
+          }
+  
+          &.p-focus {
+            outline: none;
+            background: #dcdce8;
+            border-color: transparent;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  
+    .mobile-form-actions {
+      padding: 16px 24px 32px;
+      background: white;
+      flex-shrink: 0;
+  
+      .mobile-save-button {
+        width: 100%;
+        padding: 18px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%);
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35);
+  
+        &:active {
+          transform: scale(0.98);
+          box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+        }
+      }
+    }
+  }
+  
+  // Dropdown Panel Styling
+  :host ::ng-deep .p-dropdown-panel {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border: none;
+  
+    .p-dropdown-items {
+      padding: 8px;
+  
+      .p-dropdown-item {
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin: 4px 0;
+        color: #4a4a6a;
+        font-weight: 500;
+        text-align: right;
+        direction: rtl;
+  
+        &:hover {
+          background: #e8e8f3;
+        }
+  
+        &.p-highlight {
+          background: #6c63ff;
+          color: white;
+        }
+      }
+    }
+  }

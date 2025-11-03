@@ -630,18 +630,51 @@
     box-shadow: none;
     text-align: center;
     direction: rtl;
-
+  
+    &:not(:last-child) {
+      border-bottom: 1px solid #B8B3FD;
+    }
+  
     &:hover {
       background: #F5F5F5;
     }
-
+  
     &:active {
       background: #EBEBEB;
     }
   }
 }
 
-// Responsive - Mobile
+
+@media (min-width: 769px) {
+  .contact-wrapper,
+  .client-actions-menu,
+  .row-cell.name::before,
+  .row-cell.name::after {
+    display: none !important;
+  }
+
+  .row-cell.phone,
+  .row-cell.email,
+  .row-cell.address {
+    display: block !important;
+  }
+
+  .table-body .table-row {
+    display: flex !important;
+  }
+}
+
+
+@media (min-width: 769px) {
+  .mobile-hero-section,
+  .mobile-add-btn,
+  .mobile-fab-overlay,
+  .mobile-fab-menu {
+    display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 20px 15px;
@@ -651,105 +684,416 @@
     }
 
     .content-card {
-      padding: 16px;
-      border-radius: 24px 24px 16px 16px;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
       margin-top: -12px;
       position: relative;
       z-index: 5;
 
-      .search-bar {
+      .table-header {
         display: none;
       }
-
-      .table-header {
+      .search-bar {
         display: none;
       }
 
       .table-body .table-row {
         display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto auto auto auto;
-        padding: 6%;
-        gap: 12px 16px;
-        border: 1px solid #f0f0f0;
-        border-radius: 40px;
-        margin-bottom: 12px;
-        box-shadow: 0 4px 20px rgba(87, 77, 255, 0.1);
-        align-items: start;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto auto auto;
+        gap: 0;
+        padding: 0;
+        border-radius: 16px;
+        background: white;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(87, 77, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        direction: rtl;
 
         .row-cell {
+          text-align: center;
+          font-size: 15px;
+          color: #2d3748;
+          border: none !important;
+
+          /* 1. Name and Actions (Row 1) */
           &.name {
             grid-column: 1 / -1;
             grid-row: 1;
             font-size: 18px;
             font-weight: 700;
             color: #574DFF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            text-align: right;
+            position: relative;
+
+            /* The three dots (⋮) icon */
+            &::before {
+              content: "⋮";
+              font-size: 24px;
+              color: #C4C4C4;
+              cursor: pointer;
+              order: -1;
+              line-height: 1;
+              font-weight: 700;
+              padding: 0 4px;
+              z-index: 15;
+            }
+
+            /* "To client page" link */
+            &::after {
+              content: "לדף הלקוח >";
+              font-size: 14px;
+              font-weight: 500;
+              color: #574DFF;
+              order: 2;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              cursor: pointer;
+            }
+
+            /* --- Action Menu Styles --- */
+            .client-actions-menu {
+                position: absolute;
+                top: 45px;
+                left: 20px;
+                background: #FFFFFF;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 20;
+                display: flex;
+                flex-direction: column;
+                width: 150px;
+                visibility: hidden;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+                text-align: right;
+
+                &.visible {
+                    visibility: visible;
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                .menu-action {
+                    display: flex;
+                    flex-direction: row-reverse;
+                    align-items: center;
+                    justify-content: flex-start;
+                    padding: 10px 15px;
+                    background: none;
+                    border: none;
+                    width: 100%;
+                    cursor: pointer;
+                    color: #15123C;
+                    gap: 10px;
+                    
+                    &:hover {
+                        background: #F8F8FF;
+                    }
+
+                    span {
+                        font-size: 15px;
+                        font-weight: 500;
+                    }
+
+                    i {
+                        font-size: 16px;
+                        color: #574DFF;
+                    }
+
+                    &.delete i {
+                        color: #E53935;
+                    }
+                }
+            }
           }
 
+          /* 2. Address (Row 2) */
           &.address {
             grid-column: 1 / -1;
             grid-row: 2;
-            
+            font-size: 16px;
+            color: #15123C;
+            font-weight: 500;
+            padding: 0 20px 20px;
+            text-align: right;
+            background: white;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
             &::before {
-              content: 'כתובת: ';
-              font-weight: 600;
-              color: #5A5780;
+              content: "כתובת";
+              font-size: 13px;
+              color: #9D9BB1;
+              font-weight: 400;
             }
           }
 
-          &.phone {
+          &.discount,
+          &.credit-given,
+          &.balance {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 6px;
+            padding: 16px 8px;
+            background: white;
+            grid-row: 3;
+            border: none;
+          }
+
+          /* Slot 1 (Left): Account Balance (uses .balance cell) */
+          &.balance {
             grid-column: 1;
-            grid-row: 3;
-            
+            font-size: 22px;
+            font-weight: 700;
+            color: #4CAF50;
+
             &::before {
-              content: 'טלפון: ';
-              font-weight: 600;
+              content: "יתרת חשבון";
+              font-size: 13px;
+              font-weight: 400;
               color: #5A5780;
+              order: -1;
             }
           }
 
-          &.email {
-            grid-column: 2;
-            grid-row: 3;
-            
-            &::before {
-              content: 'אימייל: ';
-              font-weight: 600;
-              color: #5A5780;
-            }
-          }
-
+          /* Slot 2 (Middle): Total Payments (uses .credit-given cell) */
           &.credit-given {
-            grid-column: 1;
-            grid-row: 4;
-            
-            &::before {
-              content: 'אשראי ניתן: ';
-              font-weight: 600;
-              color: #5A5780;
-            }
-          }
-
-          &.discount {
             grid-column: 2;
-            grid-row: 4;
-            
+            font-size: 22px;
+            font-weight: 700;
+            color: #5A5780;
+
             &::before {
-              content: 'הנחה: ';
-              font-weight: 600;
+              content: "סה\"כ תשלומים";
+              font-size: 13px;
+              font-weight: 400;
               color: #5A5780;
+              order: -1;
             }
           }
 
-          &.chevron {
+          /* Slot 3 (Right): Total Orders (uses .discount cell) */
+          &.discount {
+            grid-column: 3;
+            
+            .discount-badge {
+              font-size: 22px;
+              font-weight: 700;
+              color: #5A5780;
+              background: transparent;
+              padding: 0;
+              border-radius: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 6px;
+              width: 100%;
+              
+              &.positive, &.negative {
+                background: transparent;
+                color: #5A5780;
+              }
+              
+              &::before {
+                content: "סה\"כ הזמנות";
+                display: block;
+                font-size: 13px;
+                font-weight: 400;
+                color: #5A5780;
+                order: -1;
+              }
+            }
+          }
+
+          /* 4. Contact section (Wrapper for Phone and Email - Row 4) */
+          &.contact-wrapper {
+            grid-column: 1 / -1; 
+            grid-row: 4;
+            display: flex;
+            flex-direction: row-reverse; 
+            justify-content: flex-start; 
+            align-items: center;
+            gap: 30px; 
+            font-size: 15px;
+            color: #15123C;
+            background: #F8F8FF;
+            padding: 16px 20px;
+            border-radius: 0 0 16px 16px; 
+            text-align: right;
+            box-shadow: inset 0 3px 6px -3px rgba(0, 0, 0, 0.05);
+
+            .contact-item {
+              display: flex;
+              flex-direction: row-reverse; 
+              align-items: center;
+              gap: 10px;
+            }
+
+            /* --- Icon Wrapper Styles (White, Rounded, Shadow) --- */
+            .icon-wrapper {
+              width: 38px;
+              height: 38px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              background: #FFFFFF;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              flex-shrink: 0;
+
+              .icon {
+                color: #574DFF;
+                width: 22px;
+                height: 22px;
+              }
+            }
+          }
+
+          /* Hide the old separate email/phone cells (used for desktop grid) */
+          &.phone,
+          &.email {
             display: none;
           }
 
-          &.balance {
+          /* Hide chevron */
+          &.chevron {
             display: none;
           }
         }
       }
     }
+    
+    /* Mobile Hero and Actions */
+    .mobile-hero-section {
+      display: block;
+      background-color: #FFFFFF;
+      padding: 15px 20px 0;
+      margin-bottom: 20px;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+      .mobile-hero-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+
+        .hero-image {
+          width: 32px;
+          height: 32px;
+        }
+
+        .hero-title {
+          font-size: 24px;
+          font-weight: 700;
+        }
+      }
+
+      .mobile-action-bar {
+        display: flex;
+        gap: 10px;
+        padding-bottom: 15px;
+
+        .action-btn {
+          background-color: #F8F8FF;
+          border: 1px solid #E8E6FF;
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .mobile-search-input {
+          display: flex;
+          align-items: center;
+          background: #F8F8FF;
+          border-radius: 12px;
+          padding: 8px 12px;
+          flex-grow: 1;
+          height: 44px;
+
+          .search-icon {
+            margin-left: 8px;
+            img {
+              width: 16px;
+              height: 16px;
+            }
+          }
+
+          input[type="text"] {
+            border: none;
+            background: transparent;
+            width: 100%;
+            font-size: 14px;
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .mobile-add-btn {
+      display: block;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #574DFF;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .mobile-fab-overlay {
+      display: block;
+    }
+  }
+}
+
+@media (min-width: 769px) {
+  .contact-wrapper,
+  .client-actions-menu,
+  .row-cell.name::before,
+  .row-cell.name::after {
+    display: none !important;
+  }
+
+  .table-body .table-row {
+    display: flex !important;
+  }
+
+  .row-cell.name {
+    position: static !important;
+  }
+
+  .table-row > .row-cell.credit-given:nth-of-type(n+2),
+  .table-row > .row-cell.balance:nth-of-type(n+2) {
+    display: none !important;
   }
 }

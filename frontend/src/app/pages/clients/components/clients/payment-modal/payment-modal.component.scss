@@ -1,14 +1,9 @@
-// Modal Dialog Overrides
-:host ::ng-deep .vehicle-dialog {
-  border-radius: 24px !important;
-  overflow: hidden !important;
+// ============================================
+// GLOBAL DIALOG RESET
+// ============================================
 
-  .p-dialog {
-    border-radius: 24px !important;
-    overflow: hidden !important;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
-  }
-
+::ng-deep .payment-dialog,
+::ng-deep .mobile-payment-dialog {
   .p-dialog-header {
     display: none !important;
   }
@@ -16,193 +11,449 @@
   .p-dialog-content {
     padding: 0 !important;
     background: transparent !important;
-    border-radius: 24px !important;
-    overflow: hidden !important;
   }
 
-  .form-container {
-    display: flex;
-    flex-direction: row-reverse; /* image on RIGHT */
-    height: 550px;
-    background: #FAFBFF;
-    overflow: hidden;
-    border-radius: 24px;
-
-    .form-image {
-      width: 42%;
-      position: relative;
-      overflow: hidden;
-      border-radius: 0 24px 24px 0;
-
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 0;
-      }
-
-      h2 {
-        position: absolute;
-        top: 80%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 38px;
-        font-weight: 800;
-        text-align: center;
-        line-height: 1.2;
-        margin: 0;
-        z-index: 1;
-        padding: 0 20px;
-        max-width: 100%;
-      }
+  .p-button {
+    &:focus {
+      box-shadow: none !important;
     }
+  }
 
-    .form-content {
-      flex: 1;
-      padding: 60px 50px;
+  .p-inputtext,
+  .p-inputtextarea {
+    &:enabled:focus {
+      box-shadow: none !important;
+    }
+  }
+}
+
+// ============================================
+// DESKTOP STYLES
+// ============================================
+
+::ng-deep .payment-dialog {
+  .p-dialog {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    background: #f9fafb;
+  }
+}
+
+.dialog-wrapper {
+  display: flex;
+  height: 90vh;
+  border-radius: 24px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+// LEFT SIDE - FORM (COMPACT)
+.form-side {
+  width: 58%;
+  background: white;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+  border-radius: 24px 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+
+  // Hide scrollbar
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.section-block {
+  margin-bottom: 1rem;
+  
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0;
+  text-align: right;
+  letter-spacing: -0.01em;
+}
+
+.line-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 1rem 0;
+}
+
+.input-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-direction: row-reverse;
+  direction: rtl;
+  
+  &.two-cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &.four-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+.input-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  
+  &.full {
+    flex: 1 1 100%;
+  }
+  
+  .input-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    text-align: right;
+    margin-bottom: 0.125rem;
+  }
+  
+  input, textarea {
+    width: 100%;
+    height: 32px;
+    border: 1px solid #E0DEFA;
+    border-radius: 12px;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    font-family: inherit;
+    background: #F8F7FE;
+    transition: all 0.2s ease;
+    direction: rtl;
+    text-align: right;
+    
+    &:hover {
+      background: #E0DEFA;
+      border-color: #D0CFF4;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: #B5AEF1;
+      background: white;
+      box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2);
+    }
+    
+    &::placeholder {
+      color: #D0CFF4;
+      text-align: right;
+    }
+  }
+  
+  textarea {
+    height: auto;
+    min-height: 60px;
+    padding: 0.5rem 0.75rem;
+    resize: vertical;
+  }
+}
+
+.add-payment-method-btn,
+.save-check-btn {
+  color: #9A8CF0 !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  padding: 0.375rem 0.75rem !important;
+  transition: all 0.2s ease !important;
+  direction: rtl !important;
+  background: transparent !important;
+  border: 1px solid #E0DEFA !important;
+  border-radius: 12px !important;
+  width: auto;
+  text-align: right;
+  margin-top: 0.5rem;
+  
+  &:hover {
+    background: #E8E6F9 !important;
+    color: #8C7DF0 !important;
+  }
+  
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+// Transfer Items
+.transfer-item {
+  background: #F8F7FE;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+  
+  .transfer-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    direction: rtl;
+  }
+  
+  .transfer-info,
+  .check-info {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    
+    .info-row {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      background: #FAFBFF;
-      direction: rtl;
-      border-radius: 24px 0 0 24px;
-
-      .form-fields {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-        column-gap: 32px;
-
-        .field-group {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-
-          label {
-            font-size: 15px;
-            color: #6b6b8f;
-            font-weight: 600;
-            text-align: right;
-          }
-
-          input {
-            padding: 16px 20px;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            background: #e8e8f3;
-            direction: rtl;
-            color: #4a4a6a;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            max-width: 180px;
-
-            &:focus {
-              outline: none;
-              background: #dcdce8;
-              box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
-            }
-
-            &::placeholder {
-              color: #a8a8c0;
-            }
-          }
-        }
-
-        .toggle-group {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-top: 8px;
-
-          label {
-            font-size: 15px;
-            color: #6b6b8f;
-            font-weight: 600;
-            margin: 0;
-          }
-
-          .p-inputswitch {
-            .p-inputswitch-slider {
-              background: #c5c5d8 !important;
-            }
+      align-items: flex-end;
+      gap: 0.125rem;
       
-            &.p-inputswitch-checked .p-inputswitch-slider {
-              background: #6c63ff !important;
-            }
-          }
-        }
+      .field-label {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 500;
       }
-
-      .form-actions {
-        display: flex;
-        justify-content: center;
-        margin-top: 50px;
-
-        .save-button {
-          width: 100%;
-          padding: 18px;
-          font-size: 18px;
-          font-weight: 700;
-          border-radius: 14px;
-          background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%);
-          border: none;
-          color: white;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35);
-          letter-spacing: 0.3px;
-
-          &:hover {
-            background: linear-gradient(135deg, #6c63ff 0%, #5b52e8 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(108, 99, 255, 0.45);
-          }
-
-          &:active {
-            transform: translateY(0);
-            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
-          }
-        }
+      
+      .field-value {
+        font-size: 0.875rem;
+        color: #1e293b;
+        font-weight: 600;
       }
     }
   }
-
-  // Responsive
-  @media (max-width: 768px) {
-    .form-container {
-      flex-direction: column-reverse;
-      height: auto;
-      min-height: 600px;
-
-      .form-content {
-        padding: 40px 30px;
+  
+  .transfer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 8px;
+    
+    .icon-btn {
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      
+      i {
+        font-size: 11px;
       }
-
-      .form-image {
-        width: 100%;
-        min-height: 300px;
-        border-radius: 24px 24px 0 0;
-
-        img {
-          width: 65%;
-          max-width: 200px;
-          margin-bottom: 30px;
+      
+      &.edit-btn {
+        i {
+          color: #574DFF;
         }
-
-        h2 {
-          font-size: 28px;
+        
+        &:hover {
+          background: #E8E6F9;
+        }
+      }
+      
+      &.delete-btn {
+        i {
+          color: #FF4D4D;
+        }
+        
+        &:hover {
+          background: #FFF0F0;
+          
+          i {
+            color: #FF4D4D;
+          }
         }
       }
     }
   }
 }
-// Mobile Dialog Styles - Fullscreen
-:host ::ng-deep .mobile-vehicle-dialog {
+
+.final-save-btn {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(135deg, #B5AEF1 0%, #9A8CF0 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  margin-top: 1rem !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(154, 140, 240, 0.3) !important;
+  flex-shrink: 0;
+  
+  &:hover {
+    background: linear-gradient(135deg, #9A8CF0 0%, #8C7DF0 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(154, 140, 240, 0.35) !important;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(154, 140, 240, 0.2) !important;
+  }
+}
+
+// RIGHT SIDE - ILLUSTRATION
+.illustration-side {
+  width: 42%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 24px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4A90E2 0%, #63B3ED 50%, #93C5FD 100%);
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+    }
+    
+    h2 {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin: 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      letter-spacing: -0.02em;
+      z-index: 2;
+      direction: rtl;
+    }
+  }
+}
+
+// PRIMENG OVERRIDES - Desktop
+::ng-deep .payment-dialog {
+  .p-dropdown {
+    width: 100%;
+    height: 32px;
+    border: 1px solid #E0DEFA !important;
+    border-radius: 12px !important;
+    background: #F8F7FE !important;
+    
+    &:hover {
+      border-color: #D0CFF4 !important;
+      background: #E0DEFA !important;
+    }
+    
+    &.p-focus {
+      border-color: #B5AEF1 !important;
+      background: white !important;
+      box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2) !important;
+    }
+    
+    .p-dropdown-label {
+      font-size: 0.875rem !important;
+      color: #1e293b !important;
+      text-align: right !important;
+      
+      &.p-placeholder {
+        color: #D0CFF4 !important;
+      }
+    }
+    
+    .p-dropdown-trigger {
+      width: 2rem !important;
+      color: #D0CFF4 !important;
+      
+      .p-dropdown-trigger-icon {
+        font-size: 0.75rem !important;
+      }
+    }
+    
+    .p-dropdown-clear-icon {
+      right: 2.25rem !important;
+      color: #D0CFF4 !important;
+    }
+  }
+  
+  .p-calendar {
+    width: 100%;
+    
+    .p-inputtext {
+      width: 100% !important;
+      height: 32px !important;
+      border: 1px solid #E0DEFA !important;
+      border-radius: 12px !important;
+      background: #F8F7FE !important;
+      padding: 0 0.75rem !important;
+      font-size: 0.875rem !important;
+      color: #1e293b !important;
+      direction: rtl !important;
+      text-align: right !important;
+      
+      &:focus {
+        background: white !important;
+        border-color: #B5AEF1 !important;
+      }
+      
+      &::placeholder {
+        color: #D0CFF4 !important;
+        text-align: right !important;
+      }
+    }
+    
+    .p-datepicker-trigger {
+      display: none !important;
+    }
+  }
+}
+
+// ============================================
+// MOBILE STYLES
+// ============================================
+
+::ng-deep .mobile-payment-dialog {
   &.p-dialog-bottom {
     .p-dialog {
       margin: 0 !important;
@@ -218,14 +469,9 @@
     overflow: hidden !important;
   }
 
-  .p-dialog-header {
-    display: none !important;
-  }
-
   .p-dialog-content {
     padding: 0 !important;
     background: white !important;
-    border-radius: 0 !important;
     overflow-y: auto !important;
     height: 100vh !important;
     max-height: 100vh !important;
@@ -233,10 +479,6 @@
 
   .p-dialog-mask {
     align-items: stretch !important;
-    padding: 0 !important;
-  }
-
-  .p-component-overlay {
     padding: 0 !important;
   }
 }
@@ -252,7 +494,7 @@
     position: relative;
     width: 100%;
     height: 18%;
-    background: linear-gradient(135deg, #6B73FF 0%, #5A67D8 100%);
+    background: linear-gradient(135deg, #4A90E2 0%, #63B3ED 100%);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -281,13 +523,10 @@
       align-items: center;
       justify-content: center;
       z-index: 2;
-      width: auto;
-      height: auto;
 
       &::before {
         content: '<';
         font-weight: 300;
-        font-style: normal;
       }
 
       i {
@@ -303,7 +542,7 @@
       position: relative;
       z-index: 1;
       color: white;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 700;
       text-align: center;
       margin: 0;
@@ -313,17 +552,23 @@
   }
 
   .mobile-form-content {
-    padding: 32px 24px;
-    border-radius: 24px 24px 0 0;
-    margin-top: -24px;
-    position: relative;
-    z-index: 1;
+    padding: 32px 24px 24px;
+    background: white;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background: white;
+    gap: 12px;
     overflow-y: auto;
+
+    .mobile-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      text-align: right;
+      direction: rtl;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
 
     .mobile-field-group {
       display: flex;
@@ -331,542 +576,207 @@
       gap: 8px;
 
       label {
-        font-size: 13px;
-        color: #5A5780;
+        font-size: 12px;
+        color: #64748b;
         font-weight: 500;
         text-align: right;
         direction: rtl;
       }
 
-      input {
-        padding: 16px 20px;
-        border: none;
-        border-radius: 16px;
-        font-size: 16px;
-        background: #E8E8F3;
+      input, textarea {
+        width: 100%;
+        height: 44px;
+        padding: 0 16px;
+        border: 1px solid #E0DEFA;
+        border-radius: 12px;
+        font-size: 14px;
+        background: #F8F7FE;
         direction: rtl;
-        color: #4a4a6a;
-        font-weight: 500;
+        color: #1e293b;
         transition: all 0.2s ease;
         text-align: right;
+        font-family: inherit;
+
+        &:hover {
+          background: #E0DEFA;
+          border-color: #D0CFF4;
+        }
 
         &:focus {
           outline: none;
-          background: #dcdce8;
+          background: white;
+          border-color: #B5AEF1;
+          box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2);
         }
 
         &::placeholder {
-          color: #9E9CBE;
+          color: #D0CFF4;
           text-align: right;
+        }
+      }
+
+      textarea {
+        height: auto;
+        min-height: 80px;
+        padding: 0.625rem 1rem;
+        resize: vertical;
+      }
+
+      ::ng-deep .p-dropdown {
+        width: 100% !important;
+        height: 44px !important;
+        border: 1px solid #E0DEFA !important;
+        border-radius: 12px !important;
+        background: #F8F7FE !important;
+
+        .p-dropdown-label {
+          font-size: 14px !important;
+          padding: 0 16px !important;
+          text-align: right !important;
+          color: #1e293b !important;
+
+          &.p-placeholder {
+            color: #D0CFF4 !important;
+          }
+        }
+
+        .p-dropdown-trigger {
+          width: 2.25rem !important;
+        }
+      }
+
+      ::ng-deep .p-calendar {
+        width: 100%;
+        .p-inputtext {
+          height: 44px !important;
+          padding: 0 16px !important;
+          font-size: 14px !important;
         }
       }
     }
 
-    .mobile-toggle-group {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+    .mobile-two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
-      padding: 12px 0;
-      direction: rtl;
+    }
 
-      label {
-        font-size: 13px;
-        color: #5A5780;
-        font-weight: 500;
-        order: 1;
+    .mobile-add-method-btn,
+    .mobile-save-check-btn {
+      width: 100%;
+      padding: 12px !important;
+      background: transparent !important;
+      border: 1px solid #E0DEFA !important;
+      border-radius: 12px !important;
+      color: #9A8CF0 !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      text-align: center;
+
+      &:hover {
+        background: #F8F7FE !important;
+      }
+    }
+
+    .mobile-transfer-item {
+      background: #F8F7FE;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .mobile-transfer-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .mobile-transfer-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          direction: rtl;
+
+          .field-label {
+            font-size: 0.8125rem;
+            color: #64748b;
+            font-weight: 500;
+          }
+
+          .field-value {
+            font-size: 0.875rem;
+            color: #1e293b;
+            font-weight: 600;
+          }
+        }
       }
 
-      ::ng-deep .p-inputswitch {
-        order: 2;
+      .mobile-transfer-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
 
-        &.p-inputswitch-checked .p-inputswitch-slider {
-          background: #6c63ff !important;
-        }
+        .icon-btn {
+          width: 28px;
+          height: 28px;
+          border: none;
+          border-radius: 50%;
+          background: transparent;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-        .p-inputswitch-slider {
-          background: #c5c5d8 !important;
+          i {
+            font-size: 12px;
+          }
+
+          &.edit-btn i {
+            color: #574DFF;
+          }
+
+          &.delete-btn i {
+            color: #FF4D4D;
+          }
         }
       }
     }
   }
 
   .mobile-form-actions {
-    padding: 16px 24px 32px;
+    padding: 16px 24px 24px;
     background: white;
     flex-shrink: 0;
 
     .mobile-save-button {
       width: 100%;
-      padding: 18px;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%);
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #B5AEF1, #9A8CF0);
       border: none;
       color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35);
+      box-shadow: 0 4px 12px rgba(154, 140, 240, 0.3);
 
-      &:active {
-        transform: scale(0.98);
-        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+      &:hover {
+        background: linear-gradient(135deg, #9A8CF0, #8C7DF0);
       }
     }
   }
 }
 
 @media (max-width: 768px) {
-  :host ::ng-deep .mobile-vehicle-dialog {
-    &.p-dialog {
-      max-height: 100% !important;
-    }
-    &.p-dialog-bottom {
-      .p-dialog {
-        margin: 0 !important;
-      }
-    }
-    
-
+  ::ng-deep .mobile-payment-dialog {
     .p-dialog {
-      max-height: 100%;
       position: fixed !important;
       top: 0 !important;
       left: 0 !important;
       right: 0 !important;
       bottom: 0 !important;
-      margin: 0 !important;
-    }
-    
-    .p-dialog-mask {
-      padding: 0 !important;
-      margin: 0 !important;
     }
   }
-
-  ::ng-deep {
-    .p-dialog-mask.mobile-vehicle-dialog {
-      padding: 0 !important;
-      
-      .p-dialog {
-        margin: 0 !important;
-      }
-    }
-
-    .p-dialog-bottom .p-dialog.mobile-vehicle-dialog,
-    .mobile-vehicle-dialog.p-dialog-bottom .p-dialog {
-      margin: 0 !important;
-    }
-  }
-}
-// Variables
-$primary-color: #6366f1;
-$primary-hover: #5558e3;
-$light-purple: #e8e7ff;
-$text-dark: #1f2937;
-$text-gray: #6b7280;
-$border-color: #e5e7eb;
-$background-light: #f9fafb;
-$white: #ffffff;
-
-// Reset and Base
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: $background-light;
-    padding: 20px;
-    direction: rtl;
-}
-
-// Container
-.payment-container {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: $white;
-    border-radius: 12px;
-    padding: 24px;
-}
-
-// Header Tabs
-.header-tabs {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    justify-content: flex-end;
-
-    .tab-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 20px;
-        border: 1px solid $border-color;
-        background-color: $white;
-        border-radius: 8px;
-        font-size: 14px;
-        color: $text-dark;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        .icon {
-            font-size: 18px;
-        }
-
-        .chevron {
-            margin-right: 8px;
-            font-size: 18px;
-        }
-
-        &.active {
-            background-color: $light-purple;
-            border-color: $light-purple;
-            color: $primary-color;
-        }
-
-        &:hover:not(.active) {
-            background-color: $background-light;
-        }
-    }
-}
-
-// Add Payment Button
-.add-payment-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: $white;
-    border: 2px dashed $primary-color;
-    border-radius: 8px;
-    color: $primary-color;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-bottom: 24px;
-    transition: all 0.2s;
-
-    &:hover {
-        background-color: $light-purple;
-    }
-}
-
-// Payment Form
-.payment-form {
-    margin-bottom: 24px;
-
-    .form-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: $text-dark;
-        margin-bottom: 16px;
-        text-align: right;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .form-field {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-
-        label {
-            font-size: 13px;
-            color: $text-gray;
-            font-weight: 500;
-        }
-
-        .form-input,
-        .form-select {
-            padding: 10px 12px;
-            border: 1px solid $border-color;
-            border-radius: 6px;
-            font-size: 14px;
-            background-color: $light-purple;
-            color: $text-dark;
-            transition: all 0.2s;
-
-            &::placeholder {
-                color: #9ca3af;
-            }
-
-            &:focus {
-                outline: none;
-                border-color: $primary-color;
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-            }
-        }
-
-        .form-select {
-            cursor: pointer;
-        }
-    }
-
-    .add-line-btn {
-        padding: 10px 20px;
-        background-color: $primary-color;
-        color: $white;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-            background-color: $primary-hover;
-        }
-    }
-}
-
-// Transfer Card
-.transfer-card {
-    background-color: $light-purple;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
-    position: relative;
-
-    .transfer-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 12px;
-    }
-
-    .transfer-info {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-        flex: 1;
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-
-            .label {
-                font-size: 12px;
-                color: $text-gray;
-            }
-
-            .value {
-                font-size: 14px;
-                color: $text-dark;
-                font-weight: 500;
-            }
-        }
-    }
-
-    .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background-color: $white;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: all 0.2s;
-
-            &:hover {
-                background-color: $background-light;
-            }
-        }
-    }
-
-    .transfer-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: $text-dark;
-        text-align: right;
-    }
-}
-
-// Check Card
-.check-card {
-    background-color: $light-purple;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 24px;
-    position: relative;
-
-    .check-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 12px;
-    }
-
-    .check-info {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        flex: 1;
-
-        .info-row {
-            display: flex;
-            gap: 8px;
-            font-size: 13px;
-
-            .label {
-                color: $text-gray;
-                min-width: 100px;
-            }
-
-            .value {
-                color: $text-dark;
-                font-weight: 500;
-            }
-        }
-    }
-
-    .actions {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background-color: $white;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: all 0.2s;
-
-            &:hover {
-                background-color: $background-light;
-            }
-        }
-    }
-
-    .check-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: $text-dark;
-        text-align: right;
-        margin-bottom: 12px;
-    }
-
-    .total-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        padding: 8px 20px;
-        background-color: $white;
-        border: 1px solid $border-color;
-        border-radius: 50px;
-        float: left;
-
-        .total-label {
-            font-size: 13px;
-            color: $text-gray;
-        }
-
-        .total-amount {
-            font-size: 16px;
-            font-weight: 600;
-            color: $text-dark;
-        }
-    }
-}
-
-// Notes Section
-.notes-section {
-    margin-bottom: 24px;
-
-    .notes-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: $text-dark;
-        margin-bottom: 12px;
-        text-align: right;
-    }
-
-    .notes-input {
-        width: 100%;
-        min-height: 100px;
-        padding: 12px;
-        border: 1px solid $border-color;
-        border-radius: 8px;
-        background-color: $light-purple;
-        font-size: 14px;
-        font-family: inherit;
-        resize: vertical;
-        transition: all 0.2s;
-
-        &::placeholder {
-            color: #9ca3af;
-        }
-
-        &:focus {
-            outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-    }
-}
-
-// Submit Button
-.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background-color: $primary-color;
-    color: $white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &:hover {
-        background-color: $primary-hover;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-    }
-
-    &:active {
-        transform: translateY(0);
-    }
-}
-
-// Responsive Design
-@media (max-width: 768px) {
-    .payment-form {
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .transfer-card,
-    .check-card {
-        .transfer-info,
-        .check-info {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .header-tabs {
-        flex-direction: column;
-    }
 }
