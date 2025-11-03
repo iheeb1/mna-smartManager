@@ -13,6 +13,10 @@
     
     <!-- Search and Controls -->
     <div class="search-controls">
+      <button class="control-icon">
+        <i class="pi pi-sliders-h"></i>
+      </button>
+      
       <div class="search-box">
         <input 
           type="text" 
@@ -24,13 +28,10 @@
         </button>
       </div>
       
-      <button class="control-icon">
-        <i class="pi pi-sliders-h"></i>
-      </button>
       <span class="control-label">تصفية</span>
       
-      <button class="control-icon">
-        <i class="pi pi-sort-alt"></i>
+      <button class="add-icon-mobile" (click)="onAdd()">
+        <i class="pi pi-plus"></i>
       </button>
       
       <button class="add-btn" (click)="onAdd()">
@@ -62,6 +63,7 @@
           *ngFor="let column of config.columns" 
           class="row-cell"
           [class]="column.type"
+          [attr.data-label]="column.header"
           [style.flex]="getColumnFlex(column)">
           
           <!-- Regular Text Field (not status or statusLabel) -->
@@ -149,4 +151,66 @@
       </div>
     </div>
   </div>
+
+  <!-- Mobile Cards View -->
+  <!-- Mobile Cards View -->
+<div class="mobile-cards-view">
+  <div class="product-card" *ngFor="let row of filteredRows; let i = index">
+    <div class="card-content">
+      <!-- Card title with menu -->
+      <div class="card-title-row">
+        <button class="menu-btn">
+          <i class="pi pi-ellipsis-v"></i>
+        </button>
+        <div class="card-title">{{ getCellValue(row, config.columns[0]) }}</div>
+      </div>
+      
+      <!-- Info grid - 2x2 for products, 1x3 for others -->
+      <div class="card-info-grid" [class.three-columns]="activeTabIndex !== 0">
+        <!-- Products Tab: 2x2 Grid -->
+        <ng-container *ngIf="activeTabIndex === 0">
+          <!-- Right Column -->
+          <div class="info-column right-column">
+            <div class="info-row" *ngIf="config.columns.length > 1">
+              <div class="info-label">{{ config.columns[1].header }}</div>
+              <div class="info-value">{{ getCellValue(row, config.columns[1]) }}</div>
+            </div>
+            <div class="info-row" *ngIf="config.columns.length > 3">
+              <div class="info-label">{{ config.columns[3].header }}</div>
+              <div class="info-value">{{ getCellValue(row, config.columns[3]) }}</div>
+            </div>
+          </div>
+          
+          <!-- Left Column -->
+          <div class="info-column left-column">
+            <div class="info-row" *ngIf="config.columns.length > 2">
+              <div class="info-label">{{ config.columns[2].header }}</div>
+              <div class="info-value">{{ getCellValue(row, config.columns[2]) }}</div>
+            </div>
+            <div class="info-row" *ngIf="config.columns.length > 4">
+              <div class="info-label">{{ config.columns[4].header }}</div>
+              <div class="info-value">{{ getCellValue(row, config.columns[4]) }}</div>
+            </div>
+          </div>
+        </ng-container>
+        
+        <!-- Other Tabs: 1x3 Grid -->
+        <ng-container *ngIf="activeTabIndex !== 0">
+          <div class="info-row" *ngIf="config.columns.length > 1">
+            <div class="info-label">{{ config.columns[1].header }}</div>
+            <div class="info-value">{{ getCellValue(row, config.columns[1]) }}</div>
+          </div>
+          <div class="info-row" *ngIf="config.columns.length > 2">
+            <div class="info-label">{{ config.columns[2].header }}</div>
+            <div class="info-value">{{ getCellValue(row, config.columns[2]) }}</div>
+          </div>
+          <div class="info-row" *ngIf="config.columns.length > 3">
+            <div class="info-label">{{ config.columns[3].header }}</div>
+            <div class="info-value">{{ getCellValue(row, config.columns[3]) }}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>
+</div>  

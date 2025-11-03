@@ -134,4 +134,8 @@ export class ProductsTableComponent implements OnInit, OnChanges {
       this.editingRowData[column.field] = value;
     }
   }
+
+  getColumnLabel(column: ProductTableColumn): string {
+    return column.header;
+  }
 }
