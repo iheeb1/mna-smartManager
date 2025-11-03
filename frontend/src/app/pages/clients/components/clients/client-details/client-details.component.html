@@ -3,12 +3,12 @@
 <div class="container">
   <!-- Breadcrumb & Title -->
   <div class="breadcrumb">
-    <span class="back-link" (click)="goBack()">חזור לרשימת הלקוחות ></span>
+    <span class="back-link" (click)="goBack()">العودة إلى قائمة العملاء ></span>
   </div>
 
   <div class="page-header">
-    <h1 class="page-title">משאבות</h1>
-    <p class="page-subtitle">מסרט לקוח</p>
+    <h1 class="page-title">المضخات</h1>
+    <p class="page-subtitle">من شريط العميل</p>
   </div>
 
   <!-- Main Content -->
@@ -19,16 +19,16 @@
       <div class="table-header-section">
         <div class="header-actions">
           <button pButton class="export-btn" (click)="exportData()">
-            <img src="assets/icons/export_icon.svg" alt="export">
-            <span>ייצוא</span>
+            <img src="assets/icons/export_icon.svg" alt="تصدير">
+            <span>تصدير</span>
           </button>
           <button pButton class="p-button-text print-btn" (click)="printPage()">
-            <img src="assets/icons/print_icon.svg" alt="print">
+            <img src="assets/icons/print_icon.svg" alt="طباعة">
           </button>
-          <button pButton label="הזמנה חדשה" class="p-button-primary add-btn"></button>
-          <button pButton label="תשלום חדש" class="p-button-primary add-btn" (click)="openPaymentModal()"></button>
+          <button pButton label="طلب جديد" class="p-button-primary add-btn"></button>
+          <button pButton label="دفعة جديدة" class="p-button-primary add-btn" (click)="openPaymentModal()"></button>
         </div>
-        <h2 class="table-title">מצב החשבון</h2>
+        <h2 class="table-title">حالة الحساب</h2>
       </div>
 
       <!-- Table with Border -->
@@ -37,14 +37,14 @@
           <!-- Table Headers -->
           <div class="table-header">
             <div class="header-cell actions-col"></div>
-            <div class="header-cell">יתרה</div>
-            <div class="header-cell">כללי מע"מ</div>
-            <div class="header-cell">סכום</div>
-            <div class="header-cell">הנחה</div>
-            <div class="header-cell">רכב</div>
-            <div class="header-cell">כתובת</div>
-            <div class="header-cell">סוג</div>
-            <div class="header-cell">תיאור</div>
+            <div class="header-cell">الرصيد</div>
+            <div class="header-cell">إجمالي الضريبة</div>
+            <div class="header-cell">المبلغ</div>
+            <div class="header-cell">الخصم</div>
+            <div class="header-cell">المركبة</div>
+            <div class="header-cell">العنوان</div>
+            <div class="header-cell">النوع</div>
+            <div class="header-cell">الوصف</div>
           </div>
 
           <!-- Table Body -->
@@ -80,7 +80,7 @@
                 <div class="footer-value">{{ totalStats.total2 }}</div>
                 <div class="footer-value">{{ totalStats.total3 }}</div>
               </div>
-              <div class="footer-label">:סה״כ</div>
+              <div class="footer-label">:الإجمالي</div>
             </div>
           </div>
         </div>
@@ -93,22 +93,22 @@
       <div class="stats-card">
         <div class="stats-content">
           <div class="stat-item revenue-stat">
-            <div class="stat-label">סה״כ הכנסות</div>
+            <div class="stat-label">إجمالي الإيرادات</div>
             <div class="stat-value">{{ totalRevenue }}</div>
           </div>
           
           <div class="stat-item payments-stat">
-            <div class="stat-label">סה״כ תשלומים</div>
+            <div class="stat-label">إجمالي الدفعات</div>
             <div class="stat-value">{{ totalPayments }}</div>
           </div>
           
           <div class="stat-item balance-stat">
-            <div class="stat-label">סה״כ יתרת חשבון</div>
+            <div class="stat-label">إجمالي رصيد الحساب</div>
             <div class="stat-value">{{ remainingBalance }}</div>
           </div>
         </div>
         
-        <h3 class="card-title">סיכום החשבון</h3>
+        <h3 class="card-title">ملخص الحساب</h3>
       </div>
 
       <!-- Contact Details Card -->
@@ -117,14 +117,14 @@
           <button class="edit-icon-btn">
             <i class="pi pi-pencil"></i>
           </button>
-          <h3 class="card-title">פרטים כלליים</h3>
+          <h3 class="card-title">التفاصيل العامة</h3>
         </div>
         
         <div class="contact-section">
           <div class="contact-grid">
             <div class="contact-item">
-              <div class="contact-label">שם לקוח</div>
-              <div class="contact-label">כתובת</div>
+              <div class="contact-label">اسم العميل</div>
+              <div class="contact-label">العنوان</div>
             </div>
             <div class="contact-item">
               <div class="contact-value strong">{{ contactDetails.clientName }}</div>
@@ -137,22 +137,22 @@
           <button class="edit-icon-btn">
             <i class="pi pi-pencil"></i>
           </button>
-          <h3 class="card-title">פרטי תקשורת</h3>
+          <h3 class="card-title">تفاصيل الاتصال</h3>
         </div>
 
         <div class="contact-section">
           <div class="contact-grid">
             <div class="contact-item">
-              <div class="contact-label">טלפון</div>
-              <div class="contact-label">פקס</div>
+              <div class="contact-label">الهاتف</div>
+              <div class="contact-label">الفاكس</div>
             </div>
             <div class="contact-item">
               <div class="contact-value strong">{{ contactDetails.phone }}</div>
               <div class="contact-value strong">{{ contactDetails.fax }}</div>
             </div>
             <div class="contact-item">
-              <div class="contact-label">נייד</div>
-              <div class="contact-label">אימייל</div>
+              <div class="contact-label">الجوال</div>
+              <div class="contact-label">البريد الإلكتروني</div>
             </div>
             <div class="contact-item">
               <div class="contact-value strong">{{ contactDetails.mobile }}</div>

@@ -253,7 +253,6 @@
     .table-header {
       display: flex;
       padding: 16px 20px;
-      background: #F8F9FC;
       border-radius: 12px;
       margin-bottom: 8px;
       align-items: center;
@@ -268,6 +267,7 @@
         &.chevron {
           flex: 0 0 40px;
           text-align: center;
+          cursor: pointer;
         }
 
         &.discount {
@@ -329,6 +329,7 @@
           &.chevron {
             flex: 0 0 40px;
             text-align: center;
+            cursor: pointer;
             
             i {
               color: #2f22bb;

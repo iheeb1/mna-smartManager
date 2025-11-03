@@ -1,22 +1,22 @@
 <app-header></app-header>
 <div class="mobile-hero-section">
   <div class="mobile-hero-content">
-    <img src="assets/images/clients_bg.png" alt="Clients" class="hero-image">
-    <h1 class="hero-title">לקוחות</h1>
+    <img src="assets/images/clients_bg.png" alt="العملاء" class="hero-image">
+    <h1 class="hero-title">العملاء</h1>
   </div>
 
   <div class="mobile-action-bar">
     <button class="action-btn">
-      <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+      <img src="assets/icons/calendar_icon.svg" alt="التقويم">
     </button>
     <button class="action-btn filter-mobile-btn">
-      <img src="assets/icons/filters_icon.svg" alt="Filter">
+      <img src="assets/icons/filters_icon.svg" alt="فلتر">
     </button>
     <div class="mobile-search-input">
       <div class="search-icon">
-        <img src="assets/icons/search_icon.svg" alt="search">
+        <img src="assets/icons/search_icon.svg" alt="بحث">
       </div>
-      <input type="text" placeholder="חיפוש חופשי של לקוח" [(ngModel)]="searchTerm"
+      <input type="text" placeholder="بحث حر عن عميل" [(ngModel)]="searchTerm"
         (ngModelChange)="onSearchChange($event)">
     </div>
   </div>
@@ -27,7 +27,7 @@
     <!-- Fixed animation binding -->
     <div class="mobile-fab-menu" (click)="$event.stopPropagation()" @slideUp>
       <button class="fab-menu-item" (click)="addNewClientFromMobile()">
-        הוסף לקוח חדש
+        إضافة عميل جديد
       </button>
     </div>
   </div>
@@ -39,15 +39,15 @@
   <div class="header">
     <div class="header-actions">
       <button pButton class="export-btn">
-        <img src="assets/icons/export_icon.svg" alt="export">
-        <span>ייצוא</span>
+        <img src="assets/icons/export_icon.svg" alt="تصدير">
+        <span>تصدير</span>
       </button>
       <button pButton class="p-button-text print-btn">
-        <img src="assets/icons/print_icon.svg" alt="print">
+        <img src="assets/icons/print_icon.svg" alt="طباعة">
       </button>
-      <button pButton label="הוסף לקוח חדש" (click)="addNewClient()" class="p-button-primary add-btn"></button>
+      <button pButton label="إضافة عميل جديد" (click)="addNewClient()" class="p-button-primary add-btn"></button>
     </div>
-    <h1>לקוחות</h1>
+    <h1>العملاء</h1>
   </div>
 
   <div class="content-card">
@@ -56,40 +56,40 @@
     <div *ngIf="loading" class="loading-container">
       <p-progressSpinner styleClass="custom-spinner" strokeWidth="4" animationDuration="1s">
       </p-progressSpinner>
-      <p>טוען לקוחות...</p>
+      <p>جارٍ تحميل العملاء...</p>
     </div>
 
     <!-- Empty state -->
     <div *ngIf="isEmpty" class="empty-state">
-      <h2>אין לקוחות עדיין</h2>
-      <p>התחל בהוספת לקוח חדש לניהול בסיס הלקוחות שלך</p>
+      <h2>لا يوجد عملاء بعد</h2>
+      <p>ابدأ بإضافة عميل جديد لإدارة قاعدة عملائك</p>
     </div>
 
     <!-- Table with data -->
     <div *ngIf="!loading && !isEmpty">
       <div class="search-bar">
-        <button class="filter-text-btn">סינון</button>
+        <button class="filter-text-btn">تصفية</button>
         <button pButton class="filter-btn">
-          <img src="assets/icons/filters_icon.svg" alt="filter">
+          <img src="assets/icons/filters_icon.svg" alt="فلتر">
         </button>
         <span class="p-input-icon-left search-input">
           <div class="search-icon">
-            <img src="assets/icons/search_icon.svg" alt="search">
+            <img src="assets/icons/search_icon.svg" alt="بحث">
           </div>
           <!-- Removed pInputText directive since you're using custom styling -->
-          <input type="text" placeholder="חיפוש חופשי של לקוח" [(ngModel)]="searchTerm"
+          <input type="text" placeholder="بحث حر عن عميل" [(ngModel)]="searchTerm"
             (ngModelChange)="onSearchChange($event)">
         </span>
       </div>
       <div class="table-header">
         <div class="header-cell chevron"></div>
-        <div class="header-cell discount">הנחה באחוזים</div>
-        <div class="header-cell credit-given">אשראי ניתן</div>
-        <div class="header-cell balance">יתרה</div>
-        <div class="header-cell email">אימייל</div>
-        <div class="header-cell phone">טלפון</div>
-        <div class="header-cell address">כתובת</div>
-        <div class="header-cell name">שם לקוח</div>
+        <div class="header-cell discount">الخصم بالنسبة المئوية</div>
+        <div class="header-cell credit-given">الائتمان الممنوح</div>
+        <div class="header-cell balance">الرصيد</div>
+        <div class="header-cell email">البريد الإلكتروني</div>
+        <div class="header-cell phone">الهاتف</div>
+        <div class="header-cell address">العنوان</div>
+        <div class="header-cell name">اسم العميل</div>
       </div>
 
       <div class="table-body">
@@ -113,7 +113,7 @@
 
       <!-- Pagination info -->
       <div class="pagination-info" *ngIf="totalClients > 0">
-        <p>מציג {{ clients.length }} מתוך {{ totalClients }} לקוחות</p>
+        <p>عرض {{ clients.length }} من أصل {{ totalClients }} عملاء</p>
       </div>
     </div>
   </div>

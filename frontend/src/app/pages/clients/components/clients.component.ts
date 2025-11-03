@@ -131,27 +131,7 @@ export class ClientsComponent implements OnInit {
       discount: '-5.49%',
       creditGiven: '1.36₪',
       balance: '1.36₪'
-    },
-    {
-      id: '9',
-      name: 'חלב, הקבלה 30 בהבלד',
-      phone: '0-123456789',
-      email: 'contact@greenbuild.co.il',
-      address: 'חלב, הקבלה 30 בהבלד',
-      discount: '57%',
-      creditGiven: '2.56₪',
-      balance: '2.56₪'
-    },
-    {
-      id: '10',
-      name: 'הירוק ובניה מוסד',
-      phone: '0-123456789',
-      email: 'Example@gmail.com',
-      address: 'חלב, דוראן 22, בית-7',
-      discount: '-20.45%',
-      creditGiven: '1.36₪',
-      balance: '1.36₪'
-    }
+    } 
   ];
 
   filteredClients: Client[] = [];
