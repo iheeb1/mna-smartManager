@@ -797,89 +797,126 @@
           }
 
           .table-body {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-
+            display: block;
+            
             .table-row {
+              background: white;
+              border-radius: 16px;
+              margin-bottom: 32px;
+              box-shadow: 0px 1px 8px rgba(45, 60, 229, 0.09);
+              position: relative;
+              overflow: visible;
+              transition: all 0.3s ease;
+              border: 1px solid #574DFF;
+              align-items: self-start;
+              padding: 16px;
+              padding-bottom: 20px;
+              cursor: pointer;
               display: flex;
               flex-direction: column;
-              background: white;
-              border-radius: 24px;
-              box-shadow: 0 2px 12px rgba(87, 77, 255, 0.12);
-              padding: 0;
-              border: 2px solid #574DFF;
-              gap: 0;
-              overflow: hidden;
-              position: relative;
+              gap: 12px;
               direction: rtl;
+              grid-template-columns: none;
 
-              .row-cell {
-                padding: 14px 20px;
-                border-bottom: 1px solid #F0F0F5;
+              // Show mobile card elements
+              .card-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                justify-content: space-between;
+
+                .menu-btn {
+                  background: none;
+                  border: none;
+                  color: #9CA3AF;
+                  cursor: pointer;
+                  padding: 4px;
+                  order: 1;
+
+                  i {
+                    font-size: 16px;
+                  }
+
+                  &:hover {
+                    color: #574DFF;
+                  }
+                }
+
+                .date-text {
+                  color: #6B7280;
+                  font-size: 13px;
+                  order: 1;
+                }
+
+                .description-text {
+                  color: #574DFF;
+                  font-size: 14px;
+                  font-weight: 600;
+                  flex: 1;
+                  text-align: right;
+                  order: 2;
+                }
+              }
+
+              .card-main-info {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                padding: 12px 0;
+                border-top: 1px solid #F3F4F6;
+
+                .info-group {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 4px;
+                  text-align: center;
+
+                  .info-label {
+                    font-size: 11px;
+                    color: #6B7280;
+                    font-weight: 500;
+                  }
+
+                  .info-value {
+                    font-size: 13px;
+                    color: #000000;
+                    font-weight: 600;
+                  }
+                }
+              }
+
+              .card-totals {
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
-                text-align: right;
-                font-size: 14px;
-                color: #15123C;
-                font-weight: 500;
+                gap: 12px;
+                padding: 8px 0;
+                padding-top: 12px;
+                border-top: 1px solid #F3F4F6;
 
-                &:last-child {
-                  border-bottom: none;
-                }
-
-                &.actions-col {
-                  background: white;
-                  justify-content: flex-start;
-                  gap: 12px;
-                  padding: 12px 20px;
-                  order: -1;
-
-                  .icon-btn {
-                    background: transparent;
-                    box-shadow: none;
-                    width: 32px;
-                    height: 32px;
-
-                    &:hover {
-                      background: #F8F8FF;
-                    }
-                  }
-                }
-
-                &.description-cell {
+                .total-item {
+                  display: flex;
                   flex-direction: column;
-                  align-items: flex-end;
-                  gap: 8px;
-                  background: #574DFF;
-                  color: white;
-                  padding: 18px 20px;
-                  order: -2;
+                  gap: 4px;
+                  text-align: center;
+                  flex: 1;
 
-                  .description-text {
-                    font-size: 16px;
-                    font-weight: 700;
-                    color: white;
-                  }
-
-                  .date-text {
-                    font-size: 14px;
-                    color: rgba(255, 255, 255, 0.9);
-                    font-weight: 400;
-                  }
-                }
-
-                &:not(.actions-col):not(.description-cell) {
-                  &::before {
-                    content: attr(data-label);
-                    font-size: 12px;
-                    color: #9D9BB1;
+                  .total-label {
+                    font-size: 11px;
+                    color: #6B7280;
                     font-weight: 500;
-                    flex-shrink: 0;
-                    min-width: 80px;
+                  }
+
+                  .total-value {
+                    font-size: 13px;
+                    color: #000000;
+                    font-weight: 700;
                   }
                 }
+              }
+
+              // Hide desktop row cells on mobile
+              .row-cell {
+                display: none !important;
               }
             }
           }
@@ -1271,22 +1308,24 @@
       display: flex;
       align-items: center;
       background: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       border-radius: 50px;
       padding: 10px 16px;
       gap: 10px;
-
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
       .search-icon {
+        width: 28px;
+        height: 28px;
+        background: #574DFF;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-shrink: 0;
-
+        
         img {
-          width: 20px;
-          height: 20px;
-          filter: brightness(0) saturate(100%) invert(32%) sepia(95%) saturate(2828%) hue-rotate(238deg) brightness(99%) contrast(101%);
+          width: 18px;
+          height: 18px;
+          filter: brightness(0) invert(1);
         }
       }
 
@@ -1310,13 +1349,15 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
 
       img {
         width: 20px;
@@ -1331,7 +1372,9 @@
 
       &.calendar-btn,
       &.filter-mobile-btn {
+        border: none;
         background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
       &.active {
@@ -1351,5 +1394,71 @@
   .mobile-add-menu,
   .mobile-cards {
     display: none !important;
+  }
+}
+// ============================================
+// HIDE MOBILE-ONLY ELEMENTS ON DESKTOP
+// ============================================
+
+@media (min-width: 769px) {
+  // Hide all mobile-specific sections on desktop
+  .mobile-hero-section,
+  .mobile-add-btn,
+  .mobile-add-menu,
+  .mobile-cards,
+  .mobile-action-bar {
+    display: none !important;
+  }
+
+  // Hide mobile card layout elements inside table rows
+  .table-row {
+    .card-title,
+    .card-main-info,
+    .card-totals {
+      display: none !important;
+    }
+  }
+
+  // Hide mobile action buttons in left section
+  .left-section {
+    .mobile-action-buttons {
+      display: none !important;
+    }
+  }
+
+  // Hide mobile transactions section in contact card
+  .contact-card {
+    .mobile-transactions-section {
+      display: none !important;
+    }
+  }
+}
+
+// ============================================
+// HIDE DESKTOP-ONLY ELEMENTS ON MOBILE
+// ============================================
+
+@media (max-width: 768px) {
+  // Hide desktop breadcrumb and page header
+  .breadcrumb,
+  .page-header {
+    display: none !important;
+  }
+
+  // Hide desktop table header section
+  .table-header-section {
+    display: none !important;
+  }
+
+  // Hide desktop table headers
+  .table-header {
+    display: none !important;
+  }
+
+  // Hide desktop row cells on mobile
+  .table-row {
+    .row-cell {
+      display: none !important;
+    }
   }
 }

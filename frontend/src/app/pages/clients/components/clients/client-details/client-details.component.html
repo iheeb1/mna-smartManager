@@ -36,6 +36,7 @@
     </button>
   </div>
 </div>
+
 <div class="container">
   <!-- Breadcrumb & Title -->
   <div class="breadcrumb">
@@ -86,6 +87,50 @@
           <!-- Table Body -->
           <div class="table-body">
             <div class="table-row" *ngFor="let invoice of invoices">
+              <!-- Mobile Card Layout -->
+              <div class="card-title">
+                <button class="menu-btn" (click)="showInvoiceMenu($event, invoice); $event.stopPropagation()">
+                  <i class="pi pi-ellipsis-v"></i>
+                </button>
+                <span class="date-text">{{ invoice.date }}</span>
+                <span class="description-text">{{ invoice.description }}</span>
+              </div>
+
+              <div class="card-main-info">
+                <div class="info-group">
+                  <div class="info-label">النوع</div>
+                  <div class="info-value">{{ invoice.type }}</div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">العنوان</div>
+                  <div class="info-value">{{ invoice.address }}</div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">المركبة</div>
+                  <div class="info-value">{{ invoice.vehicle }}</div>
+                </div>
+                <div class="info-group">
+                  <div class="info-label">الخصم</div>
+                  <div class="info-value">{{ invoice.discount }}</div>
+                </div>
+              </div>
+
+              <div class="card-totals">
+                <div class="total-item">
+                  <div class="total-label">الرصيد:</div>
+                  <div class="total-value">{{ invoice.balance }}</div>
+                </div>
+                <div class="total-item">
+                  <div class="total-label">إجمالي الضريبة:</div>
+                  <div class="total-value">{{ invoice.totalVat }}</div>
+                </div>
+                <div class="total-item">
+                  <div class="total-label">المبلغ:</div>
+                  <div class="total-value">{{ invoice.amount }}</div>
+                </div>
+              </div>
+
+              <!-- Original Desktop Row Cells (Hidden on Mobile) -->
               <div class="row-cell actions-col">
                 <button class="icon-btn delete-btn" (click)="deleteInvoice(invoice)">
                   <i class="pi pi-trash"></i>
@@ -192,7 +237,7 @@
             </div>
             <div class="contact-row">
               <div class="contact-item">
-                <div class="contact-label">نייד</div>
+                <div class="contact-label">נייד</div>
                 <div class="contact-value">{{ contactDetails.mobile }}</div>
               </div>
               <div class="contact-item">

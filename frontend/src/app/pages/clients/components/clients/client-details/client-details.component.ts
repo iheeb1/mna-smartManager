@@ -223,4 +223,8 @@ export class ClientDetailsComponent implements OnInit {
     console.log('Payment cancelled');
     this.showPaymentModal = false;
   }
+  showInvoiceMenu(event: Event, invoice: any) {
+    event.stopPropagation();
+    console.log('Show menu for invoice:', invoice);
+  }
 }
