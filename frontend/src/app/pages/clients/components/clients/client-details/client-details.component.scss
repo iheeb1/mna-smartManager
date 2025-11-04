@@ -882,10 +882,10 @@
                   }
                 }
   
-                // Main Info Grid (4 columns)
+                // Main Info Grid (3 columns in collapsed state)
                 .card-main-info {
                   display: grid;
-                  grid-template-columns: repeat(4, 1fr);
+                  grid-template-columns: repeat(3, 1fr);
                   gap: 8px;
                   padding: 12px 0;
                   border-top: 1px solid #F3F4F6;
@@ -974,83 +974,104 @@
   
               // Expanded Details Section
               .card-details {
-                padding: 16px;
-                padding-top: 24px;
-                padding-bottom: 60px;
+                padding: 20px;
+                padding-top: 28px;
+                padding-bottom: 28px;
                 border-top: 1px solid #F3F4F6;
                 direction: rtl;
                 animation: slideDown 0.3s ease;
+                background: white;
+                width: 100%;
+                border-radius: 24px;
   
-                .items-list {
-                  .item-row {
-                    padding: 12px 16px;
-                    border-radius: 8px;
-                    margin-bottom: 12px;
-                    border-bottom: 1px solid #E5E7EB;
+                .expanded-header {
+                  margin-bottom: 24px;
   
-                    &:last-child {
-                      border-bottom: none;
+                  .expanded-header-title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 16px;
+  
+                    .header-description {
+                      font-size: 16px;
+                      color: #574DFF;
+                      font-weight: 700;
                     }
   
-                    .item-header {
+                    .header-vehicle {
+                      font-size: 14px;
+                      color: #5A5780;
+                      font-weight: 600;
+                    }
+                  }
+  
+                  .expanded-header-meta {
+                    .meta-item {
                       display: flex;
-                      flex-direction: column;
-                      gap: 12px;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 12px 0;
+                      border-bottom: 1px solid #F3F4F6;
   
-                      > div {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        gap: 16px;
-                      }
-  
-                      .item-desc {
-                        font-size: 14px;
-                        color: #2d3748;
-                        font-weight: 600;
-                        text-align: right;
-                        flex: 1;
-                      }
-  
-                      .item-price {
-                        font-size: 14px;
-                        color: #000000;
-                        font-weight: 700;
-                        text-align: left;
-                        white-space: nowrap;
-                      }
-  
-                      .item-detail {
+                      .meta-label {
                         font-size: 13px;
-                        color: #6B7280;
-                        text-align: right;
-                        white-space: nowrap;
+                        color: #9D9BB1;
+                        font-weight: 500;
+                      }
+  
+                      .meta-value {
+                        font-size: 14px;
+                        color: #15123C;
+                        font-weight: 600;
                       }
                     }
                   }
                 }
   
                 .expanded-total {
-                  background: #D9D6FF;
-                  padding: 10px 16px;
-                  border-radius: 50px;
+                  background: transparent;
+                  padding: 0;
+                  border-radius: 0;
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
-                  margin-top: 16px;
-                  max-width: 70%;
-                  margin-right: 15%;
+                  margin-top: 20px;
+                  margin-bottom: 16px;
+                  max-width: 100%;
+                  margin-right: 0;
+                  padding-bottom: 12px;
+                  border-bottom: 1px solid #F3F4F6;
   
                   .expanded-total-label {
-                    font-size: 15px;
-                    font-weight: 700;
-                    color: #15123C;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #5A5780;
                   }
   
                   .expanded-total-value {
-                    font-size: 15px;
-                    font-weight: 700;
+                    font-size: 14px;
+                    font-weight: 600;
                     color: #5A5780;
+                  }
+                }
+  
+                .expanded-address-section {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding-top: 12px;
+  
+                  .address-label {
+                    font-size: 13px;
+                    color: #9D9BB1;
+                    font-weight: 500;
+                  }
+  
+                  .address-value {
+                    font-size: 14px;
+                    color: #15123C;
+                    font-weight: 600;
                   }
                 }
               }
