@@ -148,55 +148,61 @@
       </div>
 
       <!-- Contact Details Card -->
-      <div class="contact-card" dir="rtl">
-        <div class="contact-header">
-          <button class="edit-icon-btn">
-            <i class="pi pi-pencil"></i>
-          </button>
-          <h3 class="card-title">التفاصيل العامة</h3>
-        </div>
+<div class="contact-card" dir="rtl">
+  <div class="contact-header">
+    <button class="edit-icon-btn">
+      <i class="pi pi-pencil"></i>
+    </button>
+    <h3 class="card-title">التفاصيل العامة</h3>
+  </div>
 
-        <div class="contact-section">
-          <div class="contact-grid">
-            <div class="contact-item">
-              <div class="contact-label">اسم العميل</div>
-              <div class="contact-label">العنوان</div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-value strong">{{ contactDetails.clientName }}</div>
-              <div class="contact-value strong">{{ contactDetails.address }}</div>
-            </div>
-          </div>
+  <div class="contact-section">
+    <div class="contact-grid">
+      <div class="contact-row">
+        <div class="contact-item">
+          <div class="contact-label">اسم العميل</div>
+          <div class="contact-value">{{ contactDetails.clientName }}</div>
         </div>
-
-        <div class="contact-header">
-          <button class="edit-icon-btn">
-            <i class="pi pi-pencil"></i>
-          </button>
-          <h3 class="card-title">تفاصيل الاتصال</h3>
-        </div>
-
-        <div class="contact-section">
-          <div class="contact-grid">
-            <div class="contact-item">
-              <div class="contact-label">الهاتف</div>
-              <div class="contact-label">الفاكس</div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-value strong">{{ contactDetails.phone }}</div>
-              <div class="contact-value strong">{{ contactDetails.fax }}</div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-label">الجوال</div>
-              <div class="contact-label">البريد الإلكتروني</div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-value strong">{{ contactDetails.mobile }}</div>
-              <div class="contact-value strong">{{ contactDetails.email }}</div>
-            </div>
-          </div>
+        <div class="contact-item">
+          <div class="contact-label">العنوان</div>
+          <div class="contact-value">{{ contactDetails.address }}</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="contact-header">
+    <button class="edit-icon-btn">
+      <i class="pi pi-pencil"></i>
+    </button>
+    <h3 class="card-title">تفاصيل الاتصال</h3>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-grid">
+      <div class="contact-row">
+        <div class="contact-item">
+          <div class="contact-label">טלפון</div>
+          <div class="contact-value">{{ contactDetails.phone }}</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">فاكس</div>
+          <div class="contact-value">{{ contactDetails.fax }}</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-item">
+          <div class="contact-label">نייד</div>
+          <div class="contact-value">{{ contactDetails.mobile }}</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">אימייל</div>
+          <div class="contact-value email">{{ contactDetails.email }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 </div>
