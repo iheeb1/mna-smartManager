@@ -16,190 +16,212 @@
     <!-- Left Side - Form -->
     <div class="form-side">
 
-      <!-- Payment Date & Method -->
-      <div class="section-block">
-        <div class="header-row">
-          <h3 class="section-title">تفاصيل الدفعة</h3>
+      <!-- Section 1: Payment Date & Method -->
+      <div class="section-block payment-details-section">
+        <div class="section-header-row">
+          <h3 class="section-header-title">תאריך תשלום</h3>
+          <h3 class="section-header-title">אמצעי תשלום</h3>
         </div>
-
-        <div class="input-row two-cols">
+        
+        <div class="input-row two-cols-equal">
           <div class="input-col">
-            <span class="input-label">طريقة الدفع</span>
-            <p-dropdown 
-              [(ngModel)]="formData.paymentMethod"
-              [options]="paymentMethodOptions" 
-              placeholder="اختر طريقة الدفع"
-              [showClear]="true">
-            </p-dropdown>
-          </div>
-          <div class="input-col">
-            <span class="input-label">تاريخ الدفع</span>
             <p-calendar 
               [(ngModel)]="formData.paymentDate" 
               dateFormat="dd/mm/yy"
               [showIcon]="true"
-              placeholder="—/—/—">
+              placeholder="בחר תאריך">
             </p-calendar>
+          </div>
+          <div class="input-col">
+            <p-dropdown 
+              [(ngModel)]="formData.paymentMethod"
+              [options]="paymentMethodOptions" 
+              placeholder="העברה בנקאית">
+            </p-dropdown>
           </div>
         </div>
 
         <button 
           pButton 
           type="button" 
-          label="+ إضافة دفعة"
-          class="add-payment-method-btn small-btn"
+          label="+ הוסף אמצעי תשלום"
+          class="add-payment-method-btn"
           (click)="addPaymentMethod()">
         </button>
       </div>
 
       <div class="line-divider"></div>
 
-      <!-- Bank Transfer Details -->
-      <div class="section-block">
+      <!-- Section 2: Bank Transfer Details -->
+      <div class="section-block transfer-details-section">
         <div class="header-row">
-          <h3 class="section-title">بيانات الحوالة</h3>
+          <h3 class="section-title">פרטי ההעברה</h3>
         </div>
 
-        <div class="input-row four-cols">
-          <div class="input-col">
-            <span class="input-label">البنك</span>
-            <p-dropdown 
-              [(ngModel)]="formData.bank"
-              [options]="bankOptions" 
-              placeholder="اختر بنك"
-              [showClear]="true">
-            </p-dropdown>
-          </div>
-          
-          <div class="input-col">
-            <span class="input-label">رقم الحساب</span>
+        <div class="labels-row">
+          <span class="field-label">סכום</span>
+          <span class="field-label">אסמכתא</span>
+          <span class="field-label">מספר חשבון</span>
+          <span class="field-label">מספר סניף</span>
+          <span class="field-label">בנק</span>
+        </div>
+
+        <div class="input-row five-cols-equal">
+          <div class="input-col-plain">
             <input 
               pInputText 
               type="text" 
-              [(ngModel)]="formData.accountNumber"
-              placeholder="رقم الحساب" />
+              [(ngModel)]="formData.amount"
+              placeholder="מה מספר" />
           </div>
-
-          <div class="input-col">
-            <span class="input-label">أسيبكفاد</span>
+          
+          <div class="input-col-plain">
             <input 
               pInputText 
               type="text" 
               [(ngModel)]="formData.asmachta"
-              placeholder="أسيبكفاد" />
+              placeholder="מה מספר" />
           </div>
-          
-          <div class="input-col">
-            <span class="input-label">المبلغ</span>
+
+          <div class="input-col-plain">
             <input 
               pInputText 
-              type="number" 
-              [(ngModel)]="formData.amount"
-              placeholder="0.00"
-              step="0.01" />
+              type="text" 
+              [(ngModel)]="formData.accountNumber"
+              placeholder="מה מספר" />
           </div>
-        </div>
-      </div>
 
-      <div class="line-divider"></div>
-
-      <!-- Added Payments -->
-      <div class="section-block">
-        <div class="header-row">
-          <h3 class="section-title">الدفعات المضافة</h3>
-        </div>
-
-        <!-- Transfer Item -->
-        <div class="transfer-item" *ngFor="let transfer of transfers; let i = index">
-          <div class="transfer-row">
-            <div class="transfer-info">
-              <div class="info-row">
-                <span class="field-label">المبلغ:</span>
-                <span class="field-value">{{transfer.amount}}₪</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">أسيبكفاد:</span>
-                <span class="field-value">{{transfer.asmachta}}</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">الحساب:</span>
-                <span class="field-value">{{transfer.accountNumber}}</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">البنك:</span>
-                <span class="field-value">{{transfer.bank}}</span>
-              </div>
-            </div>
-            <div class="transfer-actions">
-              <button class="icon-btn edit-btn" (click)="editTransfer(i)">
-                <i class="pi pi-pencil"></i>
-              </button>
-              <button class="icon-btn delete-btn" (click)="deleteTransfer(i)">
-                <i class="pi pi-trash"></i>
-              </button>
-            </div>
+          <div class="input-col-plain">
+            <input 
+              pInputText 
+              type="text" 
+              [(ngModel)]="formData.branchNumber"
+              placeholder="מה מספר" />
           </div>
-        </div>
-
-        <!-- Check Item -->
-        <div class="transfer-item check-item" *ngFor="let check of checks; let i = index">
-          <div class="transfer-row">
-            <div class="check-info">
-              <div class="info-row">
-                <span class="field-label">تاريخ الشيك:</span>
-                <span class="field-value">{{check.date}}</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">الرقم:</span>
-                <span class="field-value">{{check.checkNumber}}</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">الحساب:</span>
-                <span class="field-value">{{check.accountNumber}}</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">البنك:</span>
-                <span class="field-value">{{check.bank}}</span>
-              </div>
-              <div class="info-row">
-                <span class="field-label">المبلغ:</span>
-                <span class="field-value">{{check.amount}}₪</span>
-              </div>
-            </div>
-            <div class="transfer-actions">
-              <button class="icon-btn edit-btn" (click)="editCheck(i)">
-                <i class="pi pi-pencil"></i>
-              </button>
-              <button class="icon-btn delete-btn" (click)="deleteCheck(i)">
-                <i class="pi pi-trash"></i>
-              </button>
-            </div>
+          
+          <div class="input-col-plain">
+            <p-dropdown 
+              [(ngModel)]="formData.bank"
+              [options]="bankOptions" 
+              placeholder="אוצר החייל"
+              [showClear]="false">
+            </p-dropdown>
           </div>
         </div>
 
         <button 
           pButton 
           type="button" 
-          label="حفظ الشيك"
-          class="save-check-btn small-btn">
+          label="הוספת שורה"
+          class="save-line-btn"
+          (click)="saveTransferLine()">
         </button>
       </div>
 
       <div class="line-divider"></div>
 
-      <!-- Notes -->
-      <div class="section-block">
+      <!-- Section 3: Added Payments -->
+      <div class="section-block added-payments-section">
         <div class="header-row">
-          <h3 class="section-title">ملاحظات</h3>
+          <h3 class="section-title">העברה בנקאית</h3>
+        </div>
+
+        <!-- Transfer Item -->
+        <div class="payment-item" *ngFor="let transfer of transfers; let i = index">
+          <div class="payment-row">
+            <div class="payment-actions">
+              <button class="icon-btn delete-btn" (click)="deleteTransfer(i)">
+                <i class="pi pi-trash"></i>
+              </button>
+              <button class="icon-btn edit-btn" (click)="editTransfer(i)">
+                <i class="pi pi-pencil"></i>
+              </button>
+            </div>
+            <div class="payment-details">
+              <div class="detail-item">
+                <span class="detail-value">{{transfer.amount}}₪</span>
+                <span class="detail-label">סכום:</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-value">{{transfer.asmachta}}</span>
+                <span class="detail-label">אסמכתא:</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-value">{{transfer.accountNumber}}</span>
+                <span class="detail-label">מספר חשבון:</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-value">{{transfer.branchNumber}}</span>
+                <span class="detail-label">מספר סניף:</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-value">{{transfer.bank}}</span>
+                <span class="detail-label">בנק:</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Check Item -->
+        <div class="payment-item check-item" *ngFor="let check of checks; let i = index">
+          <div class="payment-row">
+            <div class="payment-actions">
+              <button class="icon-btn delete-btn" (click)="deleteCheck(i)">
+                <i class="pi pi-trash"></i>
+              </button>
+              <button class="icon-btn edit-btn" (click)="editCheck(i)">
+                <i class="pi pi-pencil"></i>
+              </button>
+            </div>
+            <div class="payment-details check-details">
+              <div class="detail-item">
+                <span class="detail-label">סכום:</span>
+                <span class="detail-value">{{check.amount}}₪</span>
+                
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">תאריך פרעון:</span>
+                <span class="detail-value">{{check.dueDate}}</span>
+                
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">מספר שיק:</span>
+                <span class="detail-value">{{check.checkNumber}}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">מספר סניף:</span>
+                <span class="detail-value">{{check.branchNumber}}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">בנק:</span>
+                <span class="detail-value">{{check.bank}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Display -->
+        <div class="total-display">
+          <span class="total-label">סה״כ</span>
+          <span class="total-value">{{totalAmount}}₪</span>
+        </div>
+      </div>
+
+      <div class="line-divider"></div>
+
+      <!-- Notes -->
+      <div class="section-block notes-section">
+        <div class="header-row">
+          <h3 class="section-title">הערות</h3>
         </div>
 
         <div class="input-row">
           <div class="input-col full">
-            <span class="input-label">ملاحظات إضافية</span>
+            <span class="input-label">הערות נוספות</span>
             <textarea 
               pInputText 
               [(ngModel)]="formData.notes"
-              placeholder="أدخل ملاحظات إضافية"
+              placeholder="הכנס הערות נוספות"
               rows="2"></textarea>
           </div>
         </div>
@@ -207,7 +229,7 @@
 
       <button 
         pButton 
-        label="حفظ الدفعة"
+        label="שמור תשלום"
         class="final-save-btn"
         (click)="onSubmit()">
       </button>
@@ -216,8 +238,8 @@
     <!-- Right Side - Illustration -->
     <div class="illustration-side">
       <div class="image-overlay">
-        <img src="assets/images/payments_modal.png" alt="دفعة جديدة" />
-        <h2>دفعة جديدة</h2>
+        <img src="assets/images/payments_modal.png" alt="תשלום חדש" />
+        <h2>תשלום חדש</h2>
       </div>
     </div>
   </div>
@@ -226,30 +248,30 @@
   <div class="mobile-form-container" *ngIf="isMobile">
     <!-- Mobile Header with Image -->
     <div class="mobile-form-image">
-      <img src="assets/images/payments_modal.png" alt="دفعة جديدة">
+      <img src="assets/images/payments_modal.png" alt="תשלום חדש">
       <button class="mobile-back-btn" (click)="closeDialog()">
         <i class="pi pi-arrow-right"></i>
       </button>
-      <h2>دفعة جديدة</h2>
+      <h2>תשלום חדש</h2>
     </div>
 
     <!-- Mobile Form Content -->
     <div class="mobile-form-content">
       <!-- Payment Method & Date -->
-      <div class="mobile-section-title">تفاصيل الدفعة</div>
+      <div class="mobile-section-title">פרטי התשלום</div>
       
       <div class="mobile-field-group">
-        <label>طريقة الدفع</label>
+        <label>אמצעי תשלום</label>
         <p-dropdown 
           [(ngModel)]="formData.paymentMethod"
           [options]="paymentMethodOptions" 
-          placeholder="اختر طريقة الدفع"
+          placeholder="בחר אמצעי תשלום"
           [showClear]="true">
         </p-dropdown>
       </div>
 
       <div class="mobile-field-group">
-        <label>تاريخ الدفع</label>
+        <label>תאריך תשלום</label>
         <p-calendar 
           [(ngModel)]="formData.paymentDate" 
           dateFormat="dd/mm/yy"
@@ -261,7 +283,7 @@
       <button 
         pButton 
         type="button" 
-        label="+ إضافة دفعة"
+        label="+ הוסף תשלום"
         class="mobile-add-method-btn"
         (click)="addPaymentMethod()">
       </button>
@@ -269,39 +291,39 @@
       <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
 
       <!-- Bank Details -->
-      <div class="mobile-section-title">بيانات الحوالة</div>
+      <div class="mobile-section-title">פרטי ההעברה</div>
 
       <div class="mobile-field-group">
-        <label>البنك</label>
+        <label>בנק</label>
         <p-dropdown 
           [(ngModel)]="formData.bank"
           [options]="bankOptions" 
-          placeholder="اختر بنك"
+          placeholder="בחר בנק"
           [showClear]="true">
         </p-dropdown>
       </div>
 
       <div class="mobile-field-group">
-        <label>رقم الحساب</label>
+        <label>מספר חשבון</label>
         <input 
           pInputText 
           type="text" 
           [(ngModel)]="formData.accountNumber"
-          placeholder="رقم الحساب" />
+          placeholder="מספר חשבון" />
       </div>
 
       <div class="mobile-two-cols">
         <div class="mobile-field-group">
-          <label>أسيبكفاد</label>
+          <label>אסמכתא</label>
           <input 
             pInputText 
             type="text" 
             [(ngModel)]="formData.asmachta"
-            placeholder="أسيبكفاد" />
+            placeholder="אסמכתא" />
         </div>
 
         <div class="mobile-field-group">
-          <label>المبلغ</label>
+          <label>סכום</label>
           <input 
             pInputText 
             type="number" 
@@ -314,24 +336,24 @@
       <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
 
       <!-- Added Payments -->
-      <div class="mobile-section-title">الدفعات المضافة</div>
+      <div class="mobile-section-title">התשלומים שנוספו</div>
 
       <div class="mobile-transfer-item" *ngFor="let transfer of transfers; let i = index">
         <div class="mobile-transfer-content">
           <div class="mobile-transfer-row">
-            <span class="field-label">البنك:</span>
+            <span class="field-label">בנק:</span>
             <span class="field-value">{{transfer.bank}}</span>
           </div>
           <div class="mobile-transfer-row">
-            <span class="field-label">الحساب:</span>
+            <span class="field-label">חשבון:</span>
             <span class="field-value">{{transfer.accountNumber}}</span>
           </div>
           <div class="mobile-transfer-row">
-            <span class="field-label">أسيبكفاد:</span>
+            <span class="field-label">אסמכתא:</span>
             <span class="field-value">{{transfer.asmachta}}</span>
           </div>
           <div class="mobile-transfer-row">
-            <span class="field-label">المبلغ:</span>
+            <span class="field-label">סכום:</span>
             <span class="field-value">{{transfer.amount}}₪</span>
           </div>
         </div>
@@ -348,21 +370,21 @@
       <button 
         pButton 
         type="button" 
-        label="حفظ الشيك"
+        label="שמור שיק"
         class="mobile-save-check-btn">
       </button>
 
       <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
 
       <!-- Notes -->
-      <div class="mobile-section-title">ملاحظات</div>
+      <div class="mobile-section-title">הערות</div>
 
       <div class="mobile-field-group">
-        <label>ملاحظات إضافية</label>
+        <label>הערות נוספות</label>
         <textarea 
           pInputText 
           [(ngModel)]="formData.notes"
-          placeholder="أدخل ملاحظات إضافية"
+          placeholder="הכנס הערות נוספות"
           rows="2"></textarea>
       </div>
     </div>
@@ -371,7 +393,7 @@
     <div class="mobile-form-actions">
       <button 
         pButton 
-        label="حفظ الدفعة"
+        label="שמור תשלום"
         class="mobile-save-button" 
         (click)="onSubmit()">
       </button>

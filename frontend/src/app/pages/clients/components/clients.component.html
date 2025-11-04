@@ -171,21 +171,8 @@
           
           <div class="row-cell address">{{ client.address }}</div>
           
-          <!-- MOBILE NAME & ACTION MENU (ROW 1) -->
-          <div class="row-cell name" (click)="showActionMenu(client)">
+          <div class="row-cell name" (click)="navigateToClient(client)">
             <span>{{ client.name }}</span>
-
-            <!-- Action Menu Structure for Mobile -->
-            <div class="client-actions-menu" [class.visible]="client.showMenu">
-              <button class="menu-action edit" (click)="$event.stopPropagation(); editClient(client)">
-                <i class="pi pi-pencil"></i>
-                <span>תדויק</span> <!-- Edit -->
-              </button>
-              <button class="menu-action delete" (click)="$event.stopPropagation(); deleteClient(client)">
-                <i class="pi pi-trash"></i>
-                <span>מחק</span> <!-- Delete -->
-              </button>
-            </div>
           </div>
         </div>
       </div>

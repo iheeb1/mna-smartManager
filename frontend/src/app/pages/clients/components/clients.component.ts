@@ -296,4 +296,8 @@ selectedClient: any = null;
     this.showDialog = false;
     this.selectedClient = null;
   }
+
+  navigateToClient(client: any): void {
+    this.router.navigate(['/customers', client.id]);
+  }
 }

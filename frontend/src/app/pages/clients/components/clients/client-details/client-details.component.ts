@@ -38,6 +38,7 @@ export class ClientDetailsComponent implements OnInit {
   
   // Modal visibility
   showPaymentModal: boolean = false;
+  showAddMenu: boolean = false;
   
   // Static client info
   clientName: string = 'חברת בניית הפירמידה בע"מ';
@@ -192,8 +193,25 @@ export class ClientDetailsComponent implements OnInit {
     console.log('Delete invoice:', invoice);
   }
   
+  // Mobile add menu methods
+  showAddOptions(): void {
+    this.showAddMenu = true;
+  }
+  
+  closeAddMenu(): void {
+    this.showAddMenu = false;
+  }
+  
+  addNewOrder(): void {
+    console.log('Add new order');
+    this.closeAddMenu();
+    // Implement add new order logic
+  }
+  
+  // Payment modal methods
   openPaymentModal(): void {
     this.showPaymentModal = true;
+    this.closeAddMenu();
   }
   
   handlePaymentSave(paymentData: any): void {
