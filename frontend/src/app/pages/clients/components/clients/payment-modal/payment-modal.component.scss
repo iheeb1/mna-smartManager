@@ -646,51 +646,30 @@
 }
 
 // ============================================
-// MOBILE STYLES
+// MOBILE STYLES - FULLSCREEN (NO DIALOG)
 // ============================================
 
-::ng-deep .mobile-payment-dialog {
-  &.p-dialog-bottom {
-    .p-dialog {
-      margin: 0 !important;
-    }
-  }
-
-  .p-dialog {
-    margin: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-  }
-
-  .p-dialog-content {
-    padding: 0 !important;
-    background: white !important;
-    overflow-y: auto !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-  }
-
-  .p-dialog-mask {
-    align-items: stretch !important;
-    padding: 0 !important;
-  }
-}
-
 .mobile-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
   background: white;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  min-height: 100vh;
+  overflow: hidden;
 
   .mobile-form-image {
     position: relative;
     width: 100%;
-    height: 18%;
-    background: linear-gradient(135deg, #9A8CF0 0%, #B5AEF1 100%);
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+    background: linear-gradient(135deg, #6B73FF 0%, #5A67D8 100%);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -712,17 +691,21 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      padding: 8px;
+      padding: 8px 12px;
       color: white;
-      font-size: 28px;
+      font-size: 32px;
+      line-height: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 2;
+      width: auto;
+      height: auto;
+      font-weight: 300;
 
-      &::before {
-        content: '<';
-        font-weight: 300;
+      .back-arrow {
+        display: block;
+        font-style: normal;
       }
 
       i {
@@ -738,32 +721,45 @@
       position: relative;
       z-index: 1;
       color: white;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
       text-align: center;
       margin: 0;
+      line-height: 1.3;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       direction: rtl;
     }
   }
 
   .mobile-form-content {
-    padding: 32px 24px 24px;
-    background: white;
+    padding: 32px 24px;
+    border-radius: 24px 24px 0 0;
+    margin-top: -24px;
+    position: relative;
+    z-index: 1;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px;
+    background: white;
     overflow-y: auto;
+    overflow-x: hidden;
+
+    // Hide scrollbar
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
     .mobile-section-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
       color: #1e293b;
       text-align: right;
       direction: rtl;
-      margin-top: 8px;
-      margin-bottom: 8px;
+      margin-top: 0;
+      margin-bottom: 4px;
     }
 
     .mobile-field-group {
@@ -772,81 +768,109 @@
       gap: 8px;
 
       label {
-        font-size: 12px;
-        color: #64748b;
+        font-size: 13px;
+        color: #5A5780;
         font-weight: 500;
         text-align: right;
         direction: rtl;
       }
 
       input, textarea {
-        width: 100%;
-        height: 24px;
-        padding: 0 16px;
-        border: 1px solid #E0DEFA;
-        border-radius: 20px;
-        font-size: 14px;
-        background: #F8F7FE;
+        padding: 16px 20px;
+        border: none;
+        border-radius: 16px;
+        font-size: 16px;
+        background: #E8E8F3;
         direction: rtl;
-        color: #1e293b;
+        color: #4a4a6a;
+        font-weight: 500;
         transition: all 0.2s ease;
         text-align: right;
+        width: 100%;
         font-family: inherit;
-
-        &:hover {
-          background: #E0DEFA;
-          border-color: #D0CFF4;
-        }
 
         &:focus {
           outline: none;
-          background: white;
-          border-color: #B5AEF1;
-          box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.15);
+          background: #dcdce8;
         }
 
         &::placeholder {
-          color: #D0CFF4;
+          color: #9E9CBE;
           text-align: right;
         }
       }
 
       textarea {
-        height: fit-content;
-        padding: 0.625rem 1rem;
         resize: vertical;
+        min-height: 80px;
       }
 
       ::ng-deep .p-dropdown {
-        width: 100% !important;
-        height: 44px !important;
-        border: 1px solid #E0DEFA !important;
-        border-radius: 12px !important;
-        background: #F8F7FE !important;
+        border: none !important;
+        border-radius: 16px !important;
+        background: #E8E8F3 !important;
+        direction: rtl;
+        width: 100%;
+        height: auto !important;
 
         .p-dropdown-label {
-          font-size: 14px !important;
-          padding: 0 16px !important;
+          padding: 16px 20px !important;
+          color: #4a4a6a !important;
+          font-weight: 500 !important;
           text-align: right !important;
-          color: #1e293b !important;
+          font-size: 16px !important;
 
           &.p-placeholder {
-            color: #D0CFF4 !important;
+            color: #9E9CBE !important;
           }
         }
 
         .p-dropdown-trigger {
-          width: 2.25rem !important;
+          color: #5A5780 !important;
+          width: 2.5rem !important;
+        }
+
+        &:hover {
+          background: #dcdce8 !important;
+        }
+
+        &.p-focus {
+          outline: none !important;
+          background: #dcdce8 !important;
+          border-color: transparent !important;
+          box-shadow: none !important;
         }
       }
 
       ::ng-deep .p-calendar {
         width: 100%;
-        height: 30px;
+
         .p-inputtext {
-          height: 32px !important;
-          padding: 0 16px !important;
-          font-size: 14px !important;
+          padding: 16px 20px !important;
+          border: none !important;
+          border-radius: 16px !important;
+          font-size: 16px !important;
+          background: #E8E8F3 !important;
+          direction: rtl !important;
+          color: #4a4a6a !important;
+          font-weight: 500 !important;
+          text-align: right !important;
+          height: auto !important;
+
+          &:focus {
+            outline: none !important;
+            background: #dcdce8 !important;
+            box-shadow: none !important;
+          }
+
+          &::placeholder {
+            color: #9E9CBE !important;
+            text-align: right !important;
+          }
+        }
+
+        .p-datepicker-trigger {
+          display: none !important;
         }
       }
     }
@@ -857,38 +881,65 @@
       gap: 12px;
     }
 
-    .mobile-add-method-btn,
-    .mobile-save-check-btn {
-      width: 100%;
-      padding: 12px !important;
+    .mobile-add-method-btn {
       background: transparent !important;
-      border: 1px solid #E0DEFA !important;
-      border-radius: 12px !important;
-      color: #9A8CF0 !important;
+      border: none !important;
+      color: #6c63ff !important;
       font-size: 14px !important;
       font-weight: 600 !important;
-      text-align: center;
+      cursor: pointer;
+      padding: 8px 0 !important;
+      text-align: right;
+      direction: rtl;
+      width: auto;
+      align-self: flex-start;
 
       &:hover {
-        background: #F8F7FE !important;
+        background: transparent !important;
+      }
+
+      &:active {
+        opacity: 0.7;
+      }
+
+      &:focus {
+        box-shadow: none !important;
+      }
+    }
+
+    .mobile-save-line-btn {
+      width: 100%;
+      padding: 14px !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      border-radius: 16px !important;
+      background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%) !important;
+      border: none !important;
+      color: white !important;
+      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35) !important;
+      transition: all 0.3s ease !important;
+
+      &:active {
+        transform: scale(0.98);
+        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3) !important;
+      }
+
+      &:focus {
+        box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35) !important;
       }
     }
 
     .mobile-transfer-item {
-      background: #F8F7FE;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 0.75rem;
+      border-radius: 16px;
+      padding: 16px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
+      margin-left: 50%;
+      gap: 16px;
 
       .mobile-transfer-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+        
+        gap: 8px;
 
         .mobile-transfer-row {
           display: flex;
@@ -897,14 +948,15 @@
           direction: rtl;
 
           .field-label {
-            font-size: 0.8125rem;
-            color: #64748b;
+            font-size: 13px;
+            color: #1e293b;
             font-weight: 500;
           }
 
           .field-value {
-            font-size: 0.875rem;
-            color: #1e293b;
+            margin-right: 10px;;
+            font-size: 14px;
+            color: #64748b;
             font-weight: 600;
           }
         }
@@ -913,66 +965,346 @@
       .mobile-transfer-actions {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 8px;
+        border-left: solid 1px #574DFF;
 
         .icon-btn {
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           border: none;
-          border-radius: 50%;
+          border-radius: 8px;
           background: transparent;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: all 0.2s ease;
 
           i {
-            font-size: 12px;
+            font-size: 14px;
           }
 
-          &.edit-btn i {
-            color: #9A8CF0;
+          &.edit-btn {
+            i {
+              color: #6c63ff;
+            }
+
+            &:active {
+              background: #e8e8f3;
+            }
           }
 
-          &.delete-btn i {
-            color: #EF4444;
+          &.delete-btn {
+            i {
+              color: #EF4444;
+            }
+
+            &:active {
+              background: #FEE2E2;
+            }
           }
         }
+      }
+    }
+
+    .mobile-total-display {
+      background: #F8F7FE;
+      border: 1px solid #E0DEFA;
+      border-radius: 16px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      direction: rtl;
+
+      .total-label {
+        color: #1e293b;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .total-value {
+        color: #1e293b;
+        font-weight: 700;
+        font-size: 18px;
       }
     }
   }
 
   .mobile-form-actions {
-    padding: 16px 24px 24px;
+    padding: 16px 24px 32px;
     background: white;
     flex-shrink: 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
 
     .mobile-save-button {
       width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #B5AEF1, #9A8CF0);
-      border: none;
-      color: white;
-      box-shadow: 0 4px 12px rgba(154, 140, 240, 0.3);
+      padding: 18px !important;
+      font-size: 18px !important;
+      font-weight: 700 !important;
+      border-radius: 16px !important;
+      background: linear-gradient(135deg, #7c6fff 0%, #6c63ff 100%) !important;
+      border: none !important;
+      color: white !important;
+      cursor: pointer;
+      transition: all 0.3s ease !important;
+      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35) !important;
+
+      &:active {
+        transform: scale(0.98);
+        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3) !important;
+      }
+
+      &:focus {
+        box-shadow: 0 8px 24px rgba(108, 99, 255, 0.35) !important;
+      }
+    }
+  }
+}
+
+// Dropdown Panel Styling for Mobile
+:host ::ng-deep .p-dropdown-panel {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+
+  .p-dropdown-items {
+    padding: 8px !important;
+
+    .p-dropdown-item {
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      margin: 4px 0 !important;
+      color: #4a4a6a !important;
+      font-weight: 500 !important;
+      text-align: right !important;
+      direction: rtl !important;
 
       &:hover {
-        background: linear-gradient(135deg, #9A8CF0, #8C7DF0);
+        background: #e8e8f3 !important;
+      }
+
+      &.p-highlight {
+        background: #6c63ff !important;
+        color: white !important;
       }
     }
   }
 }
 
 @media (max-width: 768px) {
-  ::ng-deep .mobile-payment-dialog {
-    .p-dialog {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
+  .mobile-form-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+}
+
+// ============================================
+// MOBILE INPUT FIELDS - MATCH DESKTOP STYLE
+// ============================================
+// ============================================
+// MOBILE INPUT FIELDS, CALENDAR & DROPDOWN - MATCH DESKTOP STYLE ONLY
+// ============================================
+
+@media (max-width: 768px) {
+  .mobile-form-content {
+    .mobile-field-group {
+      
+      // Text inputs and textareas ONLY
+      input, textarea {
+        width: 100%;
+        height: 38px; // Match desktop height
+        border: 1px solid #E0DEFA !important; // Match desktop border
+        border-radius: 22px !important; // Match desktop border radius
+        padding: 0 1rem !important; // Match desktop padding
+        font-size: 0.875rem !important; // Match desktop font size
+        font-family: inherit;
+        background: #E8E6F9 !important; // Match desktop background
+        transition: all 0.2s ease !important;
+        direction: rtl !important;
+        text-align: right !important;
+        color: #1e293b !important; // Match desktop text color
+        
+        &:hover {
+          background: #E0DEFA !important;
+          border-color: #D0CFF4 !important;
+        }
+        
+        &:focus {
+          outline: none !important;
+          border-color: #B5AEF1 !important;
+          background: white !important;
+          box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2) !important;
+        }
+        
+        &::placeholder {
+          color: #D0CFF4 !important; // Match desktop placeholder color
+          text-align: right !important;
+        }
+      }
+      
+      textarea {
+        height: auto !important;
+        padding: 0.75rem 1rem !important;
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      // PrimeNG Dropdown Override ONLY
+      ::ng-deep .p-dropdown {
+        width: 100% !important;
+        height: 38px !important; // Match desktop height
+        border: 1px solid #E0DEFA !important; // Match desktop border
+        border-radius: 22px !important; // Match desktop border radius
+        background: #E8E6F9 !important; // Match desktop background
+        transition: all 0.2s ease !important;
+        
+        &:hover {
+          border-color: #D0CFF4 !important;
+          background: #E0DEFA !important;
+        }
+        
+        &.p-focus {
+          border-color: #B5AEF1 !important;
+          background: white !important;
+          box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2) !important;
+        }
+        
+        .p-dropdown-label {
+          font-size: 0.875rem !important; // Match desktop
+          color: #1e293b !important;
+          text-align: right !important;
+          padding: 0 1rem !important; // Match desktop padding
+          line-height: 38px !important; // Vertically center text
+          
+          &.p-placeholder {
+            color: #D0CFF4 !important; // Match desktop placeholder
+          }
+        }
+        
+        .p-dropdown-trigger {
+          width: 2.5rem !important;
+          color: #D0CFF4 !important; // Match desktop arrow color
+          
+          .p-dropdown-trigger-icon {
+            font-size: 0.875rem !important;
+          }
+        }
+        
+        .p-dropdown-clear-icon {
+          display: none !important;
+        }
+      }
+
+      // PrimeNG Calendar Override ONLY
+      ::ng-deep .p-calendar {
+        width: 100% !important;
+        height: 38px !important;
+        
+        .p-inputtext {
+          width: 100% !important;
+          height: 38px !important; // Match desktop height
+          border: 1px solid #E0DEFA !important; // Match desktop border
+          border-radius: 22px !important; // Match desktop border radius
+          background: #E8E6F9 !important; // Match desktop background
+          padding: 0 1rem !important; // Match desktop padding
+          font-size: 0.875rem !important; // Match desktop font size
+          color: #1e293b !important;
+          direction: rtl !important;
+          text-align: right !important;
+          transition: all 0.2s ease !important;
+          line-height: 38px !important; // Vertically center text
+          
+          &:hover {
+            background: #E0DEFA !important;
+            border-color: #D0CFF4 !important;
+          }
+          
+          &:focus {
+            outline: none !important;
+            border-color: #B5AEF1 !important;
+            background: white !important;
+            box-shadow: 0 0 0 2px rgba(181, 174, 241, 0.2) !important;
+          }
+          
+          &::placeholder {
+            color: #D0CFF4 !important; // Match desktop placeholder
+            text-align: right !important;
+          }
+        }
+        
+        .p-datepicker-trigger {
+          display: none !important;
+        }
+        
+        .p-inputicon {
+          right: 1rem !important;
+          left: auto !important;
+          color: #D0CFF4 !important;
+        }
+      }
+    }
+  }
+
+  // Dropdown Panel Override (Mobile)
+  ::ng-deep .p-dropdown-panel {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+    margin-top: 4px !important;
+    
+    .p-dropdown-items {
+      padding: 0.5rem !important;
+      
+      .p-dropdown-item {
+        padding: 0.75rem 1rem !important;
+        border-radius: 8px !important;
+        font-size: 0.875rem !important;
+        text-align: right !important;
+        transition: all 0.15s ease !important;
+        
+        &:hover {
+          background: #F8F7FE !important;
+        }
+        
+        &.p-highlight {
+          background: #E8E6F9 !important;
+          color: #9A8CF0 !important;
+        }
+      }
+    }
+  }
+
+  // Datepicker Override (Mobile)
+  ::ng-deep .p-datepicker {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    
+    .p-datepicker-calendar {
+      margin: 0.5rem !important;
+    }
+    
+    table td {
+      padding: 0.25rem !important;
+      
+      > span {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+        border-radius: 6px !important;
+        
+        &.p-highlight {
+          background: #B5AEF1 !important;
+          color: white !important;
+        }
+        
+        &:hover {
+          background: #F8F7FE !important;
+        }
+      }
     }
   }
 }

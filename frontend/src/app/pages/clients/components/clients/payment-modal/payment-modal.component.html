@@ -243,160 +243,214 @@
       </div>
     </div>
   </div>
+</p-dialog>
 
-  <!-- MOBILE VIEW -->
-  <div class="mobile-form-container" *ngIf="isMobile">
-    <!-- Mobile Header with Image -->
-    <div class="mobile-form-image">
-      <img src="assets/images/payments_modal.png" alt="תשלום חדש">
-      <button class="mobile-back-btn" (click)="closeDialog()">
-        <i class="pi pi-arrow-right"></i>
-      </button>
-      <h2>תשלום חדש</h2>
+<!-- MOBILE VIEW - FULLSCREEN NO DIALOG -->
+<div class="mobile-form-container" *ngIf="isMobile && visible">
+  <!-- Mobile Header with Image -->
+  <div class="mobile-form-image">
+    <img src="assets/images/payments_modal.png" alt="תשלום חדש">
+    <button class="mobile-back-btn" (click)="closeDialog()">
+      <span class="back-arrow">&lt;</span>
+    </button>
+    <h2>תשלום חדש</h2>
+  </div>
+
+  <!-- Mobile Form Content -->
+  <div class="mobile-form-content">
+    <!-- Payment Method & Date -->
+    <div class="mobile-section-title">פרטי התשלום</div>
+    
+    <div class="mobile-field-group">
+      <label>אמצעי תשלום</label>
+      <p-dropdown 
+        [(ngModel)]="formData.paymentMethod"
+        [options]="paymentMethodOptions" 
+        placeholder="בחר אמצעי תשלום"
+        [showClear]="true">
+      </p-dropdown>
     </div>
 
-    <!-- Mobile Form Content -->
-    <div class="mobile-form-content">
-      <!-- Payment Method & Date -->
-      <div class="mobile-section-title">פרטי התשלום</div>
-      
+    <div class="mobile-field-group">
+      <label>תאריך תשלום</label>
+      <p-calendar 
+        [(ngModel)]="formData.paymentDate" 
+        dateFormat="dd/mm/yy"
+        [showIcon]="true"
+        placeholder="—/—/—">
+      </p-calendar>
+    </div>
+
+    <button 
+      pButton 
+      type="button" 
+      label="+ הוסף תשלום"
+      class="mobile-add-method-btn"
+      (click)="addPaymentMethod()">
+    </button>
+
+    <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
+
+    <!-- Bank Details -->
+    <div class="mobile-section-title">פרטי ההעברה</div>
+
+    <div class="mobile-field-group">
+      <label>בנק</label>
+      <p-dropdown 
+        [(ngModel)]="formData.bank"
+        [options]="bankOptions" 
+        placeholder="בחר בנק"
+        [showClear]="true">
+      </p-dropdown>
+    </div>
+
+    <div class="mobile-field-group">
+      <label>מספר סניף</label>
+      <input 
+        pInputText 
+        type="text" 
+        [(ngModel)]="formData.branchNumber"
+        placeholder="מספר סניף" />
+    </div>
+
+    <div class="mobile-field-group">
+      <label>מספר חשבון</label>
+      <input 
+        pInputText 
+        type="text" 
+        [(ngModel)]="formData.accountNumber"
+        placeholder="מספר חשבון" />
+    </div>
+
+    <div class="mobile-two-cols">
       <div class="mobile-field-group">
-        <label>אמצעי תשלום</label>
-        <p-dropdown 
-          [(ngModel)]="formData.paymentMethod"
-          [options]="paymentMethodOptions" 
-          placeholder="בחר אמצעי תשלום"
-          [showClear]="true">
-        </p-dropdown>
-      </div>
-
-      <div class="mobile-field-group">
-        <label>תאריך תשלום</label>
-        <p-calendar 
-          [(ngModel)]="formData.paymentDate" 
-          dateFormat="dd/mm/yy"
-          [showIcon]="true"
-          placeholder="—/—/—">
-        </p-calendar>
-      </div>
-
-      <button 
-        pButton 
-        type="button" 
-        label="+ הוסף תשלום"
-        class="mobile-add-method-btn"
-        (click)="addPaymentMethod()">
-      </button>
-
-      <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
-
-      <!-- Bank Details -->
-      <div class="mobile-section-title">פרטי ההעברה</div>
-
-      <div class="mobile-field-group">
-        <label>בנק</label>
-        <p-dropdown 
-          [(ngModel)]="formData.bank"
-          [options]="bankOptions" 
-          placeholder="בחר בנק"
-          [showClear]="true">
-        </p-dropdown>
-      </div>
-
-      <div class="mobile-field-group">
-        <label>מספר חשבון</label>
+        <label>אסמכתא</label>
         <input 
           pInputText 
           type="text" 
-          [(ngModel)]="formData.accountNumber"
-          placeholder="מספר חשבון" />
+          [(ngModel)]="formData.asmachta"
+          placeholder="אסמכתא" />
       </div>
-
-      <div class="mobile-two-cols">
-        <div class="mobile-field-group">
-          <label>אסמכתא</label>
-          <input 
-            pInputText 
-            type="text" 
-            [(ngModel)]="formData.asmachta"
-            placeholder="אסמכתא" />
-        </div>
-
-        <div class="mobile-field-group">
-          <label>סכום</label>
-          <input 
-            pInputText 
-            type="number" 
-            [(ngModel)]="formData.amount"
-            placeholder="0.00"
-            step="0.01" />
-        </div>
-      </div>
-
-      <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
-
-      <!-- Added Payments -->
-      <div class="mobile-section-title">התשלומים שנוספו</div>
-
-      <div class="mobile-transfer-item" *ngFor="let transfer of transfers; let i = index">
-        <div class="mobile-transfer-content">
-          <div class="mobile-transfer-row">
-            <span class="field-label">בנק:</span>
-            <span class="field-value">{{transfer.bank}}</span>
-          </div>
-          <div class="mobile-transfer-row">
-            <span class="field-label">חשבון:</span>
-            <span class="field-value">{{transfer.accountNumber}}</span>
-          </div>
-          <div class="mobile-transfer-row">
-            <span class="field-label">אסמכתא:</span>
-            <span class="field-value">{{transfer.asmachta}}</span>
-          </div>
-          <div class="mobile-transfer-row">
-            <span class="field-label">סכום:</span>
-            <span class="field-value">{{transfer.amount}}₪</span>
-          </div>
-        </div>
-        <div class="mobile-transfer-actions">
-          <button class="icon-btn edit-btn" (click)="editTransfer(i)">
-            <i class="pi pi-pencil"></i>
-          </button>
-          <button class="icon-btn delete-btn" (click)="deleteTransfer(i)">
-            <i class="pi pi-trash"></i>
-          </button>
-        </div>
-      </div>
-
-      <button 
-        pButton 
-        type="button" 
-        label="שמור שיק"
-        class="mobile-save-check-btn">
-      </button>
-
-      <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
-
-      <!-- Notes -->
-      <div class="mobile-section-title">הערות</div>
 
       <div class="mobile-field-group">
-        <label>הערות נוספות</label>
-        <textarea 
+        <label>סכום</label>
+        <input 
           pInputText 
-          [(ngModel)]="formData.notes"
-          placeholder="הכנס הערות נוספות"
-          rows="2"></textarea>
+          type="number" 
+          [(ngModel)]="formData.amount"
+          placeholder="0.00"
+          step="0.01" />
       </div>
     </div>
 
-    <!-- Mobile Save Button -->
-    <div class="mobile-form-actions">
-      <button 
-        pButton 
-        label="שמור תשלום"
-        class="mobile-save-button" 
-        (click)="onSubmit()">
-      </button>
+    <button 
+      pButton 
+      type="button" 
+      label="הוספת שורה"
+      class="mobile-save-line-btn"
+      (click)="saveTransferLine()">
+    </button>
+
+    <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
+
+    <!-- Added Payments -->
+    <div class="mobile-section-title">התשלומים שנוספו</div>
+
+    <div class="mobile-transfer-item" *ngFor="let transfer of transfers; let i = index">
+      <div class="mobile-transfer-content">
+        <div class="mobile-transfer-row">
+          <span class="field-label">בנק:</span>
+          <span class="field-value">{{transfer.bank}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">מספר סניף:</span>
+          <span class="field-value">{{transfer.branchNumber}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">חשבון:</span>
+          <span class="field-value">{{transfer.accountNumber}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">אסמכתא:</span>
+          <span class="field-value">{{transfer.asmachta}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">סכום:</span>
+          <span class="field-value">{{transfer.amount}}₪</span>
+        </div>
+      </div>
+      <div class="mobile-transfer-actions">
+        <button class="icon-btn edit-btn" (click)="editTransfer(i)">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button class="icon-btn delete-btn" (click)="deleteTransfer(i)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Check Items -->
+    <div class="mobile-transfer-item" *ngFor="let check of checks; let i = index">
+      <div class="mobile-transfer-content">
+        <div class="mobile-transfer-row">
+          <span class="field-label">בנק:</span>
+          <span class="field-value">{{check.bank}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">מספר סניף:</span>
+          <span class="field-value">{{check.branchNumber}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">מספר שיק:</span>
+          <span class="field-value">{{check.checkNumber}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">תאריך פרעון:</span>
+          <span class="field-value">{{check.dueDate}}</span>
+        </div>
+        <div class="mobile-transfer-row">
+          <span class="field-label">סכום:</span>
+          <span class="field-value">{{check.amount}}₪</span>
+        </div>
+      </div>
+      <div class="mobile-transfer-actions">
+        <button class="icon-btn edit-btn" (click)="editCheck(i)">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button class="icon-btn delete-btn" (click)="deleteCheck(i)">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Total Display -->
+    <div class="mobile-total-display">
+      <span class="total-label">סה״כ</span>
+      <span class="total-value">{{totalAmount}}₪</span>
+    </div>
+
+    <div style="height: 1px; border-top: 1px solid #B8B3FD; margin: 16px 0; width: 100%;"></div>
+
+    <!-- Notes -->
+    <div class="mobile-section-title">הערות</div>
+
+    <div class="mobile-field-group">
+      <label>הערות נוספות</label>
+      <textarea 
+        pInputText 
+        [(ngModel)]="formData.notes"
+        placeholder="הכנס הערות נוספות"
+        rows="3"></textarea>
     </div>
   </div>
-</p-dialog>
+
+  <!-- Mobile Save Button -->
+  <div class="mobile-form-actions">
+    <button 
+      pButton 
+      label="שמור תשלום"
+      class="mobile-save-button" 
+      (click)="onSubmit()">
+    </button>
+  </div>
+</div>

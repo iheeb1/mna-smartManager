@@ -1462,6 +1462,9 @@
 }
 
 @media (max-width: 768px) {
+  :host {
+    overflow-x: hidden;
+  }
   .mobile-action-bar {
     display: flex;
     align-items: center;
