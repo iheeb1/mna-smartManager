@@ -86,72 +86,138 @@
 
           <!-- Table Body -->
           <div class="table-body">
-            <div class="table-row" *ngFor="let invoice of invoices">
-              <!-- Mobile Card Layout -->
-              <div class="card-title">
-                <button class="menu-btn" (click)="showInvoiceMenu($event, invoice); $event.stopPropagation()">
-                  <i class="pi pi-ellipsis-v"></i>
-                </button>
-                <span class="date-text">{{ invoice.date }}</span>
-                <span class="description-text">{{ invoice.description }}</span>
-              </div>
+  <div class="table-row" *ngFor="let invoice of invoices" [class.expanded]="expandedRows[invoice.id]">
+    <!-- Mobile Card Header -->
+    <div class="card-header" (click)="toggleMobileCard(invoice)">
+      <div class="card-title">
+        <button class="menu-btn" (click)="showInvoiceMenu($event, invoice); $event.stopPropagation()">
+          <i class="pi pi-ellipsis-v"></i>
+        </button>
+        <span class="date-text">{{ invoice.date }}</span>
+        <span class="description-text">{{ invoice.description }}</span>
+      </div>
 
-              <div class="card-main-info">
-                <div class="info-group">
-                  <div class="info-label">النوع</div>
-                  <div class="info-value">{{ invoice.type }}</div>
-                </div>
-                <div class="info-group">
-                  <div class="info-label">العنوان</div>
-                  <div class="info-value">{{ invoice.address }}</div>
-                </div>
-                <div class="info-group">
-                  <div class="info-label">المركبة</div>
-                  <div class="info-value">{{ invoice.vehicle }}</div>
-                </div>
-                <div class="info-group">
-                  <div class="info-label">الخصم</div>
-                  <div class="info-value">{{ invoice.discount }}</div>
-                </div>
-              </div>
+      <div class="card-main-info">
+        <div class="info-group">
+          <div class="info-label">סכום</div>
+          <div class="info-value">{{ invoice.amount }}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">כולל מע"מ</div>
+          <div class="info-value">{{ invoice.totalVat }}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">יתרה</div>
+          <div class="info-value">{{ invoice.balance }}</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">הנחה</div>
+          <div class="info-value">{{ invoice.discount }}</div>
+        </div>
+      </div>
 
-              <div class="card-totals">
-                <div class="total-item">
-                  <div class="total-label">الرصيد:</div>
-                  <div class="total-value">{{ invoice.balance }}</div>
-                </div>
-                <div class="total-item">
-                  <div class="total-label">إجمالي الضريبة:</div>
-                  <div class="total-value">{{ invoice.totalVat }}</div>
-                </div>
-                <div class="total-item">
-                  <div class="total-label">المبلغ:</div>
-                  <div class="total-value">{{ invoice.amount }}</div>
-                </div>
-              </div>
+      <div class="card-totals">
+        <div class="total-item">
+          <div class="total-label">רכב</div>
+          <div class="total-value">{{ invoice.vehicle }}</div>
+        </div>
+        <div class="total-item">
+          <div class="total-label">תיאור</div>
+          <div class="total-value">{{ invoice.type }}</div>
+        </div>
+        <div class="total-item">
+          <div class="total-label">כתובת</div>
+          <div class="total-value">{{ invoice.address }}</div>
+        </div>
+      </div>
+    </div>
 
-              <!-- Original Desktop Row Cells (Hidden on Mobile) -->
-              <div class="row-cell actions-col">
-                <button class="icon-btn delete-btn" (click)="deleteInvoice(invoice)">
-                  <i class="pi pi-trash"></i>
-                </button>
-                <button class="icon-btn edit-btn" (click)="editInvoice(invoice)">
-                  <i class="pi pi-pencil"></i>
-                </button>
+    <!-- Expand Icon -->
+    <div class="expand-icon" (click)="toggleMobileCard(invoice); $event.stopPropagation()">
+      <i class="pi" [class.pi-chevron-down]="!expandedRows[invoice.id]" 
+         [class.pi-chevron-up]="expandedRows[invoice.id]"></i>
+    </div>
+
+    <!-- Expanded Details Section - Shows when card is expanded -->
+    <div class="card-details" *ngIf="expandedRows[invoice.id]">
+      <!-- Vehicle and Description Section -->
+      <div class="expanded-info-section">
+        <div class="expanded-info-row">
+          <div class="info-item">
+            <div class="info-label">רכב</div>
+            <div class="info-value">{{ invoice.vehicle }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">תיאור</div>
+            <div class="info-value">{{ invoice.type }}</div>
+          </div>
+        </div>
+        
+        <div class="expanded-info-row full-width">
+          <div class="info-item">
+            <div class="info-label">כתובת</div>
+            <div class="info-value">{{ invoice.address }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items List (if invoice has items) -->
+      <div class="items-list" *ngIf="invoice.items && invoice.items.length > 0">
+        <div class="items-header">פריטי החשבונית</div>
+        
+        <div class="item-row" *ngFor="let item of invoice.items">
+          <div class="item-content">
+            <div class="item-main">
+              <span class="item-desc">{{ item.description }}</span>
+              <span class="item-qty">כמות: {{ item.quantity }}</span>
+            </div>
+            <div class="item-prices">
+              <div class="price-group">
+                <span class="price-label">לפני מע"מ:</span>
+                <span class="price-value">{{ item.beforeTax }}</span>
               </div>
-              <div class="row-cell">{{ invoice.balance }}</div>
-              <div class="row-cell">{{ invoice.totalVat }}</div>
-              <div class="row-cell">{{ invoice.amount }}</div>
-              <div class="row-cell">{{ invoice.discount }}</div>
-              <div class="row-cell">{{ invoice.vehicle }}</div>
-              <div class="row-cell">{{ invoice.address }}</div>
-              <div class="row-cell">{{ invoice.type }}</div>
-              <div class="row-cell description-cell">
-                <div class="description-text">{{ invoice.description }}</div>
-                <div class="date-text">{{ invoice.date }}</div>
+              <div class="price-group">
+                <span class="price-label">מע"מ:</span>
+                <span class="price-value">{{ item.tax }}</span>
+              </div>
+              <div class="price-group total">
+                <span class="price-label">סה"כ:</span>
+                <span class="price-value">{{ item.total }}</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Expanded Total -->
+      <div class="expanded-total">
+        <span class="expanded-total-label">:סה"כ</span>
+        <span class="expanded-total-value">{{ invoice.totalVat }}</span>
+      </div>
+    </div>
+
+    <!-- Original Desktop Row Cells (Hidden on Mobile) -->
+    <div class="row-cell actions-col">
+      <button class="icon-btn delete-btn" (click)="deleteInvoice(invoice)">
+        <i class="pi pi-trash"></i>
+      </button>
+      <button class="icon-btn edit-btn" (click)="editInvoice(invoice)">
+        <i class="pi pi-pencil"></i>
+      </button>
+    </div>
+    <div class="row-cell">{{ invoice.balance }}</div>
+    <div class="row-cell">{{ invoice.totalVat }}</div>
+    <div class="row-cell">{{ invoice.amount }}</div>
+    <div class="row-cell">{{ invoice.discount }}</div>
+    <div class="row-cell">{{ invoice.vehicle }}</div>
+    <div class="row-cell">{{ invoice.address }}</div>
+    <div class="row-cell">{{ invoice.type }}</div>
+    <div class="row-cell description-cell">
+      <div class="description-text">{{ invoice.description }}</div>
+      <div class="date-text">{{ invoice.date }}</div>
+    </div>
+  </div>
+</div>
 
           <!-- Table Footer -->
           <div class="table-footer">
