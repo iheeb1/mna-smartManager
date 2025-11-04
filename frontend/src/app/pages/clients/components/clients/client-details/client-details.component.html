@@ -35,7 +35,7 @@
       دفعة جديدة
     </button>
   </div>
-</div>  
+</div>
 <div class="container">
   <!-- Breadcrumb & Title -->
   <div class="breadcrumb">
@@ -148,61 +148,82 @@
       </div>
 
       <!-- Contact Details Card -->
-<div class="contact-card" dir="rtl">
-  <div class="contact-header">
-    <button class="edit-icon-btn">
-      <i class="pi pi-pencil"></i>
-    </button>
-    <h3 class="card-title">التفاصيل العامة</h3>
-  </div>
-
-  <div class="contact-section">
-    <div class="contact-grid">
-      <div class="contact-row">
-        <div class="contact-item">
-          <div class="contact-label">اسم العميل</div>
-          <div class="contact-value">{{ contactDetails.clientName }}</div>
+      <div class="contact-card" dir="rtl">
+        <div class="contact-header">
+          <button class="edit-icon-btn">
+            <i class="pi pi-pencil"></i>
+          </button>
+          <h3 class="card-title">التفاصيل العامة</h3>
         </div>
-        <div class="contact-item">
-          <div class="contact-label">العنوان</div>
-          <div class="contact-value">{{ contactDetails.address }}</div>
+
+        <div class="contact-section">
+          <div class="contact-grid">
+            <div class="contact-row">
+              <div class="contact-item">
+                <div class="contact-label">اسم العميل</div>
+                <div class="contact-value">{{ contactDetails.clientName }}</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">العنوان</div>
+                <div class="contact-value">{{ contactDetails.address }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-header">
+          <button class="edit-icon-btn">
+            <i class="pi pi-pencil"></i>
+          </button>
+          <h3 class="card-title">تفاصيل الاتصال</h3>
+        </div>
+
+        <div class="contact-section">
+          <div class="contact-grid">
+            <div class="contact-row">
+              <div class="contact-item">
+                <div class="contact-label">טלפון</div>
+                <div class="contact-value">{{ contactDetails.phone }}</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">فاكس</div>
+                <div class="contact-value">{{ contactDetails.fax }}</div>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-item">
+                <div class="contact-label">نייד</div>
+                <div class="contact-value">{{ contactDetails.mobile }}</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">אימייל</div>
+                <div class="contact-value email">{{ contactDetails.email }}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="contact-header">
-    <button class="edit-icon-btn">
-      <i class="pi pi-pencil"></i>
-    </button>
-    <h3 class="card-title">تفاصيل الاتصال</h3>
-  </div>
-
-  <div class="contact-section">
-    <div class="contact-grid">
-      <div class="contact-row">
-        <div class="contact-item">
-          <div class="contact-label">טלפון</div>
-          <div class="contact-value">{{ contactDetails.phone }}</div>
+      <div class="mobile-action-bar">
+        <!-- Extended Search Input -->
+        <div class="mobile-search-input expanded">
+          <div class="search-icon">
+            <img src="assets/icons/search_icon.svg" alt="search">
+          </div>
+          <input type="text" placeholder="البحث الحر عن الطلب" >
         </div>
-        <div class="contact-item">
-          <div class="contact-label">فاكس</div>
-          <div class="contact-value">{{ contactDetails.fax }}</div>
-        </div>
+      
+        <!-- Calendar Button -->
+        <button class="action-btn calendar-btn">
+          <img src="assets/icons/calendar_icon.svg" alt="Calendar">
+        </button>
+      
+        <!-- Filter Button -->
+        <button class="action-btn filter-mobile-btn">
+          <img src="assets/icons/filters_icon.svg" alt="Filter">
+        </button>
       </div>
-      <div class="contact-row">
-        <div class="contact-item">
-          <div class="contact-label">نייד</div>
-          <div class="contact-value">{{ contactDetails.mobile }}</div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-label">אימייל</div>
-          <div class="contact-value email">{{ contactDetails.email }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      
     </div>
   </div>
 </div>
