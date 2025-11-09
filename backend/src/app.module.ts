@@ -10,7 +10,7 @@ import { BackupsModule } from './backups/backups.module';
 import { CarsModule } from './cars/cars.module';
 import { CustomersModule } from './customers/customers.module';
 import { DriversModule } from './drivers/drivers.module';
-import { InventoryAdjustmentsModule } from './inventory-adjustments/inventory-adjustments.module';
+import { InventoryAdjustmentModule } from './inventory-adjustments/inventory-adjustments.module';
 import { InventoryAdjustmentItemsModule } from './inventory-adjustment-items/inventory-adjustment-items.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
@@ -22,6 +22,8 @@ import { QuoteItemsModule } from './quote-items/quote-items.module';
 import { TransportationsModule } from './transportations/transportations.module';
 import { TransportationItemsModule } from './transportation-items/transportation-items.module';
 import { LookupsModule } from './lookups/lookups.module';
+import { ExpensesModule } from './expenses/expenses.module';
+import { ExpenseItemsModule } from './expense-items/expense-items.module';
 
 @Module({
   imports: [
@@ -31,7 +33,7 @@ import { LookupsModule } from './lookups/lookups.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT ||'3306'),
+      port: parseInt(process.env.DB_PORT || '3306'),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
@@ -45,7 +47,7 @@ import { LookupsModule } from './lookups/lookups.module';
     CarsModule,
     CustomersModule,
     DriversModule,
-    InventoryAdjustmentsModule,
+    InventoryAdjustmentModule,
     InventoryAdjustmentItemsModule,
     OrdersModule,
     OrderItemsModule,
@@ -56,7 +58,9 @@ import { LookupsModule } from './lookups/lookups.module';
     QuoteItemsModule,
     TransportationsModule,
     TransportationItemsModule,
-    LookupsModule
+    LookupsModule,
+    ExpensesModule,
+    ExpenseItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

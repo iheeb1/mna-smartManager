@@ -1,12 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, ManyToOne, JoinColumn } from 'typeorm';
+import { Transportation } from '../transportations/transportation.entity';
 
 @Entity('mng_transportationitems')
-@Index('FKIndex', ['transportationItemId', 'transportationId', 'transportationItemStatusId', 'shippingCertificateId'])
+@Index('FKIndex', ['transportationId', 'transportationItemStatusId', 'shippingCertificateId'])
 export class TransportationItem {
   @PrimaryGeneratedColumn({ name: 'TransportationItemId', unsigned: true })
   transportationItemId: number;
 
-  @Column({ name: 'TransportationId', type: 'int', nullable: true })
+  @Column({ name: 'TransportationId', type: 'int', unsigned: true, nullable: true })
   transportationId: number;
 
   @Column({ name: 'TransportationItemStatusId', type: 'int', nullable: true })
@@ -17,18 +18,6 @@ export class TransportationItem {
 
   @Column({ name: 'TransportationItemDesc', type: 'varchar', length: 1000, nullable: true })
   transportationItemDesc: string;
-
-  @Column({ name: 'CreatedBy', type: 'int', default: 1, nullable: true })
-  createdBy: number;
-
-  @Column({ name: 'ModifiedBy', type: 'int', default: 1, nullable: true })
-  modifiedBy: number;
-
-  @CreateDateColumn({ name: 'CreatedDate', type: 'timestamp' })
-  createdDate: Date;
-
-  @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
-  modifiedDate: Date;
 
   @Column({ name: 'OrderUnitsNumber', type: 'decimal', precision: 20, scale: 2, nullable: true })
   orderUnitsNumber: number;
@@ -83,5 +72,20 @@ export class TransportationItem {
 
   @Column({ name: 'ConversionDate', type: 'datetime', nullable: true })
   conversionDate: Date;
-  
+
+  @Column({ name: 'CreatedBy', type: 'int', default: 1, nullable: true })
+  createdBy: number;
+
+  @Column({ name: 'ModifiedBy', type: 'int', default: 1, nullable: true })
+  modifiedBy: number;
+
+  @CreateDateColumn({ name: 'CreatedDate', type: 'timestamp' })
+  createdDate: Date;
+
+  @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
+  modifiedDate: Date;
+
+  @ManyToOne(() => Transportation, (transportation) => transportation.transportationItems)
+  @JoinColumn({ name: 'TransportationId' })
+  transportation: Transportation;
 }

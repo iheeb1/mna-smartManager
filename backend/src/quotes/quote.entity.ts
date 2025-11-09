@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { QuoteItem } from '../quote-items/quote-item.entity';
 
 @Entity('mng_quotes')
-@Index('FKIndex', ['orderId', 'customerId', 'driverId', 'orderTypeId', 'orderStatusId', 'shippingCertificateId', 'fromLocationId', 'toLocationId', 'orderDate', 'conversionDate'])
+@Index('FKIndex', ['customerId', 'driverId', 'orderTypeId', 'orderStatusId', 'shippingCertificateId', 'fromLocationId', 'toLocationId', 'orderDate', 'conversionDate'])
 export class Quote {
   @PrimaryGeneratedColumn({ name: 'OrderId', unsigned: true })
   orderId: number;
@@ -80,4 +81,7 @@ export class Quote {
 
   @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
   modifiedDate: Date;
+
+  @OneToMany(() => QuoteItem, (quoteItem) => quoteItem.quote)
+  quoteItems: QuoteItem[];
 }

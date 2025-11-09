@@ -1,7 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('mng_backups')
-@Index('FKIndex', ['backupId', 'createdBy', 'createdDate'])
 export class Backup {
   @PrimaryGeneratedColumn({ name: 'BackupId', unsigned: true })
   backupId: number;

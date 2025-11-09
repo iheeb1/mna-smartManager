@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { InventoryAdjustmentItem } from 'src/inventory-adjustment-items/inventory-adjustment-item.entity';
 
 @Entity('mng_inventoryadjustments')
 @Index('FKIndex', ['adjustmentId', 'adjustmentDate', 'adjustmentStatusId', 'adjustmentTypeId'])
@@ -29,4 +30,7 @@ export class InventoryAdjustment {
 
   @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
   modifiedDate: Date;
+
+  @OneToMany(() => InventoryAdjustmentItem, item => item.adjustment)
+  adjustmentItems: InventoryAdjustmentItem[];
 }

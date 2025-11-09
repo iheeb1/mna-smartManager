@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { PaymentItem } from 'src/payment-items/payment-item.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
 
 @Entity('mng_payments')
-@Index('FKIndex', ['paymentId', 'customerId', 'paymentTypeId', 'paymentStatusId', 'paymentDate'])
+@Index('FKIndex', ['customerId', 'paymentTypeId', 'paymentStatusId', 'paymentDate'])
 export class Payment {
   @PrimaryGeneratedColumn({ name: 'PaymentId', unsigned: true })
   paymentId: number;
@@ -35,4 +36,7 @@ export class Payment {
 
   @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
   modifiedDate: Date;
+
+  @OneToMany(() => PaymentItem, (paymentItem) => paymentItem.payment)
+  paymentItems: PaymentItem[];
 }

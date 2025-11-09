@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { TransportationItem } from '../transportation-items/transportation-item.entity';
 
 @Entity('mng_transportations')
-@Index('FKIndex', ['transportationId', 'driverId', 'transportationStatusId', 'transportationDate'])
+@Index('FKIndex', ['driverId', 'transportationStatusId', 'transportationDate'])
 export class Transportation {
   @PrimaryGeneratedColumn({ name: 'TransportationId', unsigned: true })
   transportationId: number;
@@ -15,7 +16,7 @@ export class Transportation {
   @Column({ name: 'TransportationNotes', type: 'varchar', length: 1000, nullable: true })
   transportationNotes: string;
 
-  @CreateDateColumn({ name: 'TransportationDate', type: 'timestamp' })
+  @Column({ name: 'TransportationDate', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: true })
   transportationDate: Date;
 
   @Column({ name: 'CreatedBy', type: 'int', default: 1, nullable: true })
@@ -29,4 +30,7 @@ export class Transportation {
 
   @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
   modifiedDate: Date;
+
+  @OneToMany(() => TransportationItem, (item) => item.transportation)
+  transportationItems: TransportationItem[];
 }

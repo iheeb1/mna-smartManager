@@ -1,13 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, Unique } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, ManyToOne, JoinColumn } from 'typeorm';
+import { InventoryAdjustment
 
-
+ } from 'src/inventory-adjustments/inventory-adjustment.entity';
 @Entity('mng_inventoryadjustmentitems')
 @Index('FKIndex', ['adjustmentItemId', 'adjustmentId', 'productItemId', 'adjustmentItemStatusId'])
 export class InventoryAdjustmentItem {
   @PrimaryGeneratedColumn({ name: 'AdjustmentItemId', unsigned: true })
   adjustmentItemId: number;
 
-  @Column({ name: 'AdjustmentId', type: 'int', nullable: true })
+  @Column({ name: 'AdjustmentId', type: 'int', nullable: true, unsigned: true })
   adjustmentId: number;
 
   @Column({ name: 'ProductItemId', type: 'int', nullable: true })
@@ -48,4 +49,8 @@ export class InventoryAdjustmentItem {
 
   @UpdateDateColumn({ name: 'ModifiedDate', type: 'timestamp' })
   modifiedDate: Date;
+
+  @ManyToOne(() => InventoryAdjustment, adjustment => adjustment.adjustmentItems)
+  @JoinColumn({ name: 'AdjustmentId' })
+  adjustment: InventoryAdjustment;
 }

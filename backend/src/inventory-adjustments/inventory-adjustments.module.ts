@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { InventoryAdjustmentsController } from './inventory-adjustments.controller';
-import { InventoryAdjustmentsService } from './inventory-adjustments.service';
 import { InventoryAdjustment } from './inventory-adjustment.entity';
+import { InventoryAdjustmentController } from './inventory-adjustments.controller';
+import { InventoryAdjustmentService } from './inventory-adjustments.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([InventoryAdjustment])],
-  controllers: [InventoryAdjustmentsController],
-  providers: [InventoryAdjustmentsService],
-  exports: [InventoryAdjustmentsService],
+  controllers: [InventoryAdjustmentController],
+  providers: [InventoryAdjustmentService],
+  exports: [InventoryAdjustmentService],
 })
-export class InventoryAdjustmentsModule {}
+export class InventoryAdjustmentModule {}
