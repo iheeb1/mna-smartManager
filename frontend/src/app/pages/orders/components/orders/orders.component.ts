@@ -116,152 +116,121 @@ export class OrdersComponent implements OnInit {
   }
 
   mapGroupedOrdersFromAPI(groupedData: any[]): Order[] {
-    console.log('=== MAPPING GROUPED ORDERS ===');
-    console.log('Raw grouped data:', JSON.stringify(groupedData, null, 2));
-    
-    if (!groupedData || groupedData.length === 0) {
-      console.warn('No grouped data to map!');
-      return [];
-    }
+
   
-    return groupedData.map((group, groupIndex) => {
-      console.log(`\n--- Processing group ${groupIndex} ---`);
-      console.log('Group structure:', Object.keys(group));
-      console.log('Group item (orderId):', group.item);
-      
-      const orderItems = group.subList || [];
-      console.log(`Group has ${orderItems.length} items`);
-      
-      if (orderItems.length === 0) {
-        console.warn('Group has no items, skipping');
-        return null;
-      }
-  
-      const firstItem = orderItems[0];
-      console.log('First item structure:', Object.keys(firstItem));
-      console.log('First item data:', JSON.stringify(firstItem, null, 2));
-      
-      // Log specific field availability
-      console.log('Field availability check:', {
-        hasCustomerName: !!firstItem.customerName || !!firstItem.customer?.customerName,
-        customerNameValue: firstItem.customerName || firstItem.customer?.customerName,
-        hasCarNumber: !!firstItem.carNumber || !!firstItem.car?.carNumber,
-        carNumberValue: firstItem.carNumber || firstItem.car?.carNumber,
-        hasAddress: !!firstItem.locationAddress || !!firstItem.order?.locationAddress,
-        addressValue: firstItem.locationAddress || firstItem.order?.locationAddress,
-        hasPhoneNumber: !!firstItem.customerPhoneNumber || !!firstItem.customer?.phoneNumber,
-        phoneNumberValue: firstItem.customerPhoneNumber || firstItem.customer?.phoneNumber,
-      });
-  
-      // Helper to safely get nested property
-      const safeGet = (obj: any, path: string, defaultVal: any = '') => {
-        const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
-        console.log(`  ${path} = ${value || defaultVal}`);
-        return value || defaultVal;
-      };
-  
-      // Build order object with MULTIPLE fallback paths
-      const order: Order = {
-        id: group.item || 0,
-        date: group.orderDate || safeGet(firstItem, 'orderDate.shortDate'),
-        
-        // Customer ID - try multiple paths
-        customerId: firstItem.customerId || 
-                    firstItem.order?.customerId || 
-                    firstItem.customer?.customerId || 0,
-        
-        // Car ID - try multiple paths
-        carId: firstItem.carId || 
-               firstItem.order?.driverId || 
-               firstItem.car?.carId || 0,
-        
-        // Customer Name - CRITICAL FIELD
-        client: firstItem.customerName || 
-                firstItem.customer?.customerName || 
-                safeGet(firstItem, 'customer.customerName') || '',
-        
-        // Car Number - CRITICAL FIELD
-        vehicle: firstItem.carNumber || 
-                 firstItem.car?.carNumber || 
-                 safeGet(firstItem, 'car.carNumber') || '',
-        
-        // Address - CRITICAL FIELD
-        address: firstItem.locationAddress || 
-                 firstItem.order?.locationAddress || 
-                 safeGet(firstItem, 'order.locationAddress') || '',
-        
-        // Phone Number - CRITICAL FIELD
-        phoneNumber: firstItem.customerPhoneNumber || 
-                     firstItem.customer?.phoneNumber || 
-                     firstItem.customer?.customerPhoneNumber || 
-                     firstItem.customer?.customerMobileNumber || '',
-        
-        // Fixed Type - CRITICAL FIELD - check multiple paths
-        fixedType: firstItem.fixedType || 
-                   firstItem.order?.fixedType || 
-                   (firstItem.order?.fromLocationId ? `Loc-${firstItem.order.fromLocationId}` : '') || '',
-        
-        // Parking - CRITICAL FIELD - check multiple paths
-        parking: firstItem.parking || 
-                 firstItem.order?.parking || 
-                 firstItem.order?.shippingCertificateId || '',
-        
-        taxAmount: 0,
-        totalBeforeTax: 0,
-        totalWithTax: 0,
-        items: []
-      };
-  
-      console.log('Built base order:', order);
-  
-      // Map order items
-      order.items = orderItems.map((item: any, itemIndex: number) => {
-        console.log(`  Mapping item ${itemIndex}:`, Object.keys(item));
-        
-        const toNumber = (val: any): number => {
-          if (val === null || val === undefined || val === '') return 0;
-          const num = typeof val === 'string' ? parseFloat(val) : Number(val);
-          return isNaN(num) ? 0 : num;
-        };
-        
-        const mappedItem = {
-          orderItemId: item.orderItemId || 0,
-          orderId: group.item || 0,
-          productId: item.orderTypeId || item.productId || 0,
-          productCode: safeGet(item, 'product.productCode'),
-          productName: safeGet(item, 'product.productName') || safeGet(item, 'orderType.productName'),
-          description: safeGet(item, 'product.productName') || safeGet(item, 'orderType.productName'),
-          duration: item.duration || '',
-          quantity: toNumber(item.orderUnitsNumber || item.quantity),
-          price: toNumber(item.orderPrice || item.price),
-          totalBeforeTax: toNumber(item.orderTotalPriceWithOutVat || item.totalBeforeTax),
-          taxAmount: toNumber(item.orderTotalPriceVat || item.totalTax || item.taxAmount),
-          totalWithTax: toNumber(item.orderTotalPriceWithVat || item.totalWithTax),
-          beforeTax: toNumber(item.orderTotalPriceWithOutVat || item.totalBeforeTax),
-          tax: toNumber(item.orderTotalPriceVat || item.totalTax || item.taxAmount),
-          total: toNumber(item.orderTotalPriceWithVat || item.totalWithTax)
-        };
-        
-        console.log(`  Mapped item ${itemIndex}:`, mappedItem);
-        return mappedItem;
-      });
-  
-      // Calculate order totals
-      order.totalBeforeTax = order.items.reduce((sum, item) => sum + (item.totalBeforeTax || 0), 0);
-      order.taxAmount = order.items.reduce((sum, item) => sum + (item.taxAmount || 0), 0);
-      order.totalWithTax = order.items.reduce((sum, item) => sum + (item.totalWithTax || 0), 0);
-  
-      console.log('Final order with totals:', {
-        id: order.id,
-        totalBeforeTax: order.totalBeforeTax,
-        taxAmount: order.taxAmount,
-        totalWithTax: order.totalWithTax,
-        itemCount: order.items.length
-      });
-  
-      return order;
-    }).filter(order => order !== null) as Order[];
+  if (!groupedData || groupedData.length === 0) {
+    console.warn('No grouped data to map!');
+    return [];
   }
+
+  return groupedData.map((group, groupIndex) => {
+
+    
+    const orderItems = group.subList || [];
+    
+    if (orderItems.length === 0) {
+      return null;
+    }
+
+    const firstItem = orderItems[0];
+
+    // Helper to safely get nested property
+    const safeGet = (obj: any, path: string, defaultVal: any = '') => {
+      const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
+      return value || defaultVal;
+    };
+
+    // Build order object with MULTIPLE fallback paths
+    const order: Order = {
+      id: group.item || 0,
+      date: group.orderDate || safeGet(firstItem, 'orderDate.shortDate'),
+      
+      // Customer ID - try multiple paths
+      customerId: firstItem.customerId || 
+                  firstItem.order?.customerId || 
+                  firstItem.customer?.customerId || 0,
+      
+      // Car ID - try multiple paths
+      carId: firstItem.carId || 
+             firstItem.order?.driverId || 
+             firstItem.car?.carId || 0,
+      
+      // Customer Name - CRITICAL FIELD
+      client: firstItem.customerName || 
+              firstItem.customer?.customerName || 
+              safeGet(firstItem, 'customer.customerName') || '',
+      
+      // Car Number - CRITICAL FIELD
+      vehicle: firstItem.carNumber || 
+               firstItem.car?.carNumber || 
+               safeGet(firstItem, 'car.carNumber') || '',
+      
+      // Address - CRITICAL FIELD
+      address: firstItem.locationAddress || 
+               firstItem.order?.locationAddress || 
+               safeGet(firstItem, 'order.locationAddress') || '',
+      
+      // Phone Number - CRITICAL FIELD
+      phoneNumber: firstItem.customerPhoneNumber || 
+                   firstItem.customer?.phoneNumber || 
+                   firstItem.customer?.customerPhoneNumber || 
+                   firstItem.customer?.customerMobileNumber || '',
+      
+      // Fixed Type - CRITICAL FIELD - check multiple paths
+      fixedType: firstItem.fixedType || 
+                 firstItem.order?.fixedType || 
+                 (firstItem.order?.fromLocationId ? `Loc-${firstItem.order.fromLocationId}` : '') || '',
+      
+      // Parking - CRITICAL FIELD - check multiple paths
+      parking: firstItem.parking || 
+               firstItem.order?.parking || 
+               firstItem.order?.shippingCertificateId || '',
+      
+      taxAmount: 0,
+      totalBeforeTax: 0,
+      totalWithTax: 0,
+      items: []
+    };
+
+
+    // Map order items
+    order.items = orderItems.map((item: any, itemIndex: number) => {
+      
+      const toNumber = (val: any): number => {
+        if (val === null || val === undefined || val === '') return 0;
+        const num = typeof val === 'string' ? parseFloat(val) : Number(val);
+        return isNaN(num) ? 0 : num;
+      };
+      
+      const mappedItem = {
+        orderItemId: item.orderItemId || 0,
+        orderId: group.item || 0,
+        productId: item.orderTypeId || item.productId || 0,
+        productCode: safeGet(item, 'product.productCode'),
+        productName: safeGet(item, 'product.productName') || safeGet(item, 'orderType.productName'),
+        description: safeGet(item, 'product.productName') || safeGet(item, 'orderType.productName'),
+        duration: item.duration || '',
+        quantity: toNumber(item.orderUnitsNumber || item.quantity),
+        price: toNumber(item.orderPrice || item.price),
+        totalBeforeTax: toNumber(item.orderTotalPriceWithOutVat || item.totalBeforeTax),
+        taxAmount: toNumber(item.orderTotalPriceVat || item.totalTax || item.taxAmount),
+        totalWithTax: toNumber(item.orderTotalPriceWithVat || item.totalWithTax),
+        beforeTax: toNumber(item.orderTotalPriceWithOutVat || item.totalBeforeTax),
+        tax: toNumber(item.orderTotalPriceVat || item.totalTax || item.taxAmount),
+        total: toNumber(item.orderTotalPriceWithVat || item.totalWithTax)
+      };
+      
+      return mappedItem;
+    });
+
+    // Calculate order totals
+    order.totalBeforeTax = order.items.reduce((sum, item) => sum + (item.totalBeforeTax || 0), 0);
+    order.taxAmount = order.items.reduce((sum, item) => sum + (item.taxAmount || 0), 0);
+    order.totalWithTax = order.items.reduce((sum, item) => sum + (item.totalWithTax || 0), 0);
+
+    return order;
+  }).filter(order => order !== null) as Order[];
+}
   
 
   calculateGrandTotals() {
@@ -304,7 +273,6 @@ export class OrdersComponent implements OnInit {
   }
 
   editOrder(order: Order) {
-    console.log('Editing order:', order);
     this.editingOrderId = order.id;
     
     // Load full order details with items
@@ -374,7 +342,6 @@ export class OrdersComponent implements OnInit {
   }
 
   exportOrders() {
-    console.log('Export orders');
     alert('وظيفة التصدير قيد التطوير');
   }
 
@@ -388,7 +355,6 @@ export class OrdersComponent implements OnInit {
 
   showOrderMenu(event: Event, order: Order) {
     event.stopPropagation();
-    console.log('Show menu for order:', order.id);
   }
 
   toggleMobileSearch() {
@@ -423,7 +389,6 @@ export class OrdersComponent implements OnInit {
   }
 
   onApplyFilters(filters: FilterOptions) {
-    console.log('Applied filters:', filters);
     this.activeFilters = filters;
     this.currentPage = 0;
     this.loadOrders();
