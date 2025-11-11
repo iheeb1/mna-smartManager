@@ -1,4 +1,15 @@
-import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { 
+  Controller, 
+  Post, 
+  Get, 
+  Put, 
+  Delete, 
+  Body, 
+  Param, 
+  UseGuards, 
+  UsePipes, 
+  ValidationPipe 
+} from '@nestjs/common';
 import { PaymentItemsService } from './payment-items.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ApiResponse } from 'src/shared/dto/api-response.dto';
@@ -11,6 +22,9 @@ import { PaymentItemRequestDto } from './dto/payment-item.dto';
 export class PaymentItemsController {
   constructor(private readonly paymentItemsService: PaymentItemsService) {}
 
+  /**
+   * Original POST endpoint for legacy requests
+   */
   @Post()
   async handleRequest(@Body() body: PaymentItemRequestDto): Promise<ApiResponse<any>> {
     try {
@@ -37,6 +51,107 @@ export class PaymentItemsController {
       return ApiResponse.error(error.message);
     }
   }
+
+  /**
+   * REST: Get payment item by ID
+   * GET /api/smpaymentitem/:id
+   */
+  @Get(':id')
+  async getPaymentItemById(@Param('id') id: string): Promise<ApiResponse<any>> {
+    try {
+      const paymentItemId = parseInt(id);
+      
+      if (!paymentItemId || isNaN(paymentItemId)) {
+        return ApiResponse.error('Invalid payment item ID');
+      }
+
+      const paymentItem = await this.paymentItemsService.getPaymentItemDetails(paymentItemId);
+
+      if (paymentItem) {
+        return ApiResponse.success(paymentItem, 'Success');
+      }
+
+      return ApiResponse.error('Payment item not found');
+    } catch (error) {
+      return ApiResponse.error(error.message);
+    }
+  }
+
+  /**
+   * REST: Create new payment item (check)
+   * POST /api/smpaymentitem/create
+   */
+  @Post('create')
+  async createPaymentItem(@Body() reqObject: any): Promise<ApiResponse<any>> {
+    try {
+      if (!reqObject) {
+        return ApiResponse.error('Request object is required');
+      }
+
+      const paymentItem = await this.paymentItemsService.savePaymentItemDetails(reqObject);
+
+      if (paymentItem) {
+        return ApiResponse.success(paymentItem, 'Payment item created successfully');
+      }
+
+      return ApiResponse.error('Failed to create payment item');
+    } catch (error) {
+      return ApiResponse.error(error.message);
+    }
+  }
+
+  /**
+   * REST: Update payment item
+   * PUT /api/smpaymentitem/:id
+   */
+  @Put(':id')
+  async updatePaymentItem(
+    @Param('id') id: string,
+    @Body() reqObject: any
+  ): Promise<ApiResponse<any>> {
+    try {
+      const paymentItemId = parseInt(id);
+      
+      if (!paymentItemId || isNaN(paymentItemId)) {
+        return ApiResponse.error('Invalid payment item ID');
+      }
+
+      // Add the ID to the request object
+      reqObject.PaymentItemId = paymentItemId;
+
+      const paymentItem = await this.paymentItemsService.savePaymentItemDetails(reqObject);
+
+      if (paymentItem) {
+        return ApiResponse.success(paymentItem, 'Payment item updated successfully');
+      }
+
+      return ApiResponse.error('Failed to update payment item');
+    } catch (error) {
+      return ApiResponse.error(error.message);
+    }
+  }
+
+  /**
+   * REST: Delete payment item
+   * DELETE /api/smpaymentitem/:id
+   */
+  @Delete(':id')
+  async deletePaymentItemById(@Param('id') id: string): Promise<ApiResponse<any>> {
+    try {
+      const paymentItemId = parseInt(id);
+      
+      if (!paymentItemId || isNaN(paymentItemId)) {
+        return ApiResponse.error('Invalid payment item ID');
+      }
+
+      await this.paymentItemsService.deletePaymentItem(paymentItemId);
+      return ApiResponse.success(null, 'Payment item deleted successfully');
+    } catch (error) {
+      return ApiResponse.error(error.message);
+    }
+  }
+
+  // ========== Private methods for legacy support ==========
 
   private async savePaymentItemDetails(reqObject: any): Promise<ApiResponse<any>> {
     if (!reqObject) {

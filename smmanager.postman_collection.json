@@ -1,0 +1,4431 @@
+{
+	"info": {
+		"_postman_id": "13b9e0ff-6fc0-42d1-b470-fbc2cd385ae6",
+		"name": "smmanager",
+		"description": "API collection for SM Manager - Customer Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25223365"
+	},
+	"item": [
+		{
+			"name": "smcustomer",
+			"item": [
+				{
+					"name": "Save Customer Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveCustomerDetails\",\n  \"ReqObject\": {\n    \"customerName\": \"John Doe\",\n    \"customerIdz\": \"CUST001\",\n    \"customerStatusId\": 1,\n    \"customerTypeId\": 1,\n    \"customerPhoneNumber\": \"+1234567890\",\n    \"customerMobileNumber\": \"+0987654321\",\n    \"customerEmails\": \"john@example.com\",\n    \"customerCity\": \"New York\",\n    \"customerCountry\": \"USA\",\n    \"customerAddressLine1\": \"123 Main St\",\n    \"customerOpeningBalance\": 0.00,\n    \"createdBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers List (with pagination)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetCustomersList\",\n  \"ReqObject\": {\n    \"CustomerName\": \"John\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers List (grouped by name)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetCustomersList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 100,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Name\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customers List (with filters)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetCustomersList\",\n  \"ReqObject\": {\n    \"CustomerStatusIds\": \"1,2\",\n    \"CustomerCity\": \"New York\",\n    \"CustomerCountry\": \"USA\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetCustomerDetails\",\n  \"ReqObject\": {\n    \"CustomerId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveCustomerDetails\",\n  \"ReqObject\": {\n    \"customerId\": 1,\n    \"customerName\": \"John Doe Updated\",\n    \"customerPhoneNumber\": \"+1234567890\",\n    \"customerCity\": \"Los Angeles\",\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteCustomer\",\n  \"ReqObject\": {\n    \"CustomerId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer Transactions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteCustomerTransactions\",\n  \"ReqObject\": {\n    \"CustomerId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Multiple Customers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteCustomers\",\n  \"ReqObject\": {\n    \"CustomerIds\": \"1,2,3\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Customers Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"ChangeCustomersStatus\",\n  \"ReqObject\": {\n    \"CustomerIds\": \"1,2,3\",\n    \"StatusId\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smcustomer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smcustomer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "1. Create New Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveOrderDetails\",\n  \"reqObject\": {\n    \"customer\": {\n      \"customerId\": 1\n    },\n    \"car\": {\n      \"carId\": 1\n    },\n    \"orderType\": {\n      \"productId\": 1\n    },\n    \"orderDate\": {\n      \"fullDate\": \"2025-01-15T10:00:00Z\"\n    },\n    \"orderUnitsNumber\": 100,\n    \"orderPrice\": {\n      \"itemPrice\": 50.00,\n      \"itemVat\": 17,\n      \"itemIncludeVat\": true,\n      \"totalItemPriceWithOutVat\": 4273.50,\n      \"totalItemPriceVat\": 726.50,\n      \"totalItemPriceWithVat\": 5000.00,\n      \"totalItemCost\": 3000.00\n    },\n    \"orderStatus\": {\n      \"lookUpId\": 1\n    },\n    \"fromLocation\": {\n      \"lookUpId\": 1\n    },\n    \"toLocation\": {\n      \"lookUpId\": 2\n    },\n    \"shippingCertificateId\": \"SHIP-001\",\n    \"meters\": 50,\n    \"cubes\": 10,\n    \"orderNotes\": \"Test order from Postman\",\n    \"createdBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Update Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveOrderDetails\",\n  \"reqObject\": {\n    \"orderId\": 1,\n    \"customer\": {\n      \"customerId\": 1\n    },\n    \"car\": {\n      \"carId\": 1\n    },\n    \"orderType\": {\n      \"productId\": 1\n    },\n    \"orderUnitsNumber\": 150,\n    \"orderPrice\": {\n      \"itemPrice\": 55.00,\n      \"itemVat\": 17,\n      \"itemIncludeVat\": true,\n      \"totalItemPriceWithOutVat\": 7051.28,\n      \"totalItemPriceVat\": 1198.72,\n      \"totalItemPriceWithVat\": 8250.00,\n      \"totalItemCost\": 5000.00\n    },\n    \"orderStatus\": {\n      \"lookUpId\": 2\n    },\n    \"orderNotes\": \"Updated order\",\n    \"modifiedBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get All Orders (No Grouping)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrdersList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeOrderItems\": false,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"None\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Orders - Group by Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrdersList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeOrderItems\": false,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Orders - Group by Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrdersList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeOrderItems\": false,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Customer\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Orders - Group by Car",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrdersList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeOrderItems\": false,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Car\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get Orders with Filters",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrdersList\",\n  \"reqObject\": {\n    \"customer\": {\n      \"customerIds\": \"1,2,3\"\n    },\n    \"orderStatus\": {\n      \"lookUpIds\": \"1\"\n    },\n    \"orderDate\": {\n      \"fromDate\": \"2025-01-01\",\n      \"toDate\": \"2025-12-31\"\n    },\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeOrderItems\": true,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get Order Details by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderDetails\",\n  \"reqObject\": {\n    \"orderId\": 1,\n    \"includeOrderItems\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Change Orders Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"ChangeOrdersStatus\",\n  \"reqObject\": {\n    \"orderIds\": \"1,2,3\",\n    \"statusId\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10. Delete Single Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"DeleteOrder\",\n  \"reqObject\": {\n    \"orderId\": 999\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11. Delete Multiple Orders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"DeleteOrders\",\n  \"reqObject\": {\n    \"orderIds\": \"997,998,999\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order Items",
+			"item": [
+				{
+					"name": "1. Create New Order Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveOrderItemDetails\",\n  \"reqObject\": {\n    \"order\": {\n      \"orderId\": 1\n    },\n    \"orderType\": {\n      \"productId\": 1\n    },\n    \"orderDate\": {\n      \"fullDate\": \"2025-01-15T10:00:00Z\"\n    },\n    \"orderUnitsNumber\": 50,\n    \"orderPrice\": {\n      \"itemPrice\": 30.00,\n      \"itemVat\": 17,\n      \"itemIncludeVat\": true,\n      \"totalItemPriceWithOutVat\": 1282.05,\n      \"totalItemPriceVat\": 217.95,\n      \"totalItemPriceWithVat\": 1500.00,\n      \"itemCost\": 20.00,\n      \"totalItemCost\": 1000.00\n    },\n    \"orderStatus\": {\n      \"lookUpId\": 1\n    },\n    \"agent\": {\n      \"customerId\": 5\n    },\n    \"fromLocation\": {\n      \"lookUpId\": 1\n    },\n    \"toLocation\": {\n      \"lookUpId\": 2\n    },\n    \"shippingCertificateId\": \"SHIP-001\",\n    \"orderNotes\": \"Test order item from Postman\",\n    \"createdBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Update Order Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveOrderItemDetails\",\n  \"reqObject\": {\n    \"orderItemId\": 1,\n    \"order\": {\n      \"orderId\": 1\n    },\n    \"orderType\": {\n      \"productId\": 1\n    },\n    \"orderUnitsNumber\": 75,\n    \"orderPrice\": {\n      \"itemPrice\": 35.00,\n      \"itemVat\": 17,\n      \"itemIncludeVat\": true,\n      \"totalItemPriceWithOutVat\": 2243.59,\n      \"totalItemPriceVat\": 381.41,\n      \"totalItemPriceWithVat\": 2625.00,\n      \"itemCost\": 25.00,\n      \"totalItemCost\": 1875.00\n    },\n    \"orderStatus\": {\n      \"lookUpId\": 2\n    },\n    \"orderNotes\": \"Updated order item\",\n    \"modifiedBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get All Order Items",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderItemsList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"None\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Order Items for Specific Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderItemsList\",\n  \"reqObject\": {\n    \"order\": {\n      \"orderIds\": \"1\"\n    },\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"None\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Order Items - Group by Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderItemsList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Order Items - Group by Supplier",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderItemsList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Supplier\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get Order Items - Group by OrderId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderItemsList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"OrderId\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get Order Item Details by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetOrderItemDetails\",\n  \"reqObject\": {\n    \"orderItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Get Last Order Item for Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetLastOrderItemDetails\",\n  \"reqObject\": {\n    \"customerId\": 1,\n    \"orderTypeId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10. Delete Order Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"DeleteOrderItem\",\n  \"reqObject\": {\n    \"orderItemId\": 999\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMOrderItem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMOrderItem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Backup",
+			"item": [
+				{
+					"name": "Execute Backup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"createdById\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/backups/execute",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups",
+								"execute"
+							]
+						},
+						"description": "Creates a new database backup"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Backups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups?itemsPerPage=30&pageNumber=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups"
+							],
+							"query": [
+								{
+									"key": "itemsPerPage",
+									"value": "30"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								}
+							]
+						},
+						"description": "Get list of all backups with pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Backups with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups?backupIds=1,2,3&createdByIds=1&fromCreatedDate=2024-01-01&toCreatedDate=2024-12-31&itemsPerPage=10&pageNumber=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups"
+							],
+							"query": [
+								{
+									"key": "backupIds",
+									"value": "1,2,3",
+									"description": "Comma-separated backup IDs"
+								},
+								{
+									"key": "createdByIds",
+									"value": "1",
+									"description": "Comma-separated user IDs"
+								},
+								{
+									"key": "modifiedByIds",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "fromCreatedDate",
+									"value": "2024-01-01",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "toCreatedDate",
+									"value": "2024-12-31",
+									"description": "End date (YYYY-MM-DD)"
+								},
+								{
+									"key": "fromModifiedDate",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "toModifiedDate",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "itemsPerPage",
+									"value": "10"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								}
+							]
+						},
+						"description": "Get filtered list of backups"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Backups Table",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups/table?itemsPerPage=30&pageNumber=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups",
+								"table"
+							],
+							"query": [
+								{
+									"key": "itemsPerPage",
+									"value": "30"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								}
+							]
+						},
+						"description": "Get raw table data of backups"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Backups Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups/count",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups",
+								"count"
+							]
+						},
+						"description": "Get total count of all backups"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Backups Count with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups/count?createdByIds=1&fromCreatedDate=2024-01-01",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups",
+								"count"
+							],
+							"query": [
+								{
+									"key": "createdByIds",
+									"value": "1"
+								},
+								{
+									"key": "fromCreatedDate",
+									"value": "2024-01-01"
+								}
+							]
+						},
+						"description": "Get count of filtered backups"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Backup Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups",
+								"1"
+							]
+						},
+						"description": "Get details of a specific backup by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Backup",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/backups/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"backups",
+								"1"
+							]
+						},
+						"description": "Delete a specific backup by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agents",
+			"item": [
+				{
+					"name": "1. Save Agent (Create New)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveAgentDetails\",\n  \"ReqObject\": {\n    \"customerParentId\": -1,\n    \"customerStatusId\": 1,\n    \"customerTypeId\": 1,\n    \"customerIdz\": \"AGT-001\",\n    \"customerName\": \"John Doe Agency\",\n    \"customerOpeningBalance\": 5000.00,\n    \"customerNotes\": \"Premium agent\",\n    \"customerEmails\": \"john@agency.com\",\n    \"customerPhoneNumber\": \"+1234567890\",\n    \"customerMobileNumber\": \"+1234567891\",\n    \"customerFaxNumber\": \"+1234567892\",\n    \"customerAddressLine1\": \"123 Main Street\",\n    \"customerAddressLine2\": \"Suite 100\",\n    \"customerCity\": \"New York\",\n    \"customerState\": \"NY\",\n    \"customerZIP\": \"10001\",\n    \"customerCountry\": \"USA\",\n    \"createdBy\": 1,\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Create a new agent"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Save Agent (Update Existing)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveAgentDetails\",\n  \"ReqObject\": {\n    \"customerId\": 1,\n    \"customerName\": \"John Doe Agency (Updated)\",\n    \"customerOpeningBalance\": 7500.00,\n    \"customerNotes\": \"Premium agent - Updated\",\n    \"customerCity\": \"Los Angeles\",\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Update an existing agent by providing customerId"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Agent Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentDetails\",\n  \"ReqObject\": {\n    \"CustomerId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Get details of a specific agent by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get All Agents (Simple)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Get all agents with pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Agents List (With Filters)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"CustomerName\": \"John\",\n    \"CustomerCity\": \"New York\",\n    \"CustomerStatusIds\": \"1,2\",\n    \"CustomerTypeIds\": \"1\",\n    \"ItemsPerPage\": 20,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Search agents by name, city, status, and type"
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Agents List (Grouped by Name)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"GroupBy\": \"Name\",\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Get agents grouped alphabetically by first letter of name"
+					},
+					"response": []
+				},
+				{
+					"name": "7. Search by Phone/Mobile/Fax",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"CustomerPhoneNumber\": \"1234567\",\n    \"CustomerMobileNumber\": \"\",\n    \"CustomerFaxNumber\": \"\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Search agents by phone, mobile, or fax number"
+					},
+					"response": []
+				},
+				{
+					"name": "8. Search by Date Range",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"CreatedDate\": {\n      \"FromDate\": \"2024-01-01\",\n      \"ToDate\": \"2024-12-31\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Search agents created within a date range"
+					},
+					"response": []
+				},
+				{
+					"name": "9. Search by Created/Modified By",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"CreatedBy\": {\n      \"UserIds\": \"1,2\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"1\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Search agents by who created or modified them"
+					},
+					"response": []
+				},
+				{
+					"name": "10. Search by Multiple IDs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"CustomerIds\": \"1,2,3,4,5\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Get specific agents by their IDs"
+					},
+					"response": []
+				},
+				{
+					"name": "11. Search by Country",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetAgentsList\",\n  \"ReqObject\": {\n    \"CustomerCountry\": \"USA\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Get agents filtered by country"
+					},
+					"response": []
+				},
+				{
+					"name": "12. Delete Agent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteAgent\",\n  \"ReqObject\": {\n    \"CustomerId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smagent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smagent"
+							]
+						},
+						"description": "Delete an agent by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Drivers",
+			"item": [
+				{
+					"name": "1. Save Driver (Create New)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveDriverDetails\",\n  \"ReqObject\": {\n    \"driverParentId\": 0,\n    \"driverStatusId\": 1,\n    \"driverTypeId\": 1,\n    \"driverIdz\": \"DRV-001\",\n    \"carNumber\": \"ABC-1234\",\n    \"driverName\": \"Mohammed Ali\",\n    \"driverNotes\": \"Experienced driver\",\n    \"driverEmails\": \"mohammed@example.com\",\n    \"driverPhoneNumber\": \"+216-12345678\",\n    \"driverMobileNumber\": \"+216-98765432\",\n    \"driverFaxNumber\": \"+216-11111111\",\n    \"driverAddressLine1\": \"123 Avenue Habib Bourguiba\",\n    \"driverAddressLine2\": \"Apartment 5\",\n    \"driverCity\": \"Tunis\",\n    \"driverState\": \"Tunis\",\n    \"driverZIP\": \"1000\",\n    \"driverCountry\": \"Tunisia\",\n    \"createdBy\": 1,\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Create a new driver with car number"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Save Driver (Update Existing)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveDriverDetails\",\n  \"ReqObject\": {\n    \"driverId\": 1,\n    \"driverName\": \"Mohammed Ali (Updated)\",\n    \"carNumber\": \"XYZ-9999\",\n    \"driverNotes\": \"Experienced driver - Updated info\",\n    \"driverCity\": \"Sfax\",\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Update an existing driver by providing driverId"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Driver Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriverDetails\",\n  \"ReqObject\": {\n    \"DriverId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Get details of a specific driver by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get All Drivers (Simple)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Get all drivers with pagination and total count"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Drivers List (With Filters)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"DriverName\": \"Mohammed\",\n    \"DriverCity\": \"Tunis\",\n    \"DriverStatusIds\": \"1,2\",\n    \"DriverTypeIds\": \"1\",\n    \"ItemsPerPage\": 20,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Search drivers by name, city, status, and type"
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Drivers List (Grouped by Name)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"GroupBy\": \"Name\",\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Get drivers grouped alphabetically by first letter of name"
+					},
+					"response": []
+				},
+				{
+					"name": "7. Search by Car Number",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"CarNumber\": \"ABC\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Search drivers by car number"
+					},
+					"response": []
+				},
+				{
+					"name": "8. Search by Phone/Mobile/Fax",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"DriverPhoneNumber\": \"216\",\n    \"DriverMobileNumber\": \"\",\n    \"DriverFaxNumber\": \"\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Search drivers by phone, mobile, or fax number"
+					},
+					"response": []
+				},
+				{
+					"name": "9. Search by Parent Driver",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"DriverParent\": {\n      \"DriverIds\": \"1,2,3\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Search drivers by parent driver IDs"
+					},
+					"response": []
+				},
+				{
+					"name": "10. Search by Date Range",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"CreatedDate\": {\n      \"FromDate\": \"2024-01-01\",\n      \"ToDate\": \"2024-12-31\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Search drivers created within a date range"
+					},
+					"response": []
+				},
+				{
+					"name": "11. Search by Created/Modified By",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"CreatedBy\": {\n      \"UserIds\": \"1,2\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"1\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Search drivers by who created or modified them"
+					},
+					"response": []
+				},
+				{
+					"name": "12. Search by Multiple Driver IDs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"DriverIds\": \"1,2,3,4,5\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Get specific drivers by their IDs"
+					},
+					"response": []
+				},
+				{
+					"name": "13. Search by Country",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetDriversList\",\n  \"ReqObject\": {\n    \"DriverCountry\": \"Tunisia\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Get drivers filtered by country"
+					},
+					"response": []
+				},
+				{
+					"name": "14. Delete Driver",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteDriver\",\n  \"ReqObject\": {\n    \"DriverId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smdriver",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smdriver"
+							]
+						},
+						"description": "Delete a driver by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Adjustment Items",
+			"item": [
+				{
+					"name": "1. Save Adjustment Item (Create New)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveInventoryAdjustmentItemDetails\",\n  \"ReqObject\": {\n    \"adjustmentId\": 1,\n    \"productItemId\": 10,\n    \"productItemCostTypeId\": 1,\n    \"productItemCost\": 25.50,\n    \"productItemAdjustedCost\": 30.00,\n    \"referenceNumber\": \"ADJ-ITEM-001\",\n    \"adjustmentItemNewStockUnits\": 100,\n    \"palletsAmount\": 5,\n    \"adjustmentItemStatusId\": 1,\n    \"adjustmentItemReasonId\": 2,\n    \"createdBy\": 1,\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Create a new inventory adjustment item"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Save Adjustment Item (Update Existing)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveInventoryAdjustmentItemDetails\",\n  \"ReqObject\": {\n    \"adjustmentItemId\": 1,\n    \"productItemAdjustedCost\": 35.00,\n    \"adjustmentItemNewStockUnits\": 150,\n    \"palletsAmount\": 7,\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Update an existing inventory adjustment item"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Adjustment Item Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemDetails\",\n  \"ReqObject\": {\n    \"AdjustmentItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Get details of a specific adjustment item by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get All Adjustment Items (Simple)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Get all adjustment items with pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Items by Adjustment ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"Adjustment\": {\n      \"AdjustmentId\": 1\n    },\n    \"ItemsPerPage\": 20,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Get all items for a specific adjustment"
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Items by Product ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"Product\": {\n      \"ProductId\": 10\n    },\n    \"ItemsPerPage\": 20,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Get all adjustment items for a specific product"
+					},
+					"response": []
+				},
+				{
+					"name": "7. Search by Reference Number",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"ReferenceNumber\": \"ADJ-ITEM\",\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Search items by reference number"
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get Items Grouped by Adjustment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"GroupBy\": \"Adjustment\",\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Get items grouped by adjustment ID"
+					},
+					"response": []
+				},
+				{
+					"name": "9. Get Items Grouped by Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"GroupBy\": \"Date\",\n    \"IncludeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Get items grouped by creation date"
+					},
+					"response": []
+				},
+				{
+					"name": "10. Filter by Status and Reason",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"AdjustmentItemStatus\": {\n      \"LookUpId\": 1\n    },\n    \"AdjustmentItemReason\": {\n      \"LookUpId\": 2\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Filter items by status and reason"
+					},
+					"response": []
+				},
+				{
+					"name": "11. Search by Date Range",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"CreatedDate\": {\n      \"FromDate\": \"2024-01-01\",\n      \"ToDate\": \"2024-12-31\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Search items created within a date range"
+					},
+					"response": []
+				},
+				{
+					"name": "12. Filter by Created/Modified By",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentItemsList\",\n  \"ReqObject\": {\n    \"CreatedBy\": {\n      \"UserId\": 1\n    },\n    \"ModifiedBy\": {\n      \"UserId\": 1\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Filter items by who created or modified them"
+					},
+					"response": []
+				},
+				{
+					"name": "13. Delete Adjustment Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteInventoryAdjustmentItem\",\n  \"ReqObject\": {\n    \"AdjustmentItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustmentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustmentitem"
+							]
+						},
+						"description": "Delete an adjustment item by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Adjustment",
+			"item": [
+				{
+					"name": "1. Save Inventory Adjustment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveInventoryAdjustmentDetails\",\n  \"ReqObject\": {\n    \"AdjustmentId\": null,\n    \"adjustmentStatusId\": 1,\n    \"adjustmentTypeId\": 1,\n    \"Description\": \"Test adjustment\",\n    \"createdBy\": 1,\n    \"modifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Inventory Adjustments List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentsList\",\n  \"ReqObject\": {\n    \"AdjustmentId\": null,\n    \"AdjustmentDate\": {\n      \"FromDate\": \"2024-01-01\",\n      \"ToDate\": \"2024-12-31\"\n    },\n    \"AdjustmentStatus\": {\n      \"LookUpId\": null\n    },\n    \"AdjustmentType\": {\n      \"LookUpId\": null\n    },\n    \"CreatedBy\": {\n      \"UserId\": null\n    },\n    \"ModifiedBy\": {\n      \"UserId\": null\n    },\n    \"CreatedDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"includeAdjustmentItems\": true,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Inventory Adjustment Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetInventoryAdjustmentDetails\",\n  \"ReqObject\": {\n    \"AdjustmentId\": 1,\n    \"includeAdjustmentItems\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Delete Inventory Adjustment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteInventoryAdjustment\",\n  \"ReqObject\": {\n    \"AdjustmentId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Change Inventory Adjustment Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"ChangeInventoryAdjustmentStatus\",\n  \"ReqObject\": {\n    \"AdjustmentId\": 1,\n    \"AdjustmentStatusId\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Max Inventory Adjustments Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetMaxInventoryAdjustmentsId\",\n  \"ReqObject\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Update Existing Adjustment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveInventoryAdjustmentDetails\",\n  \"ReqObject\": {\n    \"AdjustmentId\": 1,\n    \"adjustmentStatusId\": 2,\n    \"adjustmentTypeId\": 1,\n    \"Description\": \"Updated adjustment description\",\n    \"createdBy\": 1,\n    \"modifiedBy\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sminventoryadjustment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sminventoryadjustment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "1. Save Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SavePaymentDetails\",\n  \"ReqObject\": {\n    \"PaymentId\": null,\n    \"CustomerId\": 1,\n    \"PaymentTypeId\": 1,\n    \"PaymentDiscount\": 0,\n    \"PaymentStatusId\": 1,\n    \"PaymentNotes\": \"Test payment\",\n    \"PaymentDate\": \"2024-11-09\",\n    \"CreatedBy\": 1,\n    \"ModifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Payments List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentsList\",\n  \"ReqObject\": {\n    \"PaymentIds\": \"\",\n    \"Customer\": {\n      \"CustomerIds\": \"\",\n      \"CustomerIdz\": \"\",\n      \"CustomerName\": \"\"\n    },\n    \"PaymentType\": {\n      \"LookUpIds\": \"\"\n    },\n    \"PaymentStatusId\": -1,\n    \"PaymentDate\": {\n      \"FromDate\": \"2024-01-01\",\n      \"ToDate\": \"2024-12-31\"\n    },\n    \"CreatedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"CreatedDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Payments List - Group By Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Payments List - Group By Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Customer\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Payment Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentDetails\",\n  \"ReqObject\": {\n    \"PaymentId\": 1,\n    \"IncludePaymentItems\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Delete Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeletePayment\",\n  \"ReqObject\": {\n    \"PaymentId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Delete Multiple Payments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeletePayments\",\n  \"ReqObject\": {\n    \"PaymentIds\": \"1,2,3\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Change Payments Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"ChangePaymentsStatus\",\n  \"ReqObject\": {\n    \"PaymentIds\": \"1,2,3\",\n    \"StatusId\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Update Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SavePaymentDetails\",\n  \"ReqObject\": {\n    \"PaymentId\": 1,\n    \"CustomerId\": 1,\n    \"PaymentTypeId\": 2,\n    \"PaymentDiscount\": 10.50,\n    \"PaymentStatusId\": 2,\n    \"PaymentNotes\": \"Updated payment notes\",\n    \"PaymentDate\": \"2024-11-09\",\n    \"CreatedBy\": 1,\n    \"ModifiedBy\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpayment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Items",
+			"item": [
+				{
+					"name": "1. Save Payment Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SavePaymentItemDetails\",\n  \"ReqObject\": {\n    \"PaymentItemId\": null,\n    \"PaymentId\": 1,\n    \"PaymentItemMethodId\": 1,\n    \"PaymentItemBankId\": 1,\n    \"PaymentItemBankAccountNumber\": \"123456\",\n    \"PaymentItemBankBranchNumber\": \"001\",\n    \"PaymentItemAmount\": 1000.00,\n    \"PaymentItemCheckNumber\": \"CHK001\",\n    \"PaymentItemNameOnCheck\": \"John Doe\",\n    \"PaymentItemCheckDueDate\": \"2024-12-01\",\n    \"PaymentItemReference\": \"REF001\",\n    \"PaymentItemCheckStatusId\": 1,\n    \"PaymentItemStatusId\": 1,\n    \"PaymentItemNotes\": \"Test payment item\",\n    \"CreatedBy\": 1,\n    \"ModifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpaymentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpaymentitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Payment Items List - Group By Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentItemsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpaymentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpaymentitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Payment Item Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentItemDetails\",\n  \"ReqObject\": {\n    \"PaymentItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpaymentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpaymentitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Delete Payment Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeletePaymentItem\",\n  \"ReqObject\": {\n    \"PaymentItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpaymentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpaymentitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Update Payment Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SavePaymentItemDetails\",\n  \"ReqObject\": {\n    \"PaymentItemId\": 1,\n    \"PaymentId\": 1,\n    \"PaymentItemMethodId\": 2,\n    \"PaymentItemBankId\": 1,\n    \"PaymentItemBankAccountNumber\": \"654321\",\n    \"PaymentItemBankBranchNumber\": \"002\",\n    \"PaymentItemAmount\": 1500.00,\n    \"PaymentItemCheckNumber\": \"CHK002\",\n    \"PaymentItemNameOnCheck\": \"Jane Doe\",\n    \"PaymentItemCheckDueDate\": \"2024-12-15\",\n    \"PaymentItemReference\": \"REF002\",\n    \"PaymentItemCheckStatusId\": 2,\n    \"PaymentItemStatusId\": 1,\n    \"PaymentItemNotes\": \"Updated payment item\",\n    \"CreatedBy\": 1,\n    \"ModifiedBy\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpaymentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpaymentitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Payment Items List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetPaymentItemsList\",\n  \"ReqObject\": {\n    \"PaymentItemIds\": \"\",\n    \"Payment\": {\n      \"PaymentIds\": \"\",\n      \"Customer\": {\n        \"CustomerIds\": \"\",\n        \"CustomerIdz\": \"\",\n        \"CustomerName\": \"\"\n      },\n      \"PaymentType\": {\n        \"LookUpIds\": \"\"\n      },\n      \"PaymentDate\": {\n        \"FromDate\": \"2024-01-01\",\n        \"ToDate\": \"2024-12-31\"\n      }\n    },\n    \"PaymentItemMethod\": {\n      \"LookUpIds\": \"\"\n    },\n    \"PaymentItemBank\": {\n      \"LookUpIds\": \"\"\n    },\n    \"PaymentItemBankAccountNumber\": \"\",\n    \"PaymentItemBankBranchNumber\": \"\",\n    \"PaymentItemCheckNumber\": \"\",\n    \"PaymentItemNameOnCheck\": \"\",\n    \"PaymentItemCheckDueDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"PaymentItemCheckStatus\": {\n      \"LookUpIds\": \"\"\n    },\n    \"PaymentItemReference\": \"\",\n    \"CreatedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"CreatedDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": null,\n      \"ToDate\": null\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smpaymentitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smpaymentitem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quotes",
+			"item": [
+				{
+					"name": "Save Quote (Create)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveOrderDetails\",\n  \"ReqObject\": {\n    \"CustomerId\": 1,\n    \"DriverId\": 1,\n    \"OrderTypeId\": 1,\n    \"OrderUnitsNumber\": 10.5,\n    \"OrderPrice\": 1000.00,\n    \"OrderVat\": 15,\n    \"OrderIncludeVat\": 1,\n    \"OrderTotalPriceWithOutVat\": 1000.00,\n    \"OrderTotalPriceVat\": 150.00,\n    \"OrderTotalPriceWithVat\": 1150.00,\n    \"OrderStatusId\": 1,\n    \"ShippingCertificateId\": \"SHIP001\",\n    \"Meters\": 100,\n    \"Cubes\": 50,\n    \"FromLocationId\": 1,\n    \"ToLocationId\": 2,\n    \"LocationAddress\": \"123 Main St, City\",\n    \"OrderNotes\": \"Urgent delivery\",\n    \"OrderDate\": \"2025-11-09T10:00:00Z\",\n    \"EvacuationTime\": 30,\n    \"CreatedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Quote (Update)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveOrderDetails\",\n  \"ReqObject\": {\n    \"OrderId\": 1,\n    \"CustomerId\": 1,\n    \"DriverId\": 1,\n    \"OrderTypeId\": 1,\n    \"OrderUnitsNumber\": 15.5,\n    \"OrderPrice\": 1500.00,\n    \"OrderVat\": 15,\n    \"OrderIncludeVat\": 1,\n    \"OrderTotalPriceWithOutVat\": 1500.00,\n    \"OrderTotalPriceVat\": 225.00,\n    \"OrderTotalPriceWithVat\": 1725.00,\n    \"OrderStatusId\": 2,\n    \"ShippingCertificateId\": \"SHIP001\",\n    \"Meters\": 150,\n    \"Cubes\": 75,\n    \"FromLocationId\": 1,\n    \"ToLocationId\": 2,\n    \"LocationAddress\": \"123 Main St, City\",\n    \"OrderNotes\": \"Updated urgent delivery\",\n    \"OrderDate\": \"2025-11-09T10:00:00Z\",\n    \"EvacuationTime\": 45,\n    \"ModifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quotes List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetOrdersList\",\n  \"ReqObject\": {\n    \"OrderIds\": \"\",\n    \"Customer\": {\n      \"CustomerIds\": \"\",\n      \"CustomerIdz\": \"\",\n      \"CustomerName\": \"\"\n    },\n    \"Car\": {\n      \"CarIds\": \"\",\n      \"CarNumber\": \"\"\n    },\n    \"OrderType\": {\n      \"ProductIds\": \"\"\n    },\n    \"OrderDate\": {\n      \"FromDate\": \"2025-01-01\",\n      \"ToDate\": \"2025-12-31\"\n    },\n    \"OrderStatus\": {\n      \"LookUpIds\": \"1\"\n    },\n    \"ShippingCertificateId\": \"\",\n    \"FromLocation\": {\n      \"LookUpIds\": \"\"\n    },\n    \"ToLocation\": {\n      \"LookUpIds\": \"\"\n    },\n    \"CreatedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"CreatedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quotes List - Grouped by Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetOrdersList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quote Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetOrderDetails\",\n  \"ReqObject\": {\n    \"OrderId\": 1,\n    \"IncludeOrderItems\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quote",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteOrder\",\n  \"ReqObject\": {\n    \"OrderId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Multiple Quotes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteOrders\",\n  \"ReqObject\": {\n    \"OrderIds\": \"1,2,3\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Quotes Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"ChangeOrdersStatus\",\n  \"ReqObject\": {\n    \"OrderIds\": \"1,2,3\",\n    \"StatusId\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquote"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quote Items",
+			"item": [
+				{
+					"name": "Save Quote Item (Create)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveOrderItemDetails\",\n  \"ReqObject\": {\n    \"OrderId\": 1,\n    \"OrderTypeId\": 1,\n    \"OrderUnitsNumber\": 5.5,\n    \"OrderPrice\": 500.00,\n    \"OrderVat\": 15,\n    \"OrderIncludeVat\": 1,\n    \"OrderTotalPriceWithOutVat\": 500.00,\n    \"OrderTotalPriceVat\": 75.00,\n    \"OrderTotalPriceWithVat\": 575.00,\n    \"OrderStatusId\": 1,\n    \"ShippingCertificateId\": \"SHIP001\",\n    \"FromLocationId\": 1,\n    \"ToLocationId\": 2,\n    \"OrderNotes\": \"First item\",\n    \"OrderDate\": \"2025-11-09T10:00:00Z\",\n    \"CreatedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquoteitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquoteitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Quote Item (Update)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveOrderItemDetails\",\n  \"ReqObject\": {\n    \"OrderItemId\": 1,\n    \"OrderId\": 1,\n    \"OrderTypeId\": 1,\n    \"OrderUnitsNumber\": 8.5,\n    \"OrderPrice\": 800.00,\n    \"OrderVat\": 15,\n    \"OrderIncludeVat\": 1,\n    \"OrderTotalPriceWithOutVat\": 800.00,\n    \"OrderTotalPriceVat\": 120.00,\n    \"OrderTotalPriceWithVat\": 920.00,\n    \"OrderStatusId\": 2,\n    \"ShippingCertificateId\": \"SHIP001\",\n    \"FromLocationId\": 1,\n    \"ToLocationId\": 2,\n    \"OrderNotes\": \"Updated first item\",\n    \"OrderDate\": \"2025-11-09T10:00:00Z\",\n    \"ModifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquoteitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquoteitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quote Items List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetOrderItemsList\",\n  \"ReqObject\": {\n    \"OrderItemIds\": \"\",\n    \"Order\": {\n      \"OrderIds\": \"\"\n    },\n    \"Customer\": {\n      \"CustomerIds\": \"\",\n      \"CustomerIdz\": \"\",\n      \"CustomerName\": \"\"\n    },\n    \"Car\": {\n      \"CarIds\": \"\",\n      \"CarNumber\": \"\"\n    },\n    \"OrderType\": {\n      \"ProductIds\": \"\"\n    },\n    \"OrderDate\": {\n      \"FromDate\": \"2025-01-01\",\n      \"ToDate\": \"2025-12-31\"\n    },\n    \"OrderStatus\": {\n      \"LookUpIds\": \"1\"\n    },\n    \"ShippingCertificateId\": \"\",\n    \"FromLocation\": {\n      \"LookUpIds\": \"\"\n    },\n    \"ToLocation\": {\n      \"LookUpIds\": \"\"\n    },\n    \"CreatedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"CreatedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquoteitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquoteitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quote Items List - Grouped by OrderId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetOrderItemsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"OrderId\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquoteitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquoteitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quote Item Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetOrderItemDetails\",\n  \"ReqObject\": {\n    \"OrderItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquoteitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquoteitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quote Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteOrderItem\",\n  \"ReqObject\": {\n    \"OrderItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smquoteitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smquoteitem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transportation",
+			"item": [
+				{
+					"name": "Save Transportation (Create)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveTransportationDetails\",\n  \"ReqObject\": {\n    \"DriverId\": 1,\n    \"TransportationStatusId\": 1,\n    \"TransportationNotes\": \"Regular delivery route\",\n    \"TransportationDate\": \"2025-11-09T10:00:00Z\",\n    \"CreatedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Transportation (Update)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveTransportationDetails\",\n  \"ReqObject\": {\n    \"TransportationId\": 1,\n    \"DriverId\": 1,\n    \"TransportationStatusId\": 2,\n    \"TransportationNotes\": \"Updated delivery route\",\n    \"TransportationDate\": \"2025-11-09T10:00:00Z\",\n    \"ModifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transportations List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetTransportationsList\",\n  \"ReqObject\": {\n    \"TransportationIds\": \"\",\n    \"Driver\": {\n      \"DriverIds\": \"\",\n      \"DriverName\": \"\",\n      \"CarNumber\": \"\"\n    },\n    \"TransportationDate\": {\n      \"FromDate\": \"2025-01-01\",\n      \"ToDate\": \"2025-12-31\"\n    },\n    \"TransportationStatus\": {\n      \"LookUpIds\": \"1\"\n    },\n    \"CreatedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"CreatedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"IncludeTransportationItems\": false,\n    \"GroupBy\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transportations List - Grouped by Date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetTransportationsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transportations List - Grouped by Driver",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetTransportationsList\",\n  \"ReqObject\": {\n    \"ItemsPerPage\": 50,\n    \"PageNumber\": 1,\n    \"IncludeTotalRowsLength\": true,\n    \"GroupBy\": \"Driver\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transportation Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetTransportationDetails\",\n  \"ReqObject\": {\n    \"TransportationId\": 1,\n    \"IncludeTransportationItems\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Transportation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteTransportation\",\n  \"ReqObject\": {\n    \"TransportationId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Multiple Transportations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteTransportations\",\n  \"ReqObject\": {\n    \"TransportationIds\": \"1,2,3\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Transportations Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"ChangeTransportationsStatus\",\n  \"ReqObject\": {\n    \"TransportationIds\": \"1,2,3\",\n    \"StatusId\": 2\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transportation Items",
+			"item": [
+				{
+					"name": "Save Transportation Item (Create)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveTransportationItemDetails\",\n  \"ReqObject\": {\n    \"TransportationId\": 1,\n    \"TransportationItemStatusId\": 1,\n    \"ShippingCertificateId\": \"SHIP001\",\n    \"TransportationItemDesc\": \"First transportation item\",\n    \"OrderUnitsNumber\": 10.5,\n    \"OrderPrice\": 1000.00,\n    \"OrderVat\": 15,\n    \"OrderIncludeVat\": 1,\n    \"OrderTotalPriceWithOutVat\": 1000.00,\n    \"OrderTotalPriceVat\": 150.00,\n    \"OrderTotalPriceWithVat\": 1150.00,\n    \"OrderTotalCost\": 900.00,\n    \"OrderStatusId\": 1,\n    \"Meters\": 100,\n    \"Cubes\": 50,\n    \"FromLocationId\": 1,\n    \"ToLocationId\": 2,\n    \"LocationAddress\": \"123 Main St, City\",\n    \"OrderNotes\": \"Handle with care\",\n    \"OrderDate\": \"2025-11-09T10:00:00Z\",\n    \"EvacuationTime\": 30,\n    \"CreatedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportationitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportationitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Transportation Item (Update)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"SaveTransportationItemDetails\",\n  \"ReqObject\": {\n    \"TransportationItemId\": 1,\n    \"TransportationId\": 1,\n    \"TransportationItemStatusId\": 2,\n    \"ShippingCertificateId\": \"SHIP001\",\n    \"TransportationItemDesc\": \"Updated transportation item\",\n    \"OrderUnitsNumber\": 15.5,\n    \"OrderPrice\": 1500.00,\n    \"OrderVat\": 15,\n    \"OrderIncludeVat\": 1,\n    \"OrderTotalPriceWithOutVat\": 1500.00,\n    \"OrderTotalPriceVat\": 225.00,\n    \"OrderTotalPriceWithVat\": 1725.00,\n    \"OrderTotalCost\": 1200.00,\n    \"OrderStatusId\": 2,\n    \"Meters\": 150,\n    \"Cubes\": 75,\n    \"FromLocationId\": 1,\n    \"ToLocationId\": 2,\n    \"LocationAddress\": \"123 Main St, City\",\n    \"OrderNotes\": \"Updated: Handle with extra care\",\n    \"OrderDate\": \"2025-11-09T10:00:00Z\",\n    \"EvacuationTime\": 45,\n    \"ModifiedBy\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportationitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportationitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transportation Items List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetTransportationsItemsList\",\n  \"ReqObject\": {\n    \"TransportationItemIds\": \"\",\n    \"Transportation\": {\n      \"TransportationIds\": \"\"\n    },\n    \"ShippingCertificateId\": \"\",\n    \"TransportationItemStatus\": {\n      \"LookUpIds\": \"1\"\n    },\n    \"CreatedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"ModifiedBy\": {\n      \"UserIds\": \"\"\n    },\n    \"CreatedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ModifiedDate\": {\n      \"FromDate\": \"\",\n      \"ToDate\": \"\"\n    },\n    \"ItemsPerPage\": 10,\n    \"PageNumber\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportationitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportationitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transportation Item Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"GetTransportationItemDetails\",\n  \"ReqObject\": {\n    \"TransportationItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransationitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransationitem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Transportation Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ReqType\": \"DeleteTransportationItem\",\n  \"ReqObject\": {\n    \"TransportationItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/smtransportationitem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"smtransportationitem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Expenses",
+			"item": [
+				{
+					"name": "1. Save Expense",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveExpenseDetails\",\n  \"reqObject\": {\n    \"expenseId\": 0,\n    \"customer\": {\n      \"customerId\": 1\n    },\n    \"expenseType\": {\n      \"lookUpId\": 1\n    },\n    \"expenseDate\": {\n      \"fullDate\": \"2024-01-15T10:00:00Z\"\n    },\n    \"expenseDiscount\": 50.00,\n    \"expenseStatusId\": 1,\n    \"expenseNotes\": \"Test expense\",\n    \"createdBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Update Expense",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveExpenseDetails\",\n  \"reqObject\": {\n    \"expenseId\": 1,\n    \"customer\": {\n      \"customerId\": 1\n    },\n    \"expenseType\": {\n      \"lookUpId\": 2\n    },\n    \"expenseDate\": {\n      \"fullDate\": \"2024-01-20T10:00:00Z\"\n    },\n    \"expenseDiscount\": 75.00,\n    \"expenseStatusId\": 1,\n    \"expenseNotes\": \"Updated expense\",\n    \"createdBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Expenses List (All)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpensesList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Expenses List (Filtered by Customer)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpensesList\",\n  \"reqObject\": {\n    \"customer\": {\n      \"customerIds\": \"1,2,3\"\n    },\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Expenses List (Filtered by Date Range)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpensesList\",\n  \"reqObject\": {\n    \"expenseDate\": {\n      \"fromDate\": \"2024-01-01\",\n      \"toDate\": \"2024-12-31\"\n    },\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Expenses List (Grouped by Date)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpensesList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get Expense Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseDetails\",\n  \"reqObject\": {\n    \"expenseId\": 1,\n    \"includeExpenseItems\": false\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get Expense Details (With Items)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseDetails\",\n  \"reqObject\": {\n    \"expenseId\": 1,\n    \"includeExpenseItems\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Delete Expense",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"DeleteExpense\",\n  \"reqObject\": {\n    \"expenseId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expenses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Expense Items",
+			"item": [
+				{
+					"name": "1. Save Expense Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveExpenseItemDetails\",\n  \"reqObject\": {\n    \"expenseItemId\": 0,\n    \"expense\": {\n      \"expenseId\": 1\n    },\n    \"expenseItemMethod\": {\n      \"lookUpId\": 1\n    },\n    \"expenseItemBank\": {\n      \"lookUpId\": 1\n    },\n    \"expenseItemBankAccountNumber\": \"123456789\",\n    \"expenseItemBankBranchNumber\": \"001\",\n    \"expenseItemAmount\": 500.00,\n    \"expenseItemCheckNumber\": \"CHK001\",\n    \"expenseItemCheckDueDate\": {\n      \"fullDate\": \"2024-02-01T10:00:00Z\"\n    },\n    \"expenseItemCheckStatus\": {\n      \"lookUpId\": 1\n    },\n    \"expenseItemReference\": \"REF001\",\n    \"expenseItemStatusId\": 1,\n    \"expenseItemNotes\": \"Test expense item\",\n    \"createdBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Update Expense Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"SaveExpenseItemDetails\",\n  \"reqObject\": {\n    \"expenseItemId\": 1,\n    \"expense\": {\n      \"expenseId\": 1\n    },\n    \"expenseItemMethod\": {\n      \"lookUpId\": 2\n    },\n    \"expenseItemBank\": {\n      \"lookUpId\": 1\n    },\n    \"expenseItemBankAccountNumber\": \"987654321\",\n    \"expenseItemBankBranchNumber\": \"002\",\n    \"expenseItemAmount\": 750.00,\n    \"expenseItemCheckNumber\": \"CHK002\",\n    \"expenseItemCheckDueDate\": {\n      \"fullDate\": \"2024-02-15T10:00:00Z\"\n    },\n    \"expenseItemCheckStatus\": {\n      \"lookUpId\": 2\n    },\n    \"expenseItemReference\": \"REF002\",\n    \"expenseItemStatusId\": 1,\n    \"expenseItemNotes\": \"Updated expense item\",\n    \"createdBy\": {\n      \"userId\": 1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Expense Items List (All)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseItemsList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Expense Items List (By Expense ID)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseItemsList\",\n  \"reqObject\": {\n    \"expenseIds\": \"1\",\n    \"expenseItemStatusIds\": \"1\",\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Expense Items List (Filtered)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseItemsList\",\n  \"reqObject\": {\n    \"expenseItemMethodIds\": \"1,2\",\n    \"expenseItemStatusIds\": \"1\",\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Expense Items List (Grouped by Date)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseItemsList\",\n  \"reqObject\": {\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 0,\n    \"includeTotalRowsLength\": true,\n    \"groupBy\": \"Date\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get Expense Item Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetExpenseItemDetails\",\n  \"reqObject\": {\n    \"expenseItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Delete Expense Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"DeleteExpenseItem\",\n  \"reqObject\": {\n    \"expenseItemId\": 1\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/expense-items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"expense-items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Totals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"description": "Add your JWT token here if authentication is enabled"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ReqType\": \"GetDashboardTotals\",\n    \"ReqObject\": {\n        \"TotalsLayoutCustomer\": {\n            \"CustomerIds\": \"\"\n        },\n        \"TotalsLayoutDate\": {\n            \"FromDate\": \"2024-11-11\",\n            \"ToDate\": \"2025-11-11\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smdashboard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smdashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dashboard Totals with Customer Filter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ReqType\": \"GetDashboardTotals\",\n    \"ReqObject\": {\n        \"TotalsLayoutCustomer\": {\n            \"CustomerIds\": \"1,2,3\"\n        },\n        \"TotalsLayoutDate\": {\n            \"FromDate\": \"2024-01-01\",\n            \"ToDate\": \"2025-12-31\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smdashboard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smdashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dashboard Bar Chart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ReqType\": \"GetDashboardTotalsBarChart\",\n    \"ReqObject\": {\n        \"TotalsLayoutCustomer\": {\n            \"CustomerIds\": \"\"\n        },\n        \"TotalsLayoutDate\": {\n            \"FromDate\": \"2024-06-01\",\n            \"ToDate\": \"2025-11-30\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/smdashboard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smdashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cleared Checks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/smdashboard/cleared-checks?fromDate=2024-11-11&toDate=2025-11-11&itemsPerPage=8&pageNumber=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smdashboard",
+								"cleared-checks"
+							],
+							"query": [
+								{
+									"key": "fromDate",
+									"value": "2024-11-11"
+								},
+								{
+									"key": "toDate",
+									"value": "2025-11-11"
+								},
+								{
+									"key": "itemsPerPage",
+									"value": "8"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "customerIds",
+									"value": "1,2,3",
+									"disabled": true
+								},
+								{
+									"key": "paymentItemMethodIds",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "paymentItemCheckStatusIds",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "paymentItemBankIds",
+									"value": "1,2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alerts and Claims",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/smdashboard/alerts-claims?fromDate=2024-11-11&toDate=2025-11-11&itemsPerPage=8&pageNumber=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smdashboard",
+								"alerts-claims"
+							],
+							"query": [
+								{
+									"key": "fromDate",
+									"value": "2024-11-11"
+								},
+								{
+									"key": "toDate",
+									"value": "2025-11-11"
+								},
+								{
+									"key": "itemsPerPage",
+									"value": "8"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "customerIds",
+									"value": "1,2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get System Backups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/smdashboard/system-backups?itemsPerPage=8&pageNumber=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"smdashboard",
+								"system-backups"
+							],
+							"query": [
+								{
+									"key": "itemsPerPage",
+									"value": "8"
+								},
+								{
+									"key": "pageNumber",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		}
+	]
+}

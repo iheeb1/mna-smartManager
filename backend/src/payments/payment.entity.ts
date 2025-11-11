@@ -1,5 +1,16 @@
 import { PaymentItem } from 'src/payment-items/payment-item.entity';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { Customer } from 'src/customers/entities/customer.entity';
+import { 
+  Entity, 
+  Column, 
+  PrimaryGeneratedColumn, 
+  CreateDateColumn, 
+  UpdateDateColumn, 
+  Index, 
+  OneToMany,
+  ManyToOne,
+  JoinColumn
+} from 'typeorm';
 
 @Entity('mng_payments')
 @Index('FKIndex', ['customerId', 'paymentTypeId', 'paymentStatusId', 'paymentDate'])
@@ -7,11 +18,14 @@ export class Payment {
   @PrimaryGeneratedColumn({ name: 'PaymentId', unsigned: true })
   paymentId: number;
 
-  @Column({ name: 'CustomerId', type: 'int', nullable: true })
+  @Column({ name: 'CustomerId', type: 'int', nullable: true, unsigned: true })
   customerId: number;
 
   @Column({ name: 'PaymentTypeId', type: 'int', nullable: true })
   paymentTypeId: number;
+
+  @Column({ name: 'PaymentAmount', type: 'decimal', precision: 20, scale: 2, nullable: true })
+  paymentAmount: number;
 
   @Column({ name: 'PaymentDiscount', type: 'decimal', precision: 20, scale: 2, nullable: true })
   paymentDiscount: number;
@@ -39,4 +53,8 @@ export class Payment {
 
   @OneToMany(() => PaymentItem, (paymentItem) => paymentItem.payment)
   paymentItems: PaymentItem[];
+
+  @ManyToOne(() => Customer, { nullable: true })
+  @JoinColumn({ name: 'CustomerId' })
+  customer: Customer;
 }

@@ -7,17 +7,14 @@ import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
-import { HeaderComponent } from '../../../shared/components/header/header.component'; 
+import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component';
+import { DashboardTotals, SystemBackup, AlertAndClaim, ClearedCheck, ReportsService } from '../services/reports.services';
 
-interface Transaction {
-  description: string;
-  date: string;
-  amount: number;
-  accountNumber: string;
-  checkNumber?: string;
-  collectionDate?: string;
-  status: string;
+
+interface DropdownOption {
+  label: string;
+  value: string;
 }
 
 @Component({
@@ -33,62 +30,207 @@ interface Transaction {
     DropdownModule,
     TabViewModule,
     HeaderComponent,
-    FooterNavComponent
+    FooterNavComponent,
   ],
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss']
+  styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent implements OnInit {
-  departments: any[] = [];
-  timeRanges: any[] = [];
-  selectedDepartment: any;
-  selectedTimeRange: any;
+  departments: DropdownOption[] = [];
+  timeRanges: DropdownOption[] = [];
+  selectedDepartment: DropdownOption | null = null;
+  selectedTimeRange: DropdownOption | null = null;
 
-  systemEvaluation: any[] = [
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' },
-    { date: '18/08/24', time: '09:00', createdBy: 'مدير النظام' }
-  ];
+  // Dashboard data
+  dashboardTotals: DashboardTotals = {
+    totalOrders: 0,
+    totalPayments: 0,
+    totalExpenses: 0,
+    totalAccount: 0,
+  };
 
-  alertsAndClaims: any[] = [
-    { date: '18/08/24', description: 'لدفع عميل المركز' },
-    { date: '18/08/24', description: 'شركة كوليت أ.ش' },
-    { date: '18/08/24', description: 'فحص الاتصال بالبطاقة' },
-    { date: '18/08/24', description: 'ن.ج مقاولو بناء' },
-    { date: '18/08/24', description: 'مدفوعات وبائعو هليل' },
-    { date: '18/08/24', description: 'فحص الاتصال بالبطاقة' },
-    { date: '18/08/24', description: 'ن.ج مقاولو بناء' },
-    { date: '18/08/24', description: 'مدفوعات وبائعو هليل' }
-  ];
+  systemEvaluation: SystemBackup[] = [];
+  alertsAndClaims: AlertAndClaim[] = [];
+  clearedChecks: ClearedCheck[] = [];
 
-  clearedChecks: any[] = [
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'وصف التحصيل', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'شركة كوليت أ.ش', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'فحص الاتصال بالبطاقة', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'ن.ج مقاولو بناء', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'مدفوعات وبائعو هليل', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'فحص الاتصال بالبطاقة', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'ن.ج مقاولو بناء', checkNumber: '0123456789' },
-    { date: '18/08/24', collectionDate: '18/08/24', accountNumber: '0123456789', amount: '50,000', description: 'مدفوعات وبائعو هليل', checkNumber: '0123456789' }
-  ];
+  isLoading: boolean = true;
+
+  constructor(private reportsService: ReportsService) {}
 
   ngOnInit() {
+    this.initializeDropdowns();
+    this.loadDashboardData();
+  }
+
+  /**
+   * Initialize dropdown options
+   */
+  initializeDropdowns() {
     this.departments = [
       { label: 'جميع الأقسام', value: 'all' },
       { label: 'القسم 1', value: 'dept1' },
-      { label: 'القسم 2', value: 'dept2' }
+      { label: 'القسم 2', value: 'dept2' },
     ];
 
     this.timeRanges = [
       { label: 'جميع الأوقات', value: 'all' },
       { label: 'اليوم', value: 'today' },
       { label: 'هذا الأسبوع', value: 'week' },
-      { label: 'هذا الشهر', value: 'month' }
+      { label: 'هذا الشهر', value: 'month' },
     ];
+
+    // Set default values
+    this.selectedDepartment = this.departments[0];
+    this.selectedTimeRange = this.timeRanges[0];
+  }
+
+  /**
+   * Load all dashboard data
+   */
+  loadDashboardData() {
+    this.isLoading = true;
+
+    const dateRange = this.reportsService.getDateRange(
+      this.selectedTimeRange?.value || 'all'
+    );
+    const customerIds = this.getCustomerIds();
+
+    Promise.all([
+      this.loadDashboardTotals(customerIds, dateRange),
+      this.loadClearedChecks(customerIds, dateRange),
+      this.loadAlertsAndClaims(customerIds, dateRange),
+      this.loadSystemBackups(),
+    ])
+      .then(() => {
+        this.isLoading = false;
+      })
+      .catch((error) => {
+        console.error('Error loading dashboard data:', error);
+        this.isLoading = false;
+      });
+  }
+
+  /**
+   * Load Dashboard Totals
+   */
+  private async loadDashboardTotals(
+    customerIds: string,
+    dateRange: { fromDate: string; toDate: string }
+  ) {
+    try {
+      this.dashboardTotals = await this.reportsService.getDashboardTotals(
+        customerIds,
+        dateRange
+      );
+    } catch (error) {
+      console.error('Error loading dashboard totals:', error);
+      this.dashboardTotals = {
+        totalOrders: 0,
+        totalPayments: 0,
+        totalExpenses: 0,
+        totalAccount: 0,
+      };
+    }
+  }
+
+  /**
+   * Load Cleared Checks
+   */
+  private async loadClearedChecks(
+    customerIds: string,
+    dateRange: { fromDate: string; toDate: string }
+  ) {
+    try {
+      this.clearedChecks = await this.reportsService.getClearedChecks(
+        dateRange,
+        customerIds || undefined,
+        8,
+        1
+      );
+    } catch (error) {
+      console.error('Error loading cleared checks:', error);
+      this.clearedChecks = [];
+    }
+  }
+
+  /**
+   * Load Alerts and Claims
+   */
+  private async loadAlertsAndClaims(
+    customerIds: string,
+    dateRange: { fromDate: string; toDate: string }
+  ) {
+    try {
+      this.alertsAndClaims = await this.reportsService.getAlertsAndClaims(
+        dateRange,
+        customerIds || undefined,
+        8,
+        1
+      );
+    } catch (error) {
+      console.error('Error loading alerts and claims:', error);
+      this.alertsAndClaims = [];
+    }
+  }
+
+  /**
+   * Load System Backups
+   */
+  private async loadSystemBackups() {
+    try {
+      this.systemEvaluation = await this.reportsService.getSystemBackups(8, 1);
+    } catch (error) {
+      console.error('Error loading system backups:', error);
+      this.systemEvaluation = [];
+    }
+  }
+
+  /**
+   * Get customer IDs based on selected department
+   */
+  getCustomerIds(): string {
+    if (!this.selectedDepartment || this.selectedDepartment.value === 'all') {
+      return '';
+    }
+
+    // Map department to customer IDs
+    // Example implementation:
+    const departmentCustomerMap: Record<string, string> = {
+      dept1: '1,2,3',
+      dept2: '4,5,6',
+    };
+
+    return departmentCustomerMap[this.selectedDepartment.value] || '';
+  }
+
+  /**
+   * Handle department change
+   */
+  onDepartmentChange() {
+    this.loadDashboardData();
+  }
+
+  /**
+   * Handle time range change
+   */
+  onTimeRangeChange() {
+    this.loadDashboardData();
+  }
+
+  /**
+   * Format currency for display
+   */
+  formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(Math.abs(amount));
+  }
+
+  /**
+   * Check if amount is negative
+   */
+  isNegative(amount: number): boolean {
+    return amount < 0;
   }
 }

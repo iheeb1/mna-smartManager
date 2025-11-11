@@ -24,6 +24,7 @@ import { TransportationItemsModule } from './transportation-items/transportation
 import { LookupsModule } from './lookups/lookups.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { ExpenseItemsModule } from './expense-items/expense-items.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { ExpenseItemsModule } from './expense-items/expense-items.module';
     LookupsModule,
     ExpensesModule,
     ExpenseItemsModule,
+    ReportsModule
   ],
   controllers: [AppController],
   providers: [AppService],
