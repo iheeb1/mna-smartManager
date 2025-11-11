@@ -12,6 +12,7 @@ import { FilterOptions, FiltersDialogComponent } from '../../../../shared/compon
 import { DateRange, DateRangeDialogComponent } from '../../../../shared/components/date-range-dialog/date-range-dialog.component';
 import { AddOrderDialogComponent } from './add-order-dialog/add-order-dialog.component';
 import { Order, OrderItem } from '../../models/order.model';
+import { OrdersService } from '../../services/orders.service';
 
 @Component({
   selector: 'app-orders',
@@ -35,6 +36,7 @@ import { Order, OrderItem } from '../../models/order.model';
 })
 export class OrdersComponent implements OnInit {
   showAddOrderDialog = false;
+  editingOrderId: number | null = null;
   searchValue = '';
   startDate: Date | null = null;
   endDate: Date | null = null;
@@ -52,12 +54,17 @@ export class OrdersComponent implements OnInit {
   showDateRangeDialog = false;
   showAddMenu = false;
   
+  totalRecords = 0;
+  currentPage = 0;
+  itemsPerPage = 50;
+  activeFilters: any = {};
+  
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('startDateMobile') startDateMobile!: Calendar;
   @ViewChild('endDateMobile') endDateMobile!: Calendar;
-  
+  @ViewChild(AddOrderDialogComponent) addOrderDialog!: AddOrderDialogComponent;
 
-  constructor() {}
+  constructor(private ordersService: OrdersService) {}
 
   ngOnInit() {
     this.loadOrders();
@@ -66,109 +73,196 @@ export class OrdersComponent implements OnInit {
   loadOrders() {
     this.loading = true;
 
-    // Simulate API delay
-    setTimeout(() => {
-      // Generate fake orders
-      this.orders = this.generateFakeOrders();
-      this.calculateGrandTotals();
-      this.loading = false;
-    }, 500);
-  }
+    const params: any = {
+      itemsPerPage: this.itemsPerPage,
+      pageNumber: this.currentPage,
+      groupBy: 'OrderId',
+      includeTotalRowsLength: true
+    };
 
-  generateFakeOrders(): Order[] {
-    const customers = [
-      { name: 'أحمد محمود', phone: '0599-123-456', address: 'رام الله' },
-      { name: 'فاطمة حسن', phone: '0598-234-567', address: 'نابلس' },
-      { name: 'محمد علي', phone: '0597-345-678', address: 'الخليل' },
-      { name: 'سارة خالد', phone: '0596-456-789', address: 'بيت لحم' },
-      { name: 'يوسف إبراهيم', phone: '0595-567-890', address: 'جنين' },
-    ];
-
-    const vehicles = [
-      '12-345-67', '23-456-78', '34-567-89', '45-678-90', '56-789-01'
-    ];
-
-    const services = [
-      { name: 'تغيير زيت المحرك', price: 150 },
-      { name: 'فحص الفرامل', price: 80 },
-      { name: 'تبديل الإطارات', price: 200 },
-      { name: 'فحص شامل', price: 120 },
-      { name: 'تنظيف المحرك', price: 90 },
-      { name: 'إصلاح التكييف', price: 250 },
-      { name: 'تبديل البطارية', price: 180 },
-      { name: 'صيانة دورية', price: 160 },
-    ];
-
-    const fixedTypes = ['عادي', 'سريع'];
-    const parkingTypes = ['موقف أ', 'موقف ب'];
-
-    const fakeOrders: Order[] = [];
-    const today = new Date();
-
-    for (let i = 0; i < 5; i++) {
-      const customer = customers[i];
-      const vehicle = vehicles[i];
-      
-      // Generate random date within last 30 days
-      const daysAgo = Math.floor(Math.random() * 30);
-      const orderDate = new Date(today);
-      orderDate.setDate(orderDate.getDate() - daysAgo);
-      
-      // Generate 2-4 items per order
-      const itemCount = Math.floor(Math.random() * 3) + 2;
-      const items: OrderItem[] = [];
-      
-      for (let j = 0; j < itemCount; j++) {
-        const service = services[Math.floor(Math.random() * services.length)];
-        const quantity = Math.floor(Math.random() * 3) + 1;
-        const price = service.price;
-        const beforeTax = price * quantity;
-        const tax = beforeTax * 0.16; // 16% VAT
-        const total = beforeTax + tax;
-
-        items.push({
-          orderItemId: i * 10 + j,
-          orderId: i + 1,
-          productId: j + 1,
-          productCode: `PRD-${1000 + j}`,
-          productName: service.name,
-          description: service.name,
-          duration: `${Math.floor(Math.random() * 3) + 1} ساعة`,
-          quantity: quantity,
-          price: price,
-          totalBeforeTax: beforeTax,
-          taxAmount: tax,
-          totalWithTax: total,
-          beforeTax: beforeTax,
-          tax: tax,
-          total: total,
-        });
-      }
-
-      const totalBeforeTax = items.reduce((sum, item) => sum + item.totalBeforeTax, 0);
-      const totalTax = items.reduce((sum, item) => sum + item.taxAmount, 0);
-      const totalWithTax = items.reduce((sum, item) => sum + item.totalWithTax, 0);
-
-      fakeOrders.push({
-        id: i + 1,
-        date: this.formatDate(orderDate),
-        customerId: i + 1,
-        carId: i + 1,
-        client: customer.name,
-        vehicle: vehicle,
-        address: customer.address,
-        phoneNumber: customer.phone,
-        fixedType: fixedTypes[Math.floor(Math.random() * fixedTypes.length)],
-        parking: parkingTypes[Math.floor(Math.random() * parkingTypes.length)],
-        taxAmount: totalTax,
-        totalBeforeTax: totalBeforeTax,
-        totalWithTax: totalWithTax,
-        items: items,
-      });
+    if (this.searchValue?.trim()) {
+      params.searchText = this.searchValue.trim();
     }
 
-    return fakeOrders;
+    if (this.startDate) {
+      params.orderDate = {
+        fromDate: this.formatDate(this.startDate),
+        toDate: this.endDate ? this.formatDate(this.endDate) : this.formatDate(this.startDate)
+      };
+    }
+
+    Object.assign(params, this.activeFilters);
+
+    this.ordersService.getOrderItemsList(params).subscribe({
+      next: (response: any) => {
+        this.loading = false;
+        if (response.success && response.data) {
+          console.log('Raw API response:', response.data);
+          this.orders = this.mapGroupedOrdersFromAPI(response.data.rowsList || []);
+          this.totalRecords = response.data.totalLength || 0;
+          this.calculateGrandTotals();
+        } else {
+          console.error('Failed to load orders:', response.message);
+          this.orders = [];
+        }
+      },
+      error: (err: any) => {
+        this.loading = false;
+        console.error('Error loading orders:', err);
+        alert('حدث خطأ أثناء تحميل الطلبات');
+        this.orders = [];
+      }
+    });
   }
+
+  mapGroupedOrdersFromAPI(groupedData: any[]): Order[] {
+    console.log('=== MAPPING GROUPED ORDERS ===');
+    console.log('Raw grouped data:', JSON.stringify(groupedData, null, 2));
+    
+    if (!groupedData || groupedData.length === 0) {
+      console.warn('No grouped data to map!');
+      return [];
+    }
+  
+    return groupedData.map((group, groupIndex) => {
+      console.log(`\n--- Processing group ${groupIndex} ---`);
+      console.log('Group structure:', Object.keys(group));
+      console.log('Group item (orderId):', group.item);
+      
+      const orderItems = group.subList || [];
+      console.log(`Group has ${orderItems.length} items`);
+      
+      if (orderItems.length === 0) {
+        console.warn('Group has no items, skipping');
+        return null;
+      }
+  
+      const firstItem = orderItems[0];
+      console.log('First item structure:', Object.keys(firstItem));
+      console.log('First item data:', JSON.stringify(firstItem, null, 2));
+      
+      // Log specific field availability
+      console.log('Field availability check:', {
+        hasCustomerName: !!firstItem.customerName || !!firstItem.customer?.customerName,
+        customerNameValue: firstItem.customerName || firstItem.customer?.customerName,
+        hasCarNumber: !!firstItem.carNumber || !!firstItem.car?.carNumber,
+        carNumberValue: firstItem.carNumber || firstItem.car?.carNumber,
+        hasAddress: !!firstItem.locationAddress || !!firstItem.order?.locationAddress,
+        addressValue: firstItem.locationAddress || firstItem.order?.locationAddress,
+        hasPhoneNumber: !!firstItem.customerPhoneNumber || !!firstItem.customer?.phoneNumber,
+        phoneNumberValue: firstItem.customerPhoneNumber || firstItem.customer?.phoneNumber,
+      });
+  
+      // Helper to safely get nested property
+      const safeGet = (obj: any, path: string, defaultVal: any = '') => {
+        const value = path.split('.').reduce((acc, part) => acc?.[part], obj);
+        console.log(`  ${path} = ${value || defaultVal}`);
+        return value || defaultVal;
+      };
+  
+      // Build order object with MULTIPLE fallback paths
+      const order: Order = {
+        id: group.item || 0,
+        date: group.orderDate || safeGet(firstItem, 'orderDate.shortDate'),
+        
+        // Customer ID - try multiple paths
+        customerId: firstItem.customerId || 
+                    firstItem.order?.customerId || 
+                    firstItem.customer?.customerId || 0,
+        
+        // Car ID - try multiple paths
+        carId: firstItem.carId || 
+               firstItem.order?.driverId || 
+               firstItem.car?.carId || 0,
+        
+        // Customer Name - CRITICAL FIELD
+        client: firstItem.customerName || 
+                firstItem.customer?.customerName || 
+                safeGet(firstItem, 'customer.customerName') || '',
+        
+        // Car Number - CRITICAL FIELD
+        vehicle: firstItem.carNumber || 
+                 firstItem.car?.carNumber || 
+                 safeGet(firstItem, 'car.carNumber') || '',
+        
+        // Address - CRITICAL FIELD
+        address: firstItem.locationAddress || 
+                 firstItem.order?.locationAddress || 
+                 safeGet(firstItem, 'order.locationAddress') || '',
+        
+        // Phone Number - CRITICAL FIELD
+        phoneNumber: firstItem.customerPhoneNumber || 
+                     firstItem.customer?.phoneNumber || 
+                     firstItem.customer?.customerPhoneNumber || 
+                     firstItem.customer?.customerMobileNumber || '',
+        
+        // Fixed Type - CRITICAL FIELD - check multiple paths
+        fixedType: firstItem.fixedType || 
+                   firstItem.order?.fixedType || 
+                   (firstItem.order?.fromLocationId ? `Loc-${firstItem.order.fromLocationId}` : '') || '',
+        
+        // Parking - CRITICAL FIELD - check multiple paths
+        parking: firstItem.parking || 
+                 firstItem.order?.parking || 
+                 firstItem.order?.shippingCertificateId || '',
+        
+        taxAmount: 0,
+        totalBeforeTax: 0,
+        totalWithTax: 0,
+        items: []
+      };
+  
+      console.log('Built base order:', order);
+  
+      // Map order items
+      order.items = orderItems.map((item: any, itemIndex: number) => {
+        console.log(`  Mapping item ${itemIndex}:`, Object.keys(item));
+        
+        const toNumber = (val: any): number => {
+          if (val === null || val === undefined || val === '') return 0;
+          const num = typeof val === 'string' ? parseFloat(val) : Number(val);
+          return isNaN(num) ? 0 : num;
+        };
+        
+        const mappedItem = {
+          orderItemId: item.orderItemId || 0,
+          orderId: group.item || 0,
+          productId: item.orderTypeId || item.productId || 0,
+          productCode: safeGet(item, 'product.productCode'),
+          productName: safeGet(item, 'product.productName') || safeGet(item, 'orderType.productName'),
+          description: safeGet(item, 'product.productName') || safeGet(item, 'orderType.productName'),
+          duration: item.duration || '',
+          quantity: toNumber(item.orderUnitsNumber || item.quantity),
+          price: toNumber(item.orderPrice || item.price),
+          totalBeforeTax: toNumber(item.orderTotalPriceWithOutVat || item.totalBeforeTax),
+          taxAmount: toNumber(item.orderTotalPriceVat || item.totalTax || item.taxAmount),
+          totalWithTax: toNumber(item.orderTotalPriceWithVat || item.totalWithTax),
+          beforeTax: toNumber(item.orderTotalPriceWithOutVat || item.totalBeforeTax),
+          tax: toNumber(item.orderTotalPriceVat || item.totalTax || item.taxAmount),
+          total: toNumber(item.orderTotalPriceWithVat || item.totalWithTax)
+        };
+        
+        console.log(`  Mapped item ${itemIndex}:`, mappedItem);
+        return mappedItem;
+      });
+  
+      // Calculate order totals
+      order.totalBeforeTax = order.items.reduce((sum, item) => sum + (item.totalBeforeTax || 0), 0);
+      order.taxAmount = order.items.reduce((sum, item) => sum + (item.taxAmount || 0), 0);
+      order.totalWithTax = order.items.reduce((sum, item) => sum + (item.totalWithTax || 0), 0);
+  
+      console.log('Final order with totals:', {
+        id: order.id,
+        totalBeforeTax: order.totalBeforeTax,
+        taxAmount: order.taxAmount,
+        totalWithTax: order.totalWithTax,
+        itemCount: order.items.length
+      });
+  
+      return order;
+    }).filter(order => order !== null) as Order[];
+  }
+  
 
   calculateGrandTotals() {
     this.grandTotalBeforeTax = this.orders.reduce((sum, order) => sum + (order.totalBeforeTax || 0), 0);
@@ -176,9 +270,13 @@ export class OrdersComponent implements OnInit {
     this.grandTotalWithTax = this.orders.reduce((sum, order) => sum + (order.totalWithTax || 0), 0);
   }
 
-  formatCurrency(value: number | undefined): string {
-    if (value === undefined || value === null) return '0₪';
-    return `${value.toFixed(2)}₪`;
+  formatCurrency(value: number | string | undefined): string {
+    if (value === undefined || value === null || value === '') return '0.00₪';
+    // Convert to number if it's a string
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    // Check if conversion resulted in valid number
+    if (isNaN(numValue)) return '0.00₪';
+    return `${numValue.toFixed(2)}₪`;
   }
 
   formatDate(date: Date): string {
@@ -191,19 +289,54 @@ export class OrdersComponent implements OnInit {
   }
 
   onSearch() {
+    this.currentPage = 0;
     this.loadOrders();
   }
 
   onDateFilterChange() {
+    this.currentPage = 0;
     this.loadOrders();
   }
 
   openAddOrderDialog() {
+    this.editingOrderId = null;
     this.showAddOrderDialog = true;
+  }
+
+  editOrder(order: Order) {
+    console.log('Editing order:', order);
+    this.editingOrderId = order.id;
+    
+    // Load full order details with items
+    this.loading = true;
+    this.ordersService.getOrderDetails(order.id, true).subscribe({
+      next: (response: any) => {
+        this.loading = false;
+        if (response.success && response.data) {
+          // Open dialog and populate with data
+          this.showAddOrderDialog = true;
+          
+          // Wait for dialog to open then populate
+          setTimeout(() => {
+            if (this.addOrderDialog) {
+              this.addOrderDialog.populateOrderData(response.data, order);
+            }
+          }, 100);
+        } else {
+          alert('فشل في تحميل بيانات الطلب');
+        }
+      },
+      error: (err: any) => {
+        this.loading = false;
+        console.error('Error loading order details:', err);
+        alert('حدث خطأ أثناء تحميل بيانات الطلب');
+      }
+    });
   }
 
   onDialogHide() {
     this.showAddOrderDialog = false;
+    this.editingOrderId = null;
   }
 
   onOrderSaved(orderData: any) {
@@ -220,9 +353,23 @@ export class OrdersComponent implements OnInit {
 
   deleteOrder(orderId: number) {
     if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) {
-      this.orders = this.orders.filter(order => order.id !== orderId);
-      this.calculateGrandTotals();
-      alert('تم حذف الطلب بنجاح');
+      this.loading = true;
+      this.ordersService.deleteOrder(orderId).subscribe({
+        next: (response: any) => {
+          this.loading = false;
+          if (response.success) {
+            alert('تم حذف الطلب بنجاح');
+            this.loadOrders();
+          } else {
+            alert('خطأ: ' + response.message);
+          }
+        },
+        error: (err: any) => {
+          this.loading = false;
+          console.error('Error deleting order:', err);
+          alert('حدث خطأ أثناء حذف الطلب');
+        }
+      });
     }
   }
 
@@ -259,7 +406,6 @@ export class OrdersComponent implements OnInit {
     this.mobileFiltersExpanded = !this.mobileFiltersExpanded;
     this.mobileSearchExpanded = false;
     this.showFiltersDialog = true;
-
   }
 
   toggleCalendars() {
@@ -269,22 +415,24 @@ export class OrdersComponent implements OnInit {
   }
 
   openStartDateCalendar() {
-    // Open the date range dialog instead of trying to show hidden calendars
     this.showDateRangeDialog = true;
   }
   
   openEndDateCalendar() {
-    // Open the date range dialog instead of trying to show hidden calendars
     this.showDateRangeDialog = true;
   }
 
   onApplyFilters(filters: FilterOptions) {
     console.log('Applied filters:', filters);
+    this.activeFilters = filters;
+    this.currentPage = 0;
+    this.loadOrders();
   }
 
   onApplyDateRange(dateRange: DateRange) {
     this.startDate = dateRange.startDate;
     this.endDate = dateRange.endDate;
+    this.currentPage = 0;
     this.loadOrders();
   }
 
@@ -299,12 +447,16 @@ export class OrdersComponent implements OnInit {
   addImmediateOrder() {
     this.showAddMenu = false;
     this.openAddOrderDialog();
-    // You can pass a parameter here to indicate it's an immediate order
   }
 
   addRegularOrder() {
     this.showAddMenu = false;
     this.openAddOrderDialog();
-    // You can pass a parameter here to indicate it's a regular order
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.page || 0;
+    this.itemsPerPage = event.rows || 50;
+    this.loadOrders();
   }
 }

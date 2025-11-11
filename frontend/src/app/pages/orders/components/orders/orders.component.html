@@ -189,7 +189,8 @@
                 (click)="deleteOrder(order.id)"></button>
             </td>
             <td class="action-col">
-              <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm edit-btn"></button>
+              <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm edit-btn" 
+  (click)="editOrder(order)"></button>  
             </td>
             <td class="action-col">
               <button type="button" pButton [pRowToggler]="order"

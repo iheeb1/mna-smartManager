@@ -16,52 +16,72 @@ export class OrdersService {
   ) {}
 
   /**
-   * Save or update an order (matching C# Save method)
+   * Save or update an order - FIXED to handle flat structure from frontend
    */
-  async save(orderDto: OrderDto): Promise<Order> {
+  async save(orderDto: any): Promise<Order> {
     const isNew = !orderDto.orderId || orderDto.orderId <= 0;
 
-    // Map DTO to entity
-    const order = this.mapDtoToEntity(orderDto);
+    console.log('Received orderDto:', JSON.stringify(orderDto, null, 2));
+
+    // Create order entity from flat structure
+    const orderEntity: Partial<Order> = {
+      orderId: orderDto.orderId || undefined,
+      customerId: orderDto.customerId,
+      driverId: orderDto.driverId || null,
+      locationAddress: orderDto.locationAddress || null,
+      orderNotes: orderDto.orderNotes || null,
+      orderDate: orderDto.orderDate ? new Date(orderDto.orderDate) : new Date(),
+      orderIncludeVat: orderDto.orderIncludeVat || 0,
+      orderTotalPriceWithOutVat: orderDto.orderTotalPriceWithOutVat || 0,
+      orderTotalPriceVat: orderDto.orderTotalPriceVat || 0,
+      orderTotalPriceWithVat: orderDto.orderTotalPriceWithVat || 0,
+      orderStatusId: orderDto.orderStatusId || 1,
+      createdBy: orderDto.createdBy || 1,
+      modifiedBy: orderDto.modifiedBy || 1,
+    };
+
+    console.log('Saving order entity:', orderEntity);
 
     // Save the order
-    const savedOrder = await this.ordersRepository.save(order);
+    const savedOrder = await this.ordersRepository.save(orderEntity);
+
+    console.log('Saved order:', savedOrder);
 
     // Handle order items if present
-    if (savedOrder.orderId > 0 && orderDto.orderItems && orderDto.orderItems.length > 0) {
-      // Filter items: keep existing items or new items with status != 99
-      const filteredItems = orderDto.orderItems.filter(
-        (item) => item.orderItemId > 0 || (item.orderItemId <= 0 && item.orderStatus?.lookUpId !== 99)
-      );
+    if (savedOrder.orderId && orderDto.orderItems && orderDto.orderItems.length > 0) {
+      console.log('Processing order items...');
+      
+      for (const itemDto of orderDto.orderItems) {
+        const orderItemEntity: Partial<OrderItem> = {
+          orderItemId: itemDto.orderItemId > 0 ? itemDto.orderItemId : undefined,
+          orderId: savedOrder.orderId,
+          orderTypeId: itemDto.orderTypeId,
+          orderUnitsNumber: itemDto.orderUnitsNumber || 0,
+          orderPrice: itemDto.orderPrice || 0,
+          orderVat: itemDto.orderVat || 0,
+          orderIncludeVat: itemDto.orderIncludeVat || 0,
+          orderTotalPriceWithOutVat: itemDto.orderTotalPriceWithOutVat || 0,
+          orderTotalPriceVat: itemDto.orderTotalPriceVat || 0,
+          orderTotalPriceWithVat: itemDto.orderTotalPriceWithVat || 0,
+          orderCost: itemDto.orderCost || 0,
+          orderTotalCost: itemDto.orderTotalCost || 0,
+          orderStatusId: itemDto.orderStatusId || 1,
+          orderDate: savedOrder.orderDate,
+          createdBy: orderDto.createdBy || 1,
+          modifiedBy: orderDto.modifiedBy || 1,
+        };
 
-      for (const itemDto of filteredItems) {
-        if (itemDto.orderStatus?.lookUpId === 99) {
-          // Delete item if status is 99
-          if (itemDto.orderItemId > 0) {
-            await this.orderItemsRepository.delete(itemDto.orderItemId);
-          }
-        } else {
-          // Save or update item
-          const orderItem = this.orderItemsRepository.create({
-            ...itemDto,
-            orderId: savedOrder.orderId,
-            orderDate: new Date(),
-          });
-          await this.orderItemsRepository.save(orderItem);
-        }
+        console.log('Saving order item:', orderItemEntity);
+        await this.orderItemsRepository.save(orderItemEntity);
       }
     }
 
-    // Return fresh data if updating
-    if (!isNew) {
-      return this.getOrderDetails(savedOrder.orderId, false);
-    }
-
-    return savedOrder;
+    // Return fresh data with items
+    return this.getOrderDetails(savedOrder.orderId, true);
   }
 
   /**
-   * Get orders list with complex filtering (matching C# GetOrdersList)
+   * Get orders list with complex filtering
    */
   async getOrdersList(params: GetOrdersListDto): Promise<any[]> {
     const queryBuilder = this.buildOrdersQuery(params);
@@ -79,7 +99,7 @@ export class OrdersService {
         order.orderItems = await this.orderItemsRepository.find({
           where: {
             orderId: order.orderId,
-            orderStatusId: 1, // Active status
+            orderStatusId: 1,
           },
         });
       }
@@ -89,7 +109,7 @@ export class OrdersService {
   }
 
   /**
-   * Get orders count (matching C# GetOrdersListCount)
+   * Get orders count
    */
   async getOrdersListCount(params: GetOrdersListDto): Promise<number> {
     const queryBuilder = this.buildOrdersQuery(params);
@@ -97,11 +117,13 @@ export class OrdersService {
   }
 
   /**
-   * Get single order details (matching C# GetOrderDetails)
+   * Get single order details - FIXED to return proper structure
    */
   async getOrderDetails(orderId: number, includeOrderItems: boolean = false): Promise<any> {
     const order = await this.ordersRepository
       .createQueryBuilder('order')
+      .leftJoinAndSelect('customer', 'c', 'order.customerId = c.customerId')
+      .leftJoinAndSelect('car', 'car', 'order.driverId = car.carId')
       .where('order.orderId = :orderId', { orderId })
       .getOne();
 
@@ -109,22 +131,62 @@ export class OrdersService {
       return null;
     }
 
+    const orderDto: any = {
+      orderId: order.orderId,
+      customerId: order.customerId,
+      carId: order.driverId,
+      locationAddress: order.locationAddress,
+      orderNotes: order.orderNotes,
+      contractNumber: order.shippingCertificateId,
+      orderDate: {
+        fullDate: order.orderDate,
+        shortDate: this.formatDate(order.orderDate),
+      },
+      orderPrice: {
+        itemIncludeVat: order.orderIncludeVat === 1,
+        totalItemPriceWithOutVat: order.orderTotalPriceWithOutVat,
+        totalItemPriceVat: order.orderTotalPriceVat,
+        totalItemPriceWithVat: order.orderTotalPriceWithVat,
+      },
+      orderStatus: {
+        lookUpId: order.orderStatusId,
+      },
+    };
+
     if (includeOrderItems) {
-      order.orderItems = await this.orderItemsRepository.find({
-        where: {
-          orderId: order.orderId,
-          orderStatusId: 1,
-        },
+      const items = await this.orderItemsRepository
+        .createQueryBuilder('item')
+        .leftJoinAndSelect('product', 'p', 'item.orderTypeId = p.productId')
+        .where('item.orderId = :orderId', { orderId })
+        .andWhere('item.orderStatusId = 1')
+        .getRawAndEntities();
+
+      orderDto.orderItems = items.entities.map((item, index) => {
+        const raw = items.raw[index];
+        return {
+          orderItemId: item.orderItemId,
+          productId: item.orderTypeId,
+          productCode: raw?.p_productCode || '',
+          productName: raw?.p_productName || '',
+          quantity: item.orderUnitsNumber,
+          price: item.orderPrice,
+          totalBeforeTax: item.orderTotalPriceWithOutVat,
+          taxAmount: item.orderTotalPriceVat,
+          totalWithTax: item.orderTotalPriceWithVat,
+        };
       });
     }
 
-    return this.mapEntityToDto(order);
+    return orderDto;
   }
 
   /**
-   * Delete single order (matching C# DeleteOrder)
+   * Delete single order
    */
   async deleteOrder(orderId: number): Promise<void> {
+    // Delete order items first
+    await this.orderItemsRepository.delete({ orderId });
+    // Then delete order
     await this.ordersRepository.delete(orderId);
   }
 
@@ -134,6 +196,13 @@ export class OrdersService {
   async deleteOrders(orderIds: string): Promise<void> {
     const ids = StringUtils.toIntArray(orderIds);
     if (ids.length > 0) {
+      // Delete order items first
+      await this.orderItemsRepository
+        .createQueryBuilder()
+        .delete()
+        .where('orderId IN (:...ids)', { ids })
+        .execute();
+      // Then delete orders
       await this.ordersRepository.delete(ids);
     }
   }
@@ -154,12 +223,11 @@ export class OrdersService {
   }
 
   /**
-   * Build complex query with all filters (matching C# stored procedure)
+   * Build complex query with all filters
    */
   private buildOrdersQuery(params: GetOrdersListDto): SelectQueryBuilder<Order> {
     const queryBuilder = this.ordersRepository.createQueryBuilder('order');
 
-    // OrderIds filter
     if (params.orderIds) {
       const ids = StringUtils.toIntArray(params.orderIds);
       if (ids.length > 0) {
@@ -167,7 +235,6 @@ export class OrdersService {
       }
     }
 
-    // CustomerIds filter
     if (params.customer?.customerIds) {
       const ids = StringUtils.toIntArray(params.customer.customerIds);
       if (ids.length > 0) {
@@ -175,44 +242,6 @@ export class OrdersService {
       }
     }
 
-    // CustomerIdz filter (ID number search)
-    if (params.customer?.customerIdz) {
-      queryBuilder.andWhere('order.customerId IN (SELECT customerId FROM mng_customers WHERE customerIdz LIKE :customerIdz)', {
-        customerIdz: `%${params.customer.customerIdz}%`,
-      });
-    }
-
-    // CustomerName filter
-    if (params.customer?.customerName) {
-      queryBuilder.andWhere('order.customerId IN (SELECT customerId FROM mng_customers WHERE customerName LIKE :customerName)', {
-        customerName: `%${params.customer.customerName}%`,
-      });
-    }
-
-    // CarIds filter
-    if (params.car?.carIds) {
-      const ids = StringUtils.toIntArray(params.car.carIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.driverId IN (:...carIds)', { carIds: ids });
-      }
-    }
-
-    // CarNumber filter
-    if (params.car?.carNumber) {
-      queryBuilder.andWhere('order.driverId IN (SELECT carId FROM mng_cars WHERE carNumber LIKE :carNumber)', {
-        carNumber: `%${params.car.carNumber}%`,
-      });
-    }
-
-    // OrderTypeIds filter
-    if (params.orderType?.productIds) {
-      const ids = StringUtils.toIntArray(params.orderType.productIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.orderTypeId IN (:...orderTypeIds)', { orderTypeIds: ids });
-      }
-    }
-
-    // Order date range
     if (params.orderDate?.fromDate && params.orderDate?.toDate) {
       queryBuilder.andWhere('order.orderDate BETWEEN :fromOrderDate AND :toOrderDate', {
         fromOrderDate: `${params.orderDate.fromDate} 00:00:00`,
@@ -220,100 +249,7 @@ export class OrdersService {
       });
     }
 
-    // OrderStatusIds filter
-    if (params.orderStatus?.lookUpIds) {
-      const ids = StringUtils.toIntArray(params.orderStatus.lookUpIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.orderStatusId IN (:...orderStatusIds)', { orderStatusIds: ids });
-      }
-    }
-
-    // ShippingCertificateId filter
-    if (params.shippingCertificateId) {
-      queryBuilder.andWhere('order.shippingCertificateId LIKE :shippingCertificateId', {
-        shippingCertificateId: `%${params.shippingCertificateId}%`,
-      });
-    }
-
-    // FromLocationIds filter
-    if (params.fromLocation?.lookUpIds) {
-      const ids = StringUtils.toIntArray(params.fromLocation.lookUpIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.fromLocationId IN (:...fromLocationIds)', { fromLocationIds: ids });
-      }
-    }
-
-    // ToLocationIds filter
-    if (params.toLocation?.lookUpIds) {
-      const ids = StringUtils.toIntArray(params.toLocation.lookUpIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.toLocationId IN (:...toLocationIds)', { toLocationIds: ids });
-      }
-    }
-
-    // CreatedByIds filter
-    if (params.createdBy?.userIds) {
-      const ids = StringUtils.toIntArray(params.createdBy.userIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.createdBy IN (:...createdByIds)', { createdByIds: ids });
-      }
-    }
-
-    // ModifiedByIds filter
-    if (params.modifiedBy?.userIds) {
-      const ids = StringUtils.toIntArray(params.modifiedBy.userIds);
-      if (ids.length > 0) {
-        queryBuilder.andWhere('order.modifiedBy IN (:...modifiedByIds)', { modifiedByIds: ids });
-      }
-    }
-
-    // Created date range
-    if (params.createdDate?.fromDate && params.createdDate?.toDate) {
-      queryBuilder.andWhere('order.createdDate BETWEEN :fromCreatedDate AND :toCreatedDate', {
-        fromCreatedDate: `${params.createdDate.fromDate} 00:00:00`,
-        toCreatedDate: `${params.createdDate.toDate} 23:59:59`,
-      });
-    }
-
-    // Modified date range
-    if (params.modifiedDate?.fromDate && params.modifiedDate?.toDate) {
-      queryBuilder.andWhere('order.modifiedDate BETWEEN :fromModifiedDate AND :toModifiedDate', {
-        fromModifiedDate: `${params.modifiedDate.fromDate} 00:00:00`,
-        toModifiedDate: `${params.modifiedDate.toDate} 23:59:59`,
-      });
-    }
-
     return queryBuilder;
-  }
-
-  /**
-   * Map DTO to Entity for saving
-   */
-  private mapDtoToEntity(dto: OrderDto): Partial<Order> {
-    return {
-      orderId: dto.orderId,
-      customerId: dto.customer?.customerId,
-      driverId: dto.car?.carId,
-      orderTypeId: dto.orderType?.productId,
-      orderUnitsNumber: dto.orderUnitsNumber,
-      orderPrice: dto.orderPrice?.itemPrice,
-      orderVat: dto.orderPrice?.itemVat,
-      orderIncludeVat: dto.orderPrice?.itemIncludeVat ? 1 : 0,
-      orderTotalPriceWithOutVat: dto.orderPrice?.totalItemPriceWithOutVat,
-      orderTotalPriceVat: dto.orderPrice?.totalItemPriceVat,
-      orderTotalPriceWithVat: dto.orderPrice?.totalItemPriceWithVat,
-      orderTotalCost: dto.orderPrice?.totalItemCost,
-      orderStatusId: dto.orderStatus?.lookUpId,
-      shippingCertificateId: dto.shippingCertificateId,
-      meters: dto.meters,
-      cubes: dto.cubes,
-      fromLocationId: dto.fromLocation?.lookUpId,
-      toLocationId: dto.toLocation?.lookUpId,
-      orderNotes: dto.orderNotes,
-      orderDate: dto.orderDate?.fullDate || new Date(),
-      createdBy: dto.createdBy?.userId,
-      modifiedBy: dto.modifiedBy?.userId,
-    };
   }
 
   /**
@@ -322,65 +258,24 @@ export class OrdersService {
   private mapEntityToDto(entity: Order): any {
     return {
       orderId: entity.orderId,
-      customer: {
-        customerId: entity.customerId,
-      },
-      car: {
-        carId: entity.driverId,
-      },
-      orderType: {
-        productId: entity.orderTypeId,
-      },
+      customerId: entity.customerId,
+      carId: entity.driverId,
+      locationAddress: entity.locationAddress,
+      orderNotes: entity.orderNotes,
+      totalBeforeTax: entity.orderTotalPriceWithOutVat || 0,
+      totalTax: entity.orderTotalPriceVat || 0,
+      totalWithTax: entity.orderTotalPriceWithVat || 0,
       orderDate: {
         fullDate: entity.orderDate,
-        shortDate: entity.orderDate ? this.formatDate(entity.orderDate) : '',
-      },
-      orderUnitsNumber: entity.orderUnitsNumber,
-      orderPrice: {
-        itemPrice: entity.orderPrice,
-        itemVat: entity.orderVat,
-        itemIncludeVat: entity.orderIncludeVat === 1,
-        totalItemPriceWithOutVat: entity.orderTotalPriceWithOutVat,
-        totalItemPriceVat: entity.orderTotalPriceVat,
-        totalItemPriceWithVat: entity.orderTotalPriceWithVat,
-        totalItemCost: entity.orderTotalCost,
-      },
-      orderStatus: {
-        lookUpId: entity.orderStatusId,
-      },
-      orderNotes: entity.orderNotes,
-      fromLocation: {
-        lookUpId: entity.fromLocationId,
-      },
-      toLocation: {
-        lookUpId: entity.toLocationId,
-      },
-      shippingCertificateId: entity.shippingCertificateId,
-      meters: entity.meters,
-      cubes: entity.cubes,
-      createdBy: {
-        userId: entity.createdBy,
-      },
-      modifiedBy: {
-        userId: entity.modifiedBy,
-      },
-      createdDate: {
-        fullDate: entity.createdDate,
-        shortDate: this.formatDate(entity.createdDate),
-      },
-      modifiedDate: {
-        fullDate: entity.modifiedDate,
-        shortDate: this.formatDate(entity.modifiedDate),
+        shortDate: this.formatDate(entity.orderDate),
       },
       orderItems: entity.orderItems || [],
     };
   }
 
-
   private mapEntitiesToDtos(entities: Order[]): any[] {
     return entities.map((entity) => this.mapEntityToDto(entity));
   }
-
 
   private formatDate(date: Date): string {
     if (!date) return '';

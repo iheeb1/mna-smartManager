@@ -15,7 +15,6 @@ export class FooterNavComponent {
     { icon: 'assets/icons/profile_icon.svg', label: 'العملاء', route: '/customers' },
     { icon: 'assets/icons/truck_icon.svg', label: 'المركبات', route: '/cars' },
     { icon: 'assets/icons/register_icon.svg', label: 'التقارير', route: '/reports' },
-    { icon: 'assets/icons/payments_icon.svg', label: 'المدفوعات', route: '/payments' },
     { icon: 'assets/icons/box_icon.svg', label: 'الطلبات', route: '/orders' }
   ];
 }

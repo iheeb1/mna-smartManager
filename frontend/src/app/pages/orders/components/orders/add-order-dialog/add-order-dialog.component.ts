@@ -37,6 +37,7 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
   @Output() onOrderSaved = new EventEmitter<any>();
 
   isMobile: boolean = false;
+  editingOrderId: number | null = null;
 
   orderData = {
     customerId: null as number | null,
@@ -48,8 +49,8 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
     notes: '',
   };
 
-  // Array to hold multiple order item rows
   orderItemRows: Array<{
+    orderItemId?: number;
     productId: number | null;
     quantity: number;
     price: number;
@@ -93,7 +94,6 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
   loadInitialData() {
     this.loading = true;
 
-    // Load tax rate
     this.lookupsService.getTaxRate().subscribe({
       next: (rate: number) => {
         this.taxRate = rate;
@@ -101,7 +101,6 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
       error: (err: any) => console.error('Error loading tax rate:', err),
     });
 
-    // Load customers
     this.customersService.getCustomersList({ itemsPerPage: 100 }).subscribe({
       next: (response: any) => {
         if (response.success && response.data?.rowsList) {
@@ -119,7 +118,6 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
       },
     });
 
-    // Load products
     this.productsService.getProductsList({ itemsPerPage: 100 }).subscribe({
       next: (response: any) => {
         if (response.success && response.data?.rowsList) {
@@ -134,6 +132,45 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Populate dialog with existing order data for editing
+   */
+  populateOrderData(orderData: any, order: any) {
+    console.log('Populating dialog with order data:', orderData, order);
+    
+    this.editingOrderId = order.id;
+    
+    // Set basic order data
+    this.orderData.customerId = orderData.customerId || order.customerId;
+    this.orderData.carId = orderData.carId || order.carId;
+    this.orderData.addressLine1 = orderData.locationAddress || order.address;
+    this.orderData.orderDate = orderData.orderDate?.fullDate ? new Date(orderData.orderDate.fullDate) : new Date(order.date);
+    this.orderData.includeVAT = orderData.orderPrice?.itemIncludeVat !== false;
+    this.orderData.contractNumber = orderData.contractNumber || '';
+    this.orderData.notes = orderData.orderNotes || '';
+
+    // Load vehicles and addresses for selected customer
+    if (this.orderData.customerId) {
+      this.onCustomerChange({ value: this.orderData.customerId });
+    }
+
+    // Populate order items
+    if (order.items && order.items.length > 0) {
+      this.orderItemRows = order.items.map((item: any) => ({
+        orderItemId: item.orderItemId,
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+        totalBeforeTax: item.totalBeforeTax,
+        taxAmount: item.taxAmount,
+        totalWithTax: item.totalWithTax,
+      }));
+    } else {
+      this.orderItemRows = [];
+      this.addRow();
+    }
+  }
+
   onCustomerChange(event: any) {
     const customerId = event.value;
     if (!customerId) {
@@ -142,7 +179,6 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Load vehicles for selected customer
     this.carsService.getCarsByCustomerId(customerId).subscribe({
       next: (response: any) => {
         if (response.success && response.data) {
@@ -156,7 +192,6 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
       error: (err: any) => console.error('Error loading vehicles:', err),
     });
 
-    // Load customer addresses
     this.customersService.getCustomerDetails(customerId).subscribe({
       next: (response: any) => {
         if (response.success && response.data) {
@@ -208,7 +243,6 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   onVATChange() {
-    // Recalculate all rows when VAT checkbox changes
     this.orderItemRows.forEach((_, index) => {
       this.calculateRowTotals(index);
     });
@@ -245,71 +279,79 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
     return this.orderItemRows.reduce((sum, row) => sum + (row.totalWithTax || 0), 0);
   }
 
-  formatCurrency(value: number): string {
-    if (!value) return '0.00₪';
-    return `${value.toFixed(2)}₪`;
+  formatCurrency(value: number | string): string {
+    if (!value || value === '') return '0.00₪';
+    // Convert to number if it's a string
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    // Check if conversion resulted in valid number
+    if (isNaN(numValue)) return '0.00₪';
+    return `${numValue.toFixed(2)}₪`;
   }
 
   onSave() {
-    // Validation
     if (!this.orderData.customerId) {
       alert('يرجى اختيار العميل');
       return;
     }
 
-    // Filter out empty rows and validate
     const validRows = this.orderItemRows.filter(
-      (row) => row.productId && row.quantity > 0
+      (row) => row.productId && row.quantity > 0 && row.price > 0
     );
 
     if (validRows.length === 0) {
-      alert('يرجى إضافة منتج واحد على الأقل مع كمية صحيحة');
+      alert('يرجى إضافة منتج واحد على الأقل مع كمية وسعر صحيحين');
       return;
     }
 
-    // Map rows to OrderItem format
-    const orderItems: OrderItem[] = validRows.map((row) => {
+    const orderItems = validRows.map((row) => {
       const selectedProduct = this.productOptions.find((p) => p.value === row.productId);
       return {
+        orderItemId: row.orderItemId || 0,
         productId: row.productId!,
-        productCode: selectedProduct?.data?.productCode,
-        productName: selectedProduct?.data?.productName,
-        quantity: row.quantity,
-        price: row.price,
-        totalBeforeTax: row.totalBeforeTax,
-        taxAmount: row.taxAmount,
-        totalWithTax: row.totalWithTax,
+        productCode: selectedProduct?.data?.productCode || '',
+        productName: selectedProduct?.data?.productName || '',
+        quantity: Number(row.quantity),
+        price: Number(row.price),
+        totalBeforeTax: Number(row.totalBeforeTax),
+        taxAmount: Number(row.taxAmount),
+        totalWithTax: Number(row.totalWithTax),
       };
     });
 
-    const saveRequest: SaveOrderRequest = {
+    const saveRequest = {
+      orderId: this.editingOrderId || 0,
       customerId: this.orderData.customerId,
-      carId: this.orderData.carId || undefined,
-      addressLine1: this.orderData.addressLine1 || undefined,
+      carId: this.orderData.carId || null,
+      addressLine1: this.orderData.addressLine1 || '',
       orderDate: this.formatDate(this.orderData.orderDate),
       includeVAT: this.orderData.includeVAT,
-      contractNumber: this.orderData.contractNumber,
-      notes: this.orderData.notes,
+      contractNumber: this.orderData.contractNumber || '',
+      notes: this.orderData.notes || '',
       items: orderItems,
     };
+
+    console.log('Saving order with data:', saveRequest);
 
     this.loading = true;
     this.ordersService.saveOrderItem(saveRequest).subscribe({
       next: (response: any) => {
         this.loading = false;
+        console.log('Save response:', response);
+        
         if (response.success) {
-          alert('تم حفظ الطلب بنجاح');
+          alert(this.editingOrderId ? 'تم تحديث الطلب بنجاح' : 'تم حفظ الطلب بنجاح');
           this.onOrderSaved.emit(response.data);
           this.closeDialog();
           this.resetForm();
         } else {
-          alert('خطأ: ' + response.message);
+          alert('خطأ: ' + (response.message || 'فشل حفظ الطلب'));
         }
       },
       error: (err: any) => {
         this.loading = false;
         console.error('Error saving order:', err);
-        alert('حدث خطأ أثناء حفظ الطلب');
+        const errorMsg = err.error?.message || err.message || 'حدث خطأ أثناء حفظ الطلب';
+        alert('خطأ: ' + errorMsg);
       },
     });
   }
@@ -324,6 +366,7 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   resetForm() {
+    this.editingOrderId = null;
     this.orderData = {
       customerId: null,
       carId: null,
@@ -334,7 +377,7 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
       notes: '',
     };
     this.orderItemRows = [];
-    this.addRow(); // Add one empty row
+    this.addRow();
     this.vehicleOptions = [];
     this.addressOptions = [];
   }
@@ -343,6 +386,7 @@ export class AddOrderDialogComponent implements OnInit, OnDestroy {
     this.visible = false;
     this.visibleChange.emit(false);
     this.onHide.emit();
+    this.resetForm();
   }
 
   closeDialog() {
