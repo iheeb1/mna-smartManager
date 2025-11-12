@@ -7,10 +7,11 @@ import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { FooterNavComponent } from '../../../shared/components/footer-nav/footer-nav.component';
 import { DashboardTotals, SystemBackup, AlertAndClaim, ClearedCheck, ReportsService } from '../services/reports.services';
-
 
 interface DropdownOption {
   label: string;
@@ -29,9 +30,11 @@ interface DropdownOption {
     TableModule,
     DropdownModule,
     TabViewModule,
+    ToastModule,
     HeaderComponent,
     FooterNavComponent,
   ],
+  providers: [MessageService],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss'],
 })
@@ -54,8 +57,12 @@ export class ReportsComponent implements OnInit {
   clearedChecks: ClearedCheck[] = [];
 
   isLoading: boolean = true;
+  isBackupInProgress: boolean = false;
 
-  constructor(private reportsService: ReportsService) {}
+  constructor(
+    private reportsService: ReportsService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
     this.initializeDropdowns();
@@ -186,6 +193,44 @@ export class ReportsComponent implements OnInit {
   }
 
   /**
+   * Handle backup button click
+   */
+  async onBackupClick() {
+    if (this.isBackupInProgress) {
+      return;
+    }
+
+    this.isBackupInProgress = true;
+
+    try {
+      // TODO: Replace with actual user ID from authentication service
+      const currentUserId = 1; // You should get this from your auth service
+      
+      const response = await this.reportsService.executeBackup(currentUserId);
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'نجح',
+        detail: 'تم إنشاء النسخة الاحتياطية بنجاح',
+        life: 3000,
+      });
+
+      // Reload system backups to show the new backup
+      await this.loadSystemBackups();
+    } catch (error) {
+      console.error('Error executing backup:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'خطأ',
+        detail: 'فشل في إنشاء النسخة الاحتياطية. يرجى المحاولة مرة أخرى',
+        life: 5000,
+      });
+    } finally {
+      this.isBackupInProgress = false;
+    }
+  }
+
+  /**
    * Get customer IDs based on selected department
    */
   getCustomerIds(): string {
@@ -194,7 +239,6 @@ export class ReportsComponent implements OnInit {
     }
 
     // Map department to customer IDs
-    // Example implementation:
     const departmentCustomerMap: Record<string, string> = {
       dept1: '1,2,3',
       dept2: '4,5,6',

@@ -86,66 +86,66 @@
 
           <!-- Table Body -->
           <div class="table-body">
-            <div class="table-row" *ngFor="let invoice of invoices" [class.expanded]="expandedRows[invoice.id]">
+            <div class="table-row" *ngFor="let invoice of invoices" [class.expanded]="expandedRows[invoice.transactionId]">
               <!-- Mobile Card Header -->
               <div class="card-header" (click)="toggleMobileCard(invoice)">
                 <div class="card-title">
                   <button class="menu-btn" (click)="showInvoiceMenu($event, invoice); $event.stopPropagation()">
                     <i class="pi pi-ellipsis-v"></i>
                   </button>
-                  <span class="date-text">{{ invoice.date }}</span>
-                  <span class="description-text">{{ invoice.description }}</span>
+                  <span class="date-text">{{ invoice.shortDate }}</span>
+                  <span class="description-text">{{ invoice.customerName }}</span>
                 </div>
             
                 <div class="card-main-info">
                   <div class="info-group">
                     <div class="info-label">סכום</div>
-                    <div class="info-value">{{ invoice.amount }}</div>
+                    <div class="info-value">{{ invoice.transactionOrderAmount }}</div>
                   </div>
                   <div class="info-group">
                     <div class="info-label">כולל מע"מ</div>
-                    <div class="info-value">{{ invoice.totalVat }}</div>
+                    <div class="info-value">{{ invoice.transactionTotal }}</div>
                   </div>
                   <div class="info-group">
                     <div class="info-label">יתרה</div>
-                    <div class="info-value">{{ invoice.balance }}</div>
+                    <div class="info-value">{{ invoice.transactionTotal }}</div>
                   </div>
                 </div>
             
                 <div class="card-totals">
                   <div class="total-item">
                     <div class="total-label">רכב</div>
-                    <div class="total-value">{{ invoice.vehicle }}</div>
+                    <div class="total-value">{{ invoice.carNumber || 'N/A' }}</div>
                   </div>
                   <div class="total-item">
                     <div class="total-label">תיאור</div>
-                    <div class="total-value">{{ invoice.type }}</div>
+                    <div class="total-value">{{ invoice.transactionType }}</div>
                   </div>
                   <div class="total-item">
                     <div class="total-label">כתובת</div>
-                    <div class="total-value">{{ invoice.address }}</div>
+                    <div class="total-value">N/A</div>
                   </div>
                 </div>
               </div>
             
               <!-- Expand Icon -->
               <div class="expand-icon" (click)="toggleMobileCard(invoice); $event.stopPropagation()">
-                <i class="pi" [class.pi-chevron-down]="!expandedRows[invoice.id]" 
-                   [class.pi-chevron-up]="expandedRows[invoice.id]"></i>
+                <i class="pi" [class.pi-chevron-down]="!expandedRows[invoice.transactionId]" 
+                   [class.pi-chevron-up]="expandedRows[invoice.transactionId]"></i>
               </div>
             
               <!-- Expanded Details Section - Shows when card is expanded -->
-              <div class="card-details" *ngIf="expandedRows[invoice.id]">
+              <div class="card-details" *ngIf="expandedRows[invoice.transactionId]">
                 <!-- Header Section -->
                 <div class="expanded-header">
                   <div class="expanded-header-title">
-                    <span class="header-description">{{ invoice.description }}</span>
-                    <span class="header-vehicle">{{ invoice.vehicle }}</span>
+                    <span class="header-description">{{ invoice.customerName }}</span>
+                    <span class="header-vehicle">{{ invoice.carNumber || 'N/A' }}</span>
                   </div>
                   <div class="expanded-header-meta">
                     <div class="meta-item">
                       <span class="meta-label">כתובת</span>
-                      <span class="meta-value">{{ invoice.address }}</span>
+                      <span class="meta-value">N/A</span>
                     </div>
                   </div>
                 </div>
@@ -171,16 +171,16 @@
                   <i class="pi pi-pencil"></i>
                 </button>
               </div>
-              <div class="row-cell">{{ invoice.balance }}</div>
-              <div class="row-cell">{{ invoice.totalVat }}</div>
-              <div class="row-cell">{{ invoice.amount }}</div>
-              <div class="row-cell">{{ invoice.discount }}</div>
-              <div class="row-cell">{{ invoice.vehicle }}</div>
-              <div class="row-cell">{{ invoice.address }}</div>
-              <div class="row-cell">{{ invoice.type }}</div>
+              <div class="row-cell">{{ invoice.transactionTotal }}</div>
+              <div class="row-cell">0</div>
+              <div class="row-cell">{{ invoice.transactionOrderAmount }}</div>
+              <div class="row-cell">0</div>
+              <div class="row-cell">{{ invoice.carNumber || 'N/A' }}</div>
+              <div class="row-cell">N/A</div>
+              <div class="row-cell">{{ invoice.transactionType }}</div>
               <div class="row-cell description-cell">
-                <div class="description-text">{{ invoice.description }}</div>
-                <div class="date-text">{{ invoice.date }}</div>
+                <div class="description-text">{{ invoice.customerName }}</div>
+                <div class="date-text">{{ invoice.shortDate }}</div>
               </div>
             </div>
 </div>
@@ -238,11 +238,11 @@
             <div class="contact-row">
               <div class="contact-item">
                 <div class="contact-label">اسم العميل</div>
-                <div class="contact-value">{{ contactDetails.clientName }}</div>
+                <div class="contact-value">{{ contactDetails?.customerName }}</div>
               </div>
               <div class="contact-item">
                 <div class="contact-label">العنوان</div>
-                <div class="contact-value">{{ contactDetails.address }}</div>
+                <div class="contact-value">{{ contactDetails?.customerAddressLine1 }}</div>
               </div>
             </div>
           </div>
@@ -260,21 +260,21 @@
             <div class="contact-row">
               <div class="contact-item">
                 <div class="contact-label">טלפון</div>
-                <div class="contact-value">{{ contactDetails.phone }}</div>
+                <div class="contact-value">{{ contactDetails?.customerPhoneNumber }}</div>
               </div>
               <div class="contact-item">
                 <div class="contact-label">فاكس</div>
-                <div class="contact-value">{{ contactDetails.fax }}</div>
+                <div class="contact-value">N/A</div>
               </div>
             </div>
             <div class="contact-row">
               <div class="contact-item">
                 <div class="contact-label">נייד</div>
-                <div class="contact-value">{{ contactDetails.mobile }}</div>
+                <div class="contact-value">{{ contactDetails?.customerMobileNumber }}</div>
               </div>
               <div class="contact-item">
                 <div class="contact-label">אימייל</div>
-                <div class="contact-value email">{{ contactDetails.email }}</div>
+                <div class="contact-value email">{{ contactDetails?.customerEmails }}</div>
               </div>
             </div>
           </div>

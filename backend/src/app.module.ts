@@ -25,6 +25,7 @@ import { LookupsModule } from './lookups/lookups.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { ExpenseItemsModule } from './expense-items/expense-items.module';
 import { ReportsModule } from './reports/reports.module';
+import { TransactionModule } from './transactions/transactions.module'; // ✅ Import correct
 
 @Module({
   imports: [
@@ -62,7 +63,8 @@ import { ReportsModule } from './reports/reports.module';
     LookupsModule,
     ExpensesModule,
     ExpenseItemsModule,
-    ReportsModule
+    ReportsModule,
+    TransactionModule
   ],
   controllers: [AppController],
   providers: [AppService],

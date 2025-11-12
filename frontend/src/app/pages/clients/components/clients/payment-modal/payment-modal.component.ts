@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -56,8 +56,9 @@ interface Check {
 })
 export class PaymentModalComponent implements OnInit, OnDestroy {
   @Input() visible: boolean = false;
+  @Input() customerId: number = 0;
   @Output() visibleChange = new EventEmitter<boolean>();
-  @Output() onSave = new EventEmitter<PaymentData>();
+  @Output() onSave = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<void>();
   @Output() onHide = new EventEmitter<void>();
   @Output() onCancel = new EventEmitter<void>();
@@ -65,7 +66,6 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
   formData: PaymentData = this.getEmptyForm();
   isMobile: boolean = false;
 
-  // Dropdown options
   paymentMethodOptions = [
     { label: 'حوالة بنكية', value: 'bank_transfer' },
     { label: 'شيك', value: 'check' },
@@ -82,29 +82,9 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
     { label: 'بنك القدس', value: 'jerusalem' }
   ];
 
-  // Sample data for transfers and checks
-  transfers: Transfer[] = [
-    {
-      bank: 'بنك هبوعليم',
-      branchNumber: '123',
-      accountNumber: '456789',
-      asmachta: 'ASM001',
-      amount: 1500
-    }
-  ];
+  transfers: Transfer[] = [];
+  checks: Check[] = [];
 
-  checks: Check[] = [
-    {
-      bank: 'بنك لئومي',
-      branchNumber: '456',
-      accountNumber: '789012',
-      checkNumber: '123456789',
-      dueDate: '11/09/2024',
-      amount: 1500
-    }
-  ];
-
-  // Calculate total
   get totalAmount(): number {
     const transferTotal = this.transfers.reduce((sum, t) => sum + t.amount, 0);
     const checkTotal = this.checks.reduce((sum, c) => sum + c.amount, 0);
@@ -126,7 +106,7 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
 
   private getEmptyForm(): PaymentData {
     return {
-      paymentDate: null,
+      paymentDate: new Date(),
       paymentMethod: '',
       bank: '',
       accountNumber: '',
@@ -139,11 +119,12 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
 
   resetForm(): void {
     this.formData = this.getEmptyForm();
+    this.transfers = [];
+    this.checks = [];
   }
 
   addPaymentMethod(): void {
     console.log('إضافة وسيلة دفع');
-    // Implement add payment method logic
   }
 
   deleteTransfer(index: number): void {
@@ -152,15 +133,11 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
 
   editTransfer(index: number): void {
     const transfer = this.transfers[index];
-    
-    // Populate form with transfer data
     this.formData.bank = transfer.bank;
     this.formData.accountNumber = transfer.accountNumber;
     this.formData.branchNumber = transfer.branchNumber;
     this.formData.asmachta = transfer.asmachta;
     this.formData.amount = transfer.amount;
-    
-    // Remove the transfer from the list
     this.transfers.splice(index, 1);
   }
 
@@ -170,33 +147,26 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
 
   editCheck(index: number): void {
     console.log('تعديل الشيك:', this.checks[index]);
-    // Implement edit check logic
   }
 
   onSubmit(): void {
-    // Validate that there are payments added
     if (this.transfers.length === 0 && this.checks.length === 0) {
       alert('يرجى إضافة حوالة أو شيك واحد على الأقل');
       return;
     }
 
-    // Prepare the full payment data
     const paymentData = {
-      ...this.formData,
+      customerId: this.customerId,
+      paymentDate: this.formData.paymentDate,
+      paymentMethod: this.formData.paymentMethod,
       transfers: this.transfers,
       checks: this.checks,
-      totalAmount: this.totalAmount
+      totalAmount: this.totalAmount,
+      notes: this.formData.notes
     };
 
-    // Emit the saved payment data
     this.onSave.emit(paymentData);
-    
-    // Reset form and arrays after save
     this.resetForm();
-    this.transfers = [];
-    this.checks = [];
-    
-    // Close the dialog
     this.closeDialog();
   }
 
@@ -213,7 +183,6 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
   }
 
   saveTransferLine(): void {
-    // Validate the form data
     if (!this.formData.bank) {
       alert('يرجى اختيار البنك');
       return;
@@ -239,7 +208,6 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
       return;
     }
   
-    // Add to transfers array
     const newTransfer: Transfer = {
       bank: this.formData.bank,
       accountNumber: this.formData.accountNumber,
@@ -250,7 +218,6 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
   
     this.transfers.push(newTransfer);
   
-    // Clear the form fields (keep payment date and method)
     this.formData.bank = '';
     this.formData.accountNumber = '';
     this.formData.branchNumber = '';

@@ -1,5 +1,8 @@
 <app-header></app-header>
 
+<!-- Toast for notifications -->
+<p-toast position="top-right"></p-toast>
+
 <!-- Mobile Hero Section - Only visible on mobile -->
 <div class="mobile-hero-section">
   <div class="mobile-hero-content">
@@ -23,185 +26,246 @@
 </div>
 
 <div class="reports-container">
-    <!-- Title - Desktop Only -->
-    <div class="header-section">
-      <h1 class="page-title">التقارير</h1>
-    </div>
-  
-    <!-- Filter Section - Desktop Only -->
-    <div class="filter-section">
-      <div class="filter-dropdowns">
-        <div class="filter-item">
-          <label class="filter-label">القسم</label>
-          <p-dropdown 
-            [options]="departments" 
-            [(ngModel)]="selectedDepartment" 
-            placeholder="جميع الأقسام"
-            styleClass="filter-dropdown">
-          </p-dropdown>
-        </div>
-        <div class="filter-item">
-          <label class="filter-label">الفترة الزمنية</label>
-          <p-dropdown 
-            [options]="timeRanges" 
-            [(ngModel)]="selectedTimeRange" 
-            placeholder="جميع الأوقات"
-            styleClass="filter-dropdown">
-          </p-dropdown>
-        </div>
-      </div>
-      <div class="filter-actions">
-        <button pButton type="button" icon="pi pi-print" class="p-button-outlined print-btn"></button>
-        <button pButton class="export-btn">
-          <span>تصدير</span>
-          <img src="assets/icons/export_icon.svg" alt="export">
-        </button>
-      </div>
-    </div>
-  
-    <!-- Summary Cards -->
-    <div class="summary-cards">
-      <div class="card-item card-cyan">
-        <img src="assets/images/reports_card_1.png" alt="Card Background">
-        <div class="card-content">
-          <div class="card-text">
-            <p class="card-label">إجمالي رصيد الحساب</p>
-            <h2 class="card-amount negative">-3,638.70₪</h2>
-          </div>
-        </div>
-      </div>
-  
-      <div class="card-item card-blue">
-        <img src="assets/images/reports_card_2.png" alt="Card Background">
-        <div class="card-content">
-          <div class="card-text">
-            <p class="card-label">إجمالي المدفوعات</p>
-            <h2 class="card-amount">0.00₪</h2>
-          </div>
-        </div>
-      </div>
-  
-      <div class="card-item card-light-blue">
-        <img src="assets/images/reports_card_3.png" alt="Card Background">
-        <div class="card-content">
-          <div class="card-text">
-            <p class="card-label">إجمالي الإيداعات شامل ضريبة القيمة المضافة</p>
-            <h2 class="card-amount">3,638.70₪</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- Tables Section -->
-    <div class="tables-section">
-      <!-- Cleared Checks Table (First) -->
-      <div>
-        <div class="table-header">
-          <h3 class="table-title">الشيكات المحصلة</h3>
-          <a [routerLink]="['/reports/checks']" class="table-subtitle">لعرض جميع الشيكات المحصلة ></a>
-        </div>
-        <div class="table-card">
-          <!-- Desktop Table -->
-          <p-table [value]="clearedChecks" styleClass="p-datatable-sm custom-table">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>التاريخ</th>
-                <th>تاريخ التحصيل</th>
-                <th>رقم الشيك</th>
-                <th>المبلغ</th>
-                <th>وصف التحصيل</th>
-                <th>رقم الحساب</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-              <tr>
-                <td>{{ item.date }}</td>
-                <td>{{ item.collectionDate }}</td>
-                <td>{{ item.accountNumber }}</td>
-                <td>{{ item.amount }}₪</td>
-                <td>{{ item.description }}</td>
-                <td>{{ item.checkNumber }}</td>
-              </tr>
-            </ng-template>
-          </p-table>
+  <!-- Title - Desktop Only -->
+  <div class="header-section">
+    <h1 class="page-title">التقارير</h1>
+  </div>
 
-          <!-- Mobile Horizontal Scroll Cards -->
-          <div class="mobile-checks-scroll">
-            <div class="check-card" *ngFor="let check of clearedChecks">
-              <div class="check-header">
-                <span class="check-status">{{ check.description }}</span>
-                <span class="check-date">{{ check.date }}</span>
+  <!-- Filter Section - Desktop Only -->
+  <div class="filter-section">
+    <div class="filter-dropdowns">
+      <div class="filter-item">
+        <label class="filter-label">القسم</label>
+        <p-dropdown 
+          [options]="departments" 
+          [(ngModel)]="selectedDepartment" 
+          placeholder="جميع الأقسام"
+          (onChange)="onDepartmentChange()"
+          styleClass="filter-dropdown">
+        </p-dropdown>
+      </div>
+      <div class="filter-item">
+        <label class="filter-label">الفترة الزمنية</label>
+        <p-dropdown 
+          [options]="timeRanges" 
+          [(ngModel)]="selectedTimeRange" 
+          placeholder="جميع الأوقات"
+          (onChange)="onTimeRangeChange()"
+          styleClass="filter-dropdown">
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button pButton type="button" icon="pi pi-print" class="p-button-outlined print-btn"></button>
+      <button pButton class="export-btn">
+        <span>تصدير</span>
+        <img src="assets/icons/export_icon.svg" alt="export">
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="card-item card-cyan">
+      <img src="assets/images/reports_card_1.png" alt="Card Background">
+      <div class="card-content">
+        <div class="card-text">
+          <p class="card-label">إجمالي رصيد الحساب</p>
+          <h2 class="card-amount" [class.negative]="isNegative(dashboardTotals.totalAccount)">
+            {{ isNegative(dashboardTotals.totalAccount) ? '-' : '' }}{{ formatCurrency(dashboardTotals.totalAccount) }}₪
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-item card-blue">
+      <img src="assets/images/reports_card_2.png" alt="Card Background">
+      <div class="card-content">
+        <div class="card-text">
+          <p class="card-label">إجمالي المدفوعات</p>
+          <h2 class="card-amount">{{ formatCurrency(dashboardTotals.totalPayments) }}₪</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-item card-light-blue">
+      <img src="assets/images/reports_card_3.png" alt="Card Background">
+      <div class="card-content">
+        <div class="card-text">
+          <p class="card-label">إجمالي الإيداعات شامل ضريبة القيمة المضافة</p>
+          <h2 class="card-amount">{{ formatCurrency(dashboardTotals.totalExpenses) }}₪</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tables Section -->
+  <div class="tables-section">
+    <!-- Cleared Checks Table (First) -->
+    <div>
+      <div class="table-header">
+        <h3 class="table-title">الشيكات المحصلة</h3>
+        <a [routerLink]="['/reports/checks']" class="table-subtitle">لعرض جميع الشيكات المحصلة ></a>
+      </div>
+      <div class="table-card">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+          <p>جاري التحميل...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && clearedChecks.length === 0" class="empty-state">
+          <i class="pi pi-inbox" style="font-size: 3rem; color: #ccc"></i>
+          <p>لا توجد شيكات محصلة</p>
+        </div>
+
+        <!-- Desktop Table -->
+        <p-table 
+          *ngIf="!isLoading && clearedChecks.length > 0"
+          [value]="clearedChecks" 
+          styleClass="p-datatable-sm custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>التاريخ</th>
+              <th>تاريخ التحصيل</th>
+              <th>رقم الشيك</th>
+              <th>المبلغ</th>
+              <th>وصف التحصيل</th>
+              <th>رقم الحساب</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>{{ item.date }}</td>
+              <td>{{ item.collectionDate }}</td>
+              <td>{{ item.accountNumber }}</td>
+              <td>{{ item.amount }}₪</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.checkNumber }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <!-- Mobile Horizontal Scroll Cards -->
+        <div class="mobile-checks-scroll" *ngIf="!isLoading && clearedChecks.length > 0">
+          <div class="check-card" *ngFor="let check of clearedChecks">
+            <div class="check-header">
+              <span class="check-status">{{ check.description }}</span>
+              <span class="check-date">{{ check.date }}</span>
+            </div>
+            <div class="check-details">
+              <div class="detail-item">
+                <div class="detail-label">تاريخ التحصيل</div>
+                <div class="detail-value">{{ check.collectionDate }}</div>
               </div>
-              <div class="check-details">
-                <div class="detail-item">
-                  <div class="detail-label">تاريخ التحصيل</div>
-                  <div class="detail-value">{{ check.collectionDate }}</div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-label">مسفر شيك</div>
-                  <div class="detail-value">{{ check.checkNumber }}</div>
-                </div>
-                <div class="detail-item full-width">
-                  <div class="detail-label">سكوم</div>
-                  <div class="detail-value">{{ check.amount }}₪</div>
-                </div>
+              <div class="detail-item">
+                <div class="detail-label">مسفر شيك</div>
+                <div class="detail-value">{{ check.checkNumber }}</div>
+              </div>
+              <div class="detail-item full-width">
+                <div class="detail-label">سكوم</div>
+                <div class="detail-value">{{ check.amount }}₪</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Alerts and Claims Table (Second) -->
-      <div>
-        <div class="table-header">
-          <h3 class="table-title">التنبيهات والمطالبات</h3>
-          <a href="#" class="table-subtitle">لجميع التنبيهات والتحديثات ></a>
-        </div>
-        <div class="table-card">
-          <p-table [value]="alertsAndClaims" styleClass="p-datatable-sm custom-table">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>التاريخ</th>
-                <th>اسم العميل</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-              <tr>
-                <td>{{ item.date }}</td>
-                <td>{{ item.description }}</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
+    <!-- Alerts and Claims Table (Second) -->
+    <div>
+      <div class="table-header">
+        <h3 class="table-title">التنبيهات والمطالبات</h3>
+        <a href="#" class="table-subtitle">لجميع التنبيهات والتحديثات ></a>
       </div>
-  
-      <!-- System Backup Table (Third) -->
-      <div>
-        <div class="table-header">
-          <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
-          <button pButton type="button" label="نسخ احتياطي" class="p-button-sm p-button-outlined backup-btn"></button>
+      <div class="table-card">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+          <p>جاري التحميل...</p>
         </div>
-        <div class="table-card">
-          <p-table [value]="systemEvaluation" styleClass="p-datatable-sm custom-table">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>التاريخ</th>
-                <th>الوقت</th>
-                <th>تم الإنشاء بواسطة</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-item>
-              <tr>
-                <td>{{ item.date }}</td>
-                <td>{{ item.time }}</td>
-                <td>
-                  <span class="status-badge">{{ item.createdBy }}</span>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && alertsAndClaims.length === 0" class="empty-state">
+          <i class="pi pi-bell" style="font-size: 3rem; color: #ccc"></i>
+          <p>لا توجد تنبيهات أو مطالبات</p>
         </div>
+
+        <!-- Data Table -->
+        <p-table 
+          *ngIf="!isLoading && alertsAndClaims.length > 0"
+          [value]="alertsAndClaims" 
+          styleClass="p-datatable-sm custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>التاريخ</th>
+              <th>اسم العميل</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>{{ item.date }}</td>
+              <td>{{ item.description }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- System Backup Table (Third) -->
+    <div>
+      <div class="table-header">
+        <h3 class="table-title">النسخ الاحتياطي للنظام</h3>
+        <button 
+          pButton 
+          type="button" 
+          label="نسخ احتياطي" 
+          class="p-button-sm p-button-outlined backup-btn"
+          [loading]="isBackupInProgress"
+          [disabled]="isBackupInProgress"
+          (click)="onBackupClick()">
+        </button>
+      </div>
+      <div class="table-card">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+          <p>جاري التحميل...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && systemEvaluation.length === 0" class="empty-state">
+          <i class="pi pi-database" style="font-size: 3rem; color: #ccc"></i>
+          <p>لا توجد نسخ احتياطية</p>
+          <small>انقر على "نسخ احتياطي" لإنشاء نسخة احتياطية جديدة</small>
+        </div>
+
+        <!-- Data Table -->
+        <p-table 
+          *ngIf="!isLoading && systemEvaluation.length > 0"
+          [value]="systemEvaluation" 
+          styleClass="p-datatable-sm custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>التاريخ</th>
+              <th>الوقت</th>
+              <th>تم الإنشاء بواسطة</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>{{ item.date }}</td>
+              <td>{{ item.time }}</td>
+              <td>
+                <span class="status-badge">{{ item.createdBy }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
-  <app-footer-nav></app-footer-nav>
+</div>
+
+<app-footer-nav></app-footer-nav>

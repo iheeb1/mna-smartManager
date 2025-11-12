@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
 import { ClientFormComponent } from './client-form/client-form/client-form.component';
+import { CustomerService } from '../services/customer.service';
 
 interface Client {
   id: string;
@@ -23,7 +24,6 @@ interface Client {
   balance: string;
   showMenu?: boolean;
 }
-
 
 @Component({
   selector: 'app-clients',
@@ -39,7 +39,7 @@ interface Client {
     ProgressSpinnerModule,
     ClientFormComponent
   ],
-  providers: [MessageService], // MessageService is provided here
+  providers: [MessageService],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],
   animations: [
@@ -55,96 +55,13 @@ interface Client {
   ]
 })
 export class ClientsComponent implements OnInit {
-
   showContactMenu: boolean = false;
-contactMenuType: 'phone' | 'email' | null = null;
-selectedContactValue: string | null = null;
-showDialog: boolean = false;
-selectedClient: any = null;
+  contactMenuType: 'phone' | 'email' | null = null;
+  selectedContactValue: string | null = null;
+  showDialog: boolean = false;
+  selectedClient: any = null;
 
-  clients: Client[] = [
-    {
-      id: '1',
-      name: 'מחמוד אחמד אלסייד',
-      phone: '0-123456789',
-      email: 'Example@gmail.com',
-      address: 'הגיזה, 31 כפר חכים',
-      discount: '2.49%',
-      creditGiven: '1.36₪',
-      balance: '1.36₪'
-    },
-    {
-      id: '2',
-      name: 'חברת בניית הפירמידה בע"מ',
-      phone: '0-123456789',
-      email: 'info@ash-projects.co.il',
-      address: 'חלב, הקבלה 45 בהבלד',
-      discount: '-20.45%',
-      creditGiven: '2.56₪',
-      balance: '2.56₪'
-    },
-    {
-      id: '3',
-      name: 'חלב, דוראן 12, בית-2',
-      phone: '0-123456789',
-      email: 'contact@greenbuild.co.il',
-      address: 'באר שבע, הרווחה הם ח.מ',
-      discount: '1.45%',
-      creditGiven: '1.36₪',
-      balance: '1.36₪'
-    },
-    {
-      id: '4',
-      name: 'נד, כבאש, בית-6',
-      phone: '0-123456789',
-      email: 'Example@gmail.com',
-      address: 'חלב, הקבלה 30 בהבלד',
-      discount: '-5.49%',
-      creditGiven: '2.56₪',
-      balance: '2.56₪'
-    },
-    {
-      id: '5',
-      name: 'הירוק ובניה מוסד',
-      phone: '0-123456789',
-      email: 'info@ash-projects.co.il',
-      address: 'חלב, דוראן 22, בית-7',
-      discount: '57%',
-      creditGiven: '1.36₪',
-      balance: '1.36₪'
-    },
-    {
-      id: '6',
-      name: 'מחמוד אחמד אלסייד',
-      phone: '0-123456789',
-      email: 'contact@greenbuild.co.il',
-      address: 'הגיזה, 31 כפר חכים',
-      discount: '-20.45%',
-      creditGiven: '1.36₪',
-      balance: '1.36₪'
-    },
-    {
-      id: '7',
-      name: 'חלב, הקבלה 45 בהבלד',
-      phone: '0-123456789',
-      email: 'Example@gmail.com',
-      address: 'חלב, הקבלה 45 בהבלד',
-      discount: '1.45%',
-      creditGiven: '2.56₪',
-      balance: '2.56₪'
-    },
-    {
-      id: '8',
-      name: 'חברת בניית הפירמידה בע"מ',
-      phone: '0-123456789',
-      email: 'info@ash-projects.co.il',
-      address: 'חלב, דוראן 12, בית-2',
-      discount: '-5.49%',
-      creditGiven: '1.36₪',
-      balance: '1.36₪'
-    } 
-  ];
-
+  clients: Client[] = [];
   filteredClients: Client[] = [];
   searchTerm: string = '';
   loading: boolean = false;
@@ -152,10 +69,10 @@ selectedClient: any = null;
   totalClients: number = 0;
   showMobileFabMenu: boolean = false;
 
-  // Use constructor injection (correct approach)
   constructor(
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private customerService: CustomerService
   ) {}
 
   ngOnInit(): void {
@@ -165,12 +82,40 @@ selectedClient: any = null;
   loadClients(): void {
     this.loading = true;
     
-    setTimeout(() => {
-      this.filteredClients = [...this.clients];
-      this.totalClients = this.clients.length;
-      this.isEmpty = this.clients.length === 0;
-      this.loading = false;
-    }, 500);
+    this.customerService.getCustomersList({
+      itemsPerPage: 100,
+      pageNumber: 0
+    }).subscribe({
+      next: (response: { RowsList: any[]; TotalLength: number; }) => {
+        if (response && response.RowsList) {
+          this.clients = response.RowsList.map((c: { customerId: { toString: () => any; }; customerName: any; customerPhoneNumber: any; customerMobileNumber: any; customerEmails: any; customerAddressLine1: any; customerCity: any; customerAllowedExcessAmount: { toString: () => any; }; customerOpeningBalance: { toString: () => any; }; }) => ({
+            id: c.customerId.toString(),
+            name: c.customerName,
+            phone: c.customerPhoneNumber || c.customerMobileNumber || '',
+            email: c.customerEmails || '',
+            address: `${c.customerAddressLine1 || ''} ${c.customerCity || ''}`.trim(),
+            discount: '0%',
+            creditGiven: c.customerAllowedExcessAmount?.toString() || '0₪',
+            balance: c.customerOpeningBalance?.toString() || '0₪'
+          }));
+          
+          this.filteredClients = [...this.clients];
+          this.totalClients = response.TotalLength || this.clients.length;
+          this.isEmpty = this.clients.length === 0;
+        }
+        this.loading = false;
+      },
+      error: (error: any) => {
+        console.error('Error loading clients:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'خطأ',
+          detail: 'فشل في تحميل قائمة العملاء'
+        });
+        this.loading = false;
+        this.isEmpty = true;
+      }
+    });
   }
 
   onSearchChange(term: string): void {
@@ -187,12 +132,8 @@ selectedClient: any = null;
     this.isEmpty = this.filteredClients.length === 0 && term.length > 0;
   }
 
-
   getDiscountClass(discount: string): string {
-    if (discount.startsWith('-')) {
-      return 'negative';
-    }
-    return 'positive';
+    return discount.startsWith('-') ? 'negative' : 'positive';
   }
 
   openMobileFabMenu(): void {
@@ -208,35 +149,47 @@ selectedClient: any = null;
   }
 
   showActionMenu(client: Client): void {
-    // Ferme tous les autres menus
     this.filteredClients.forEach(c => (c as any).showMenu = false);
-  
-    // Ouvre le menu du client cliqué
     (client as any).showMenu = true;
   }
 
   deleteClient(client: Client): void {
-    this.clients = this.clients.filter(c => c.id !== client.id);
-    this.filteredClients = this.filteredClients.filter(c => c.id !== client.id);
-  
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Supprimé',
-      detail: 'Client supprimé avec succès'
-    });
+    if (confirm('هل أنت متأكد من حذف هذا العميل؟')) {
+      this.customerService.deleteCustomer(parseInt(client.id)).subscribe({
+        next: () => {
+          this.clients = this.clients.filter(c => c.id !== client.id);
+          this.filteredClients = this.filteredClients.filter(c => c.id !== client.id);
+          
+          this.messageService.add({
+            severity: 'success',
+            summary: 'تم الحذف',
+            detail: 'تم حذف العميل بنجاح'
+          });
+        },
+        error: (error: any) => {
+          console.error('Error deleting client:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'خطأ',
+            detail: 'فشل في حذف العميل'
+          });
+        }
+      });
+    }
   }
+
   openPhoneMenu(phone: string): void {
     this.contactMenuType = 'phone';
     this.selectedContactValue = phone;
     this.showContactMenu = true;
   }
-  
+
   openEmailMenu(email: string): void {
     this.contactMenuType = 'email';
     this.selectedContactValue = email;
     this.showContactMenu = true;
   }
-  
+
   closeContactMenu(): void {
     this.showContactMenu = false;
   }
@@ -244,15 +197,15 @@ selectedClient: any = null;
   callPhone(phone: string): void {
     window.open(`tel:${phone}`, '_self');
   }
-  
+
   sendSms(phone: string): void {
     window.open(`sms:${phone}`, '_self');
   }
-  
+
   sendEmail(email: string): void {
     window.open(`mailto:${email}`, '_self');
   }
-  
+
   copyToClipboard(text: string): void {
     navigator.clipboard.writeText(text).then(() => {
       this.messageService.add({
@@ -269,29 +222,54 @@ selectedClient: any = null;
       });
     });
   }
-  
+
   addNewClient() {
     this.selectedClient = null;
     this.showDialog = true;
   }
-  
+
   addNewClientFromMobile() {
     this.selectedClient = null;
     this.showDialog = true;
     this.closeMobileFabMenu();
   }
-  
+
   editClient(client: any) {
     this.selectedClient = client;
     this.showDialog = true;
   }
-  
+
   onClientSaved(clientData: any) {
-    // Handle save logic here
-    console.log('Client saved:', clientData);
-    this.loadClients(); // Refresh the list
+    const customer = {
+      customerId: clientData.customerId || undefined,
+      customerName: clientData.customerName,
+      customerPhoneNumber: clientData.phone,
+      customerMobileNumber: clientData.additionalPhone || '',
+      customerEmails: clientData.email,
+      customerAddressLine1: clientData.address,
+      customerStatusId: 1
+    };
+
+    this.customerService.saveCustomer(customer).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'نجح',
+          detail: clientData.customerId ? 'تم تحديث العميل بنجاح' : 'تم إضافة العميل بنجاح'
+        });
+        this.loadClients();
+      },
+      error: (error: any) => {
+        console.error('Error saving client:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'خطأ',
+          detail: 'فشل في حفظ بيانات العميل'
+        });
+      }
+    });
   }
-  
+
   onDialogClose() {
     this.showDialog = false;
     this.selectedClient = null;

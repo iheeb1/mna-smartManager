@@ -46,16 +46,20 @@ export interface ApiResponse<T> {
   Message?: string;
 }
 
+export interface BackupResponse {
+  id: number;
+  createdById: number;
+  createdAt: string;
+  filePath?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ReportsService {
   private apiUrl = environment.apiUrl || 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {
-    // Log the API URL for debugging
-    console.log('ReportsService initialized with apiUrl:', this.apiUrl);
-  }
+  constructor(private http: HttpClient) {}
 
   /**
    * Get Dashboard Totals
@@ -77,14 +81,9 @@ export class ReportsService {
       },
     };
 
-    console.log('Sending request to:', `${this.apiUrl}/smdashboard`);
-    console.log('Request body:', JSON.stringify(requestBody, null, 2));
-
     const response = await firstValueFrom(
       this.http.post<ApiResponse<any>>(`${this.apiUrl}/smdashboard`, requestBody)
     );
-
-    console.log('Received response:', response);
 
     if (response?.IsSuccess && response.RespObject) {
       return {
@@ -180,6 +179,21 @@ export class ReportsService {
     );
 
     return response?.IsSuccess && response.RespObject ? response.RespObject : [];
+  }
+
+  /**
+   * Execute System Backup
+   * @param createdById - ID of the user creating the backup
+   */
+  async executeBackup(createdById: number): Promise<BackupResponse> {
+    const response = await firstValueFrom(
+      this.http.post<BackupResponse>(
+        `${this.apiUrl}/backups/execute`,
+        { createdById }
+      )
+    );
+
+    return response;
   }
 
   /**

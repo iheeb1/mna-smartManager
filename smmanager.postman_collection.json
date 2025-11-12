@@ -4420,6 +4420,73 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Get Grouped Transactions List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetGroupedTransactionsList\",\n  \"reqObject\": {\n    \"customer\": {\n      \"customerIds\": \"\"\n    },\n    \"transactionDate\": {\n      \"fromDate\": \"2024-01-01\",\n      \"toDate\": \"2025-12-31\"\n    },\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 1,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMTransaction",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMTransaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Detailed Transactions List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reqType\": \"GetDetailedTransactionsList\",\n  \"reqObject\": {\n    \"customer\": {\n      \"customerIds\": \"1\"\n    },\n    \"transactionDate\": {\n      \"fromDate\": \"2024-01-01\",\n      \"toDate\": \"2025-12-31\"\n    },\n    \"itemsPerPage\": 30,\n    \"pageNumber\": 1,\n    \"includeTotalRowsLength\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/SMTransaction",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"SMTransaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
