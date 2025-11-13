@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -15,12 +16,17 @@ export class AuthService {
   public currentUser$: Observable<User | null>;
   private tokenKey = 'smart_auth_token';
   private userKey = 'smart_user_data';
+  private isBrowser: boolean;
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) platformId: Object
   ) {
-    const storedUser = localStorage.getItem(this.userKey);
+    this.isBrowser = isPlatformBrowser(platformId);
+    
+    // Only access localStorage in the browser
+    const storedUser = this.isBrowser ? localStorage.getItem(this.userKey) : null;
     this.currentUserSubject = new BehaviorSubject<User | null>(
       storedUser ? JSON.parse(storedUser) : null
     );
@@ -32,7 +38,7 @@ export class AuthService {
   }
 
   get token(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return this.isBrowser ? localStorage.getItem(this.tokenKey) : null;
   }
 
   get isAuthenticated(): boolean {
@@ -83,6 +89,8 @@ export class AuthService {
   }
 
   private setSession(userData: LoginResponse): void {
+    if (!this.isBrowser) return;
+    
     if (userData.token) {
       localStorage.setItem(this.tokenKey, userData.token);
       
@@ -94,13 +102,17 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.userKey);
+    if (this.isBrowser) {
+      localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem(this.userKey);
+    }
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }
 
   refreshUserData(userData: User): void {
+    if (!this.isBrowser) return;
+    
     const { password, ...userWithoutPassword } = userData;
     localStorage.setItem(this.userKey, JSON.stringify(userWithoutPassword));
     this.currentUserSubject.next(userWithoutPassword);

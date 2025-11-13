@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, NgZone } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
@@ -37,17 +37,22 @@ export class LoginComponent {
   loading: boolean = false;
   errorMessage: string = '';
   returnUrl: string = '/';
+  private isBrowser: boolean;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ngZone: NgZone,
+    @Inject(PLATFORM_ID) platformId: Object
   ) {
-    if (this.authService.isAuthenticated) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    
+    if (this.isBrowser && this.authService.isAuthenticated) {
       this.router.navigate(['/dashboard']);
     }
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
   onTextSubmit() {
@@ -68,7 +73,19 @@ export class LoginComponent {
       next: (response) => {
         if (response.success) {
           console.log('تم تسجيل الدخول بنجاح:', response.data);
-          this.router.navigate([this.returnUrl]);
+          
+          // Use NgZone to ensure Angular detects the navigation
+          this.ngZone.run(() => {
+            // Navigate and reload to ensure proper state
+            this.router.navigate([this.returnUrl]).then(() => {
+              // Force a small delay to ensure auth state is synced
+              if (this.isBrowser) {
+                setTimeout(() => {
+                  this.loading = false;
+                }, 100);
+              }
+            });
+          });
         } else {
           this.errorMessage = response.message || 'فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد';
           this.loading = false;
